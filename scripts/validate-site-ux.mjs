@@ -195,6 +195,57 @@ try {
     throw new Error('Example page has no visible active entry in the primary sidebar');
   }
 
+  const readExamplesSectionMetrics = () => page.evaluate(() => {
+    const link = [...document.querySelectorAll('.md-sidebar--primary a.md-nav__link')]
+      .find((candidate) => (
+        candidate.textContent.trim() === 'Examples' && candidate.getClientRects().length > 0
+      ));
+    const child = [...document.querySelectorAll('.md-sidebar--primary a.md-nav__link')]
+      .find((candidate) => (
+        candidate.textContent.trim() === 'Minimal policy' && candidate.getClientRects().length > 0
+      ));
+    const textLeft = (element) => {
+      const node = [...element.querySelectorAll('*')]
+        .flatMap((descendant) => [...descendant.childNodes])
+        .find((childNode) => childNode.nodeType === Node.TEXT_NODE && childNode.textContent.trim());
+      if (!node) return undefined;
+      const range = document.createRange();
+      const firstCharacter = node.textContent.search(/\S/);
+      range.setStart(node, firstCharacter);
+      range.setEnd(node, firstCharacter + 1);
+      return range.getBoundingClientRect().left;
+    };
+    if (!link || !child) return undefined;
+    const style = getComputedStyle(link);
+    return {
+      active: link.classList.contains('md-nav__link--active'),
+      childTextLeft: textLeft(child),
+      fontWeight: style.fontWeight,
+      height: link.getBoundingClientRect().height,
+      markerGap: textLeft(link) - link.getBoundingClientRect().left,
+      paddingLeft: Number.parseFloat(style.paddingLeft),
+      sectionTextLeft: textLeft(link),
+    };
+  });
+  const inactiveExamplesSection = await readExamplesSectionMetrics();
+  await page.goto(`${origin}/examples/`, { waitUntil: 'networkidle' });
+  const activeExamplesSection = await readExamplesSectionMetrics();
+  if (
+    !activeExamplesSection?.active
+    || inactiveExamplesSection?.active
+    || activeExamplesSection.markerGap < 6
+    || activeExamplesSection.sectionTextLeft > activeExamplesSection.childTextLeft + 1
+    || activeExamplesSection.paddingLeft !== inactiveExamplesSection.paddingLeft
+    || activeExamplesSection.fontWeight !== inactiveExamplesSection.fontWeight
+    || Math.abs(activeExamplesSection.height - inactiveExamplesSection.height) > 1
+  ) {
+    throw new Error(
+      'Selected section marker overlaps or changes its label geometry: ' +
+        `${JSON.stringify(activeExamplesSection)} -> ${JSON.stringify(inactiveExamplesSection)}`,
+    );
+  }
+  await page.goto(`${origin}/examples/minimal/`, { waitUntil: 'networkidle' });
+
   const downloadLink = page.locator('.octoform-example-download');
   if ((await downloadLink.getAttribute('download')) !== 'octoform.yml') {
     throw new Error('Minimal policy download does not declare the expected filename');
