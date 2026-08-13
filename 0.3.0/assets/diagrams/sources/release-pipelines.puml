@@ -1,0 +1,41 @@
+@startuml release-pipelines
+!include _theme.iuml
+hide footbox
+
+actor Maintainer
+participant "Octoform repository" as AppRepo
+participant "Application CI" as AppCI
+participant "npm registry" as NPM
+participant "GitHub Releases" as Releases
+participant "Documentation repository" as DocsRepo
+participant "Documentation CI" as DocsCI
+participant "GitHub Pages" as Pages
+
+Maintainer -> AppRepo : merge reviewed PR to vMAJOR.x
+AppRepo -> AppCI : protected branch push
+AppCI -> AppCI : read package version and check tag
+AppCI -> AppRepo : create annotated vX.Y.Z tag
+AppCI -> AppCI : dispatch release workflow on tag
+AppCI -> AppCI : validate tag, changelog, build, tests and package
+AppCI -> NPM : OIDC trusted publish with provenance
+NPM --> AppCI : immutable package version
+AppCI -> Releases : create verified-tag release
+
+Maintainer -> DocsRepo : merge reviewed documentation to default v0.x
+DocsRepo -> DocsCI : trigger verification and publication
+DocsCI -> DocsCI : lint, build, examples, UML, links, privacy, WCAG
+DocsCI -> DocsCI : resolve docs patch and validate release line
+DocsCI -> DocsRepo : create annotated docs vX.Y.Z tag
+DocsCI -> DocsRepo : mike deploy immutable patch\nand line/latest/stable aliases
+DocsCI -> Pages : deploy verified gh-pages artifact
+Pages --> DocsCI : deployment URL
+DocsCI -> Pages : verify version and aliases over HTTPS
+DocsCI -> DocsRepo : create GitHub Release
+DocsCI --> Maintainer : versioned public documentation
+
+note over NPM, Pages
+  Application publishing follows the version-branch merge automatically.
+  Every default-branch revision becomes one immutable documentation patch.
+  Documentation and application share MAJOR.MINOR; patch differs.
+end note
+@enduml

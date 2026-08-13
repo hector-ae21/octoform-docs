@@ -1,0 +1,368 @@
+:root {
+  --md-primary-fg-color: #142a50;
+  --md-primary-fg-color--light: #244a82;
+  --md-primary-fg-color--dark: #09182f;
+  --md-accent-fg-color: #006d8f;
+  --md-code-hl-comment-color: #626262;
+  --md-typeset-a-color: #075985;
+  --octo-cyan: #0891b2;
+  --octo-violet: #6d28d9;
+  --octo-ink: #09182f;
+  --octo-panel: #f5f8fc;
+  --octo-border: #cbd8e8;
+  --octo-shadow: 0 1.2rem 3rem rgb(9 24 47 / 12%);
+}
+
+[data-md-color-scheme="default"] {
+  --md-code-hl-comment-color: #626262;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #07111f;
+  --md-default-bg-color--light: #0b1728;
+  --md-default-bg-color--lighter: #122039;
+  --md-default-bg-color--lightest: #1a2b47;
+  --md-default-fg-color: #eef6ff;
+  --md-default-fg-color--light: #cedcf0;
+  --md-default-fg-color--lighter: #a9bdd7;
+  --md-default-fg-color--lightest: #849bb8;
+  --md-primary-fg-color: #173b69;
+  --md-primary-fg-color--light: #24558f;
+  --md-primary-fg-color--dark: #0d284b;
+  --md-accent-fg-color: #67e8f9;
+  --md-code-hl-comment-color: #c1d0e4;
+  --md-typeset-a-color: #7dd3fc;
+  --octo-cyan: #67e8f9;
+  --octo-violet: #c4b5fd;
+  --octo-ink: #eef6ff;
+  --octo-panel: #0e1c31;
+  --octo-border: #294568;
+  --octo-shadow: 0 1.2rem 3rem rgb(0 0 0 / 32%);
+}
+
+.md-header {
+  background: linear-gradient(110deg, var(--md-primary-fg-color--dark), var(--md-primary-fg-color));
+  border-bottom: 0.05rem solid rgb(125 211 252 / 35%);
+  box-shadow: 0 0.3rem 1.2rem rgb(2 8 23 / 22%);
+}
+
+.md-tabs {
+  background: var(--md-primary-fg-color--dark);
+}
+
+.md-tabs__link {
+  opacity: 1;
+}
+
+.md-grid {
+  max-width: 92rem;
+}
+
+.md-main__inner {
+  margin-top: 1.5rem;
+}
+
+.md-content__inner {
+  padding-bottom: 4rem;
+}
+
+.md-typeset {
+  font-size: 0.82rem;
+  line-height: 1.72;
+}
+
+.md-typeset h1 {
+  color: var(--octo-ink);
+  font-size: clamp(2rem, 4vw, 3.15rem);
+  font-weight: 780;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+}
+
+.md-typeset h2 {
+  border-top: 0.05rem solid var(--octo-border);
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  font-weight: 720;
+  letter-spacing: -0.025em;
+  margin-top: 3.4rem;
+  padding-top: 1.25rem;
+}
+
+.md-typeset h3 {
+  font-weight: 700;
+}
+
+.md-typeset a:not(.md-button) {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.15em;
+}
+
+.md-typeset code {
+  border-radius: 0.28rem;
+}
+
+.md-typeset .highlight {
+  border: 0.05rem solid var(--octo-border);
+  border-radius: 0.65rem;
+  box-shadow: 0 0.5rem 1.5rem rgb(9 24 47 / 8%);
+  overflow: hidden;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 0.55rem;
+  box-shadow: 0 0.4rem 1.1rem rgb(9 24 47 / 8%);
+}
+
+.md-typeset table:not([class]) {
+  border: 0.05rem solid var(--octo-border);
+  border-radius: 0.45rem;
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--octo-panel);
+}
+
+.md-typeset .go,
+.md-typeset .nv {
+  color: #686868;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .go,
+[data-md-color-scheme="slate"] .md-typeset .nv {
+  color: #c1d0e4;
+}
+
+.md-copyright {
+  color: #8b8b8b;
+}
+
+[data-md-color-scheme="slate"] .md-copyright {
+  color: #b9c8dc;
+}
+
+.octoform-hero {
+  align-items: center;
+  background:
+    radial-gradient(circle at 88% 12%, rgb(56 189 248 / 20%), transparent 30%),
+    radial-gradient(circle at 14% 90%, rgb(124 58 237 / 14%), transparent 34%),
+    linear-gradient(135deg, var(--octo-panel), var(--md-default-bg-color));
+  border: 0.05rem solid var(--octo-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--octo-shadow);
+  display: grid;
+  gap: clamp(2rem, 6vw, 5rem);
+  grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+  margin: 1rem 0 3rem;
+  overflow: hidden;
+  padding: clamp(2rem, 6vw, 5.2rem);
+  position: relative;
+}
+
+.octoform-hero-copy,
+.octoform-hero-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.octoform-eyebrow {
+  color: var(--md-typeset-a-color);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.octoform-hero h1 {
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  margin: 0 0 1.15rem;
+  max-width: 12ch;
+}
+
+.octoform-lead {
+  color: var(--md-default-fg-color--light);
+  font-size: clamp(1.05rem, 1.8vw, 1.28rem);
+  line-height: 1.62;
+  max-width: 42rem;
+}
+
+.octoform-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.octoform-actions .md-button {
+  border-radius: 999px;
+  padding-inline: 1.25rem;
+}
+
+.octoform-hero-visual {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 20rem;
+}
+
+.octoform-hero-logo {
+  filter: drop-shadow(0 1.8rem 1.4rem rgb(31 38 135 / 30%));
+  margin: 0;
+  max-height: 30rem;
+  width: min(100%, 31rem);
+}
+
+.octoform-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.5rem;
+}
+
+.octoform-pill {
+  background: rgb(8 145 178 / 10%);
+  border: 0.05rem solid rgb(8 145 178 / 38%);
+  border-radius: 999px;
+  color: var(--octo-ink);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+}
+
+.octoform-section-intro {
+  color: var(--md-default-fg-color--light);
+  font-size: 1rem;
+  max-width: 52rem;
+}
+
+.octoform-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 1.5rem 0 2.5rem;
+}
+
+.octoform-card {
+  background: var(--octo-panel);
+  border: 0.05rem solid var(--octo-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.65rem 1.8rem rgb(9 24 47 / 8%);
+  padding: 1.45rem;
+}
+
+.octoform-card h3 {
+  margin: 0 0 0.55rem;
+}
+
+.octoform-card p:last-child {
+  margin-bottom: 0;
+}
+
+.octoform-step {
+  border-top: 0.18rem solid var(--octo-cyan);
+}
+
+.octoform-step-number {
+  color: var(--md-typeset-a-color);
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.9rem;
+  text-transform: uppercase;
+}
+
+.octoform-split {
+  align-items: start;
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1.5rem 0 2.5rem;
+}
+
+.octoform-callout {
+  background: linear-gradient(135deg, rgb(8 145 178 / 12%), rgb(109 40 217 / 10%));
+  border: 0.05rem solid var(--octo-border);
+  border-left: 0.25rem solid var(--octo-cyan);
+  border-radius: 0.65rem;
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+}
+
+.octoform-diagram {
+  background: #07111f;
+  border: 0.05rem solid #294568;
+  border-radius: 0.75rem;
+  box-shadow: var(--octo-shadow);
+  margin: 1.5rem 0;
+  overflow: auto;
+  padding: 1.25rem;
+}
+
+.octoform-diagram img {
+  display: block;
+  margin: 0 auto;
+  min-width: 42rem;
+}
+
+@media screen and (max-width: 76.2344em) {
+  .md-grid {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 60em) {
+  .octoform-hero {
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  .octoform-hero-copy {
+    text-align: center;
+  }
+
+  .octoform-hero h1,
+  .octoform-lead {
+    margin-inline: auto;
+  }
+
+  .octoform-actions,
+  .octoform-pill-row {
+    justify-content: center;
+  }
+
+  .octoform-hero-visual {
+    min-height: auto;
+  }
+
+  .octoform-hero-logo {
+    max-width: 23rem;
+  }
+}
+
+@media screen and (max-width: 44.9844em) {
+  .octoform-grid,
+  .octoform-split {
+    grid-template-columns: 1fr;
+  }
+
+  .octoform-hero {
+    border-radius: 0.75rem;
+    padding: 1.6rem;
+  }
+
+  .octoform-hero h1 {
+    font-size: clamp(2.35rem, 13vw, 3.5rem);
+  }
+
+  .octoform-actions .md-button {
+    text-align: center;
+    width: 100%;
+  }
+
+  .octoform-diagram img {
+    min-width: 32rem;
+  }
+}
