@@ -108,7 +108,14 @@ nav:
       - Guides overview: guides/index.md
       - Plan and apply: guides/plan-and-apply.md
       - CI/CD automation: automation/index.md
-      - Examples: examples/index.md
+      - Examples:
+          - Example catalogue: examples/index.md
+          - Minimal policy: examples/minimal.md
+          - Audit only: examples/audit-only.md
+          - Personal account: examples/personal-account.md
+          - Branch patterns: examples/branch-patterns.md
+          - Scheduled audit: examples/scheduled-audit.md
+          - Shared presets: examples/shared-presets.md
       - Troubleshooting: troubleshooting/index.md
   - Reference:
       - Reference overview: reference/index.md

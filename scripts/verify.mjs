@@ -17,6 +17,7 @@ runNpm('validate:diagrams');
 runNpm('validate:examples');
 runNpm('validate:secrets');
 run(mkdocs, ['build', '--strict']);
+runNpm('validate:ux');
 runNpm('validate:html');
 runNpm('validate:links');
 runNpm('validate:privacy');

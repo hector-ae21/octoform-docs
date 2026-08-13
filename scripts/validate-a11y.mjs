@@ -20,6 +20,8 @@ const paths = [
   '/guides/plan-and-apply/',
   '/automation/',
   '/examples/',
+  '/examples/minimal/',
+  '/examples/shared-presets/',
   '/security/',
   '/architecture/',
   '/reference/github-api-surface/',

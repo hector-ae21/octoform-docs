@@ -1,93 +1,92 @@
 ---
 title: Validated examples
-description: Download and adapt complete Octoform 0.3.1 configurations for common governance workflows.
+description: Choose and download a complete Octoform 0.3.1 configuration for a focused governance workflow.
 ---
 
 # Validated examples
 
-Every example uses fictitious owners and repositories. The documentation build
-loads each root configuration with the exact published `0.3.1` package,
-including imported presets, before this site can be published.
+Every root configuration in this catalogue is loaded with the exact published
+`@hector21/octoform@0.3.1` package before the documentation can be released.
+Owners and repositories are intentionally fictitious.
+
+!!! tip "Start with a plan"
+
+    Replace the placeholder owner, provide an appropriately scoped token, and
+    run `octoform plan` before considering `apply`.
+
+<div class="octoform-grid" markdown>
+
+<div class="octoform-card" markdown>
 
 ## Minimal policy
 
-One managed value for every repository. Use this shape for a first plan.
+Manage one merge setting across every selected repository. This is the
+smallest configuration that produces a mutable plan.
 
-```yaml
---8<-- "docs/examples/files/minimal/octoform.yml"
-```
+[Open the minimal policy](minimal.md)
 
-[Download minimal policy](files/minimal/octoform.yml){ .md-button }
+</div>
+
+<div class="octoform-card" markdown>
 
 ## Audit only
 
-Inventory public metadata without declaring any mutable policy.
+Report missing public metadata without declaring desired repository settings
+or making mutation possible.
 
-```yaml
---8<-- "docs/examples/files/audit-only/octoform.yml"
-```
+[Open the audit-only policy](audit-only.md)
 
-[Download audit-only policy](files/audit-only/octoform.yml){ .md-button }
+</div>
+
+<div class="octoform-card" markdown>
 
 ## Personal account
 
-Use local repository types and repository-level rulesets without assuming
-organization custom properties.
+Classify repositories from local evidence and use repository rulesets without
+depending on organization custom properties.
 
-```yaml
---8<-- "docs/examples/files/personal-account/octoform.yml"
-```
+[Open the personal-account policy](personal-account.md)
 
-[Download personal-account policy](files/personal-account/octoform.yml){ .md-button }
+</div>
 
-## Branch targeting patterns
+<div class="octoform-card" markdown>
 
-Compare the default-branch token, an exact branch, a glob, and a fixed set.
+## Branch patterns
 
-```yaml
---8<-- "docs/examples/files/branch-patterns/octoform.yml"
-```
+Compare the default-branch token, exact branches, glob patterns, and a fixed
+set of maintained branches.
 
-[Download branch-pattern policy](files/branch-patterns/octoform.yml){ .md-button }
+[Open the branch-pattern examples](branch-patterns.md)
 
-## Scheduled compliance report
+</div>
 
-A policy that remains read-only even if someone invokes `apply` against it.
+<div class="octoform-card" markdown>
 
-```yaml
---8<-- "docs/examples/files/self-audit/octoform.yml"
-```
+## Scheduled audit
 
-[Download scheduled-audit policy](files/self-audit/octoform.yml){ .md-button }
+Use a policy that stays observational even if someone invokes `apply` against
+the same file.
+
+[Open the scheduled-audit policy](scheduled-audit.md)
+
+</div>
+
+<div class="octoform-card" markdown>
 
 ## Shared presets
 
-The same owner-neutral policy fragments can be imported by an organization or
-personal-account root configuration.
+Compose owner-neutral project and security policies from organization or
+personal-account root configurations.
 
-=== "Organization root"
+[Open the shared-presets example](shared-presets.md)
 
-    ```yaml
-    --8<-- "docs/examples/files/shared-presets/org.octoform.yml"
-    ```
+</div>
 
-=== "Personal root"
+</div>
 
-    ```yaml
-    --8<-- "docs/examples/files/shared-presets/personal.octoform.yml"
-    ```
+## What validation proves
 
-=== "Project-type preset"
-
-    ```yaml
-    --8<-- "docs/examples/files/shared-presets/presets/npm-library.yml"
-    ```
-
-=== "Security preset"
-
-    ```yaml
-    --8<-- "docs/examples/files/shared-presets/presets/security-baseline.yml"
-    ```
-
-[Download organization root](files/shared-presets/org.octoform.yml){ .md-button }
-[Download personal root](files/shared-presets/personal.octoform.yml){ .md-button }
+The documentation build parses every root file, resolves its imports, and
+rejects invalid configuration. Validation proves compatibility with the
+documented Octoform release; it does not prove that the placeholder policy is
+appropriate for a particular repository, token, or GitHub plan.
