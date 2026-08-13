@@ -19,6 +19,7 @@
     "validate:links": "node scripts/validate-links.mjs",
     "validate:privacy": "node scripts/validate-privacy.mjs",
     "validate:a11y": "node scripts/validate-a11y.mjs",
+    "test:release": "node --test test/*.test.mjs",
     "verify": "node scripts/verify.mjs"
   },
   "devDependencies": {

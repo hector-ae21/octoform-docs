@@ -1,22 +1,14 @@
 name: Publish versioned documentation
-run-name: Publish docs ${{ inputs.docs_version }} for Octoform ${{ inputs.application_version }}
+run-name: Publish documentation from ${{ github.sha }}
 
 on:
+  push:
+    branches:
+      - v0.x
   workflow_dispatch:
-    inputs:
-      docs_version:
-        description: Documentation MAJOR.MINOR version
-        required: true
-        default: "0.3"
-        type: string
-      application_version:
-        description: Exact Octoform MAJOR.MINOR.PATCH release
-        required: true
-        default: "0.3.1"
-        type: string
 
 concurrency:
-  group: github-pages
+  group: documentation-release
   cancel-in-progress: false
 
 env:
@@ -26,10 +18,16 @@ jobs:
   build:
     name: Build immutable documentation
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     permissions:
       contents: write
       pages: write
+    outputs:
+      application_version: ${{ steps.release.outputs.application_version }}
+      docs_line: ${{ steps.release.outputs.docs_line }}
+      docs_tag: ${{ steps.release.outputs.docs_tag }}
+      docs_version: ${{ steps.release.outputs.docs_version }}
+      promote_aliases: ${{ steps.release.outputs.promote_aliases }}
     steps:
       - name: Check out complete history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -58,10 +56,25 @@ jobs:
       - name: Install the accessibility browser
         run: npx playwright install --with-deps chromium
 
+      - name: Resolve documentation release
+        id: release
+        run: node scripts/resolve-release.mjs "$GITHUB_SHA"
+
+      - name: Authorize manual recovery source
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          REUSED_RELEASE: ${{ steps.release.outputs.reused }}
+          SOURCE_REF: ${{ github.ref }}
+        run: |
+          if [ "$SOURCE_REF" != "refs/heads/v0.x" ] && [ "$REUSED_RELEASE" != "true" ]; then
+            echo "Manual publication must target v0.x or an existing documentation release tag." >&2
+            exit 1
+          fi
+
       - name: Validate release identity
         env:
-          APPLICATION_VERSION: ${{ inputs.application_version }}
-          DOCS_VERSION: ${{ inputs.docs_version }}
+          APPLICATION_VERSION: ${{ steps.release.outputs.application_version }}
+          DOCS_VERSION: ${{ steps.release.outputs.docs_version }}
         run: node scripts/validate-release.mjs "$DOCS_VERSION" "$APPLICATION_VERSION"
 
       - name: Verify documentation
@@ -72,17 +85,67 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Publish immutable version and aliases
+      - name: Create immutable source tag
+        if: steps.release.outputs.reused == 'false'
         env:
-          DOCS_VERSION: ${{ inputs.docs_version }}
+          APPLICATION_VERSION: ${{ steps.release.outputs.application_version }}
+          DOCS_TAG: ${{ steps.release.outputs.docs_tag }}
+          DOCS_VERSION: ${{ steps.release.outputs.docs_version }}
         run: |
-          mike deploy --branch gh-pages --update-aliases "$DOCS_VERSION" latest stable
-          mike set-default --push --branch gh-pages latest
+          git tag --annotate "$DOCS_TAG" "$GITHUB_SHA" \
+            --message "Octoform documentation $DOCS_VERSION for Octoform $APPLICATION_VERSION"
+          git push origin "refs/tags/$DOCS_TAG"
 
-      - name: Prepare complete versioned site
+      - name: Fetch published documentation history
+        run: git fetch origin gh-pages:gh-pages
+
+      - name: Migrate a legacy mutable release line
+        env:
+          DOCS_LINE: ${{ steps.release.outputs.docs_line }}
+        run: |
+          git show gh-pages:versions.json > "$RUNNER_TEMP/versions.json"
+          if node --input-type=module --eval '
+            import { readFileSync } from "node:fs";
+            const versions = JSON.parse(readFileSync(process.argv[1], "utf8"));
+            process.exit(versions.some(({ version }) => version === process.argv[2]) ? 0 : 1);
+          ' "$RUNNER_TEMP/versions.json" "$DOCS_LINE"; then
+            mike delete --branch gh-pages "$DOCS_LINE"
+          fi
+
+      - name: Publish immutable version and redirect aliases
+        env:
+          DOCS_LINE: ${{ steps.release.outputs.docs_line }}
+          DOCS_VERSION: ${{ steps.release.outputs.docs_version }}
+          PROMOTE_ALIASES: ${{ steps.release.outputs.promote_aliases }}
+        run: |
+          if [ "$PROMOTE_ALIASES" = "true" ]; then
+            mike deploy --branch gh-pages --alias-type redirect --update-aliases \
+              "$DOCS_VERSION" "$DOCS_LINE" latest stable
+            mike set-default --branch gh-pages latest
+          else
+            mike deploy --branch gh-pages "$DOCS_VERSION"
+          fi
+          git push origin gh-pages:gh-pages
+
+      - name: Export the pushed Pages tree
         run: |
           git fetch origin gh-pages
-          git worktree add --detach "$RUNNER_TEMP/octoform-pages" origin/gh-pages
+          mkdir --parents "$RUNNER_TEMP/octoform-pages"
+          git archive origin/gh-pages | tar --extract --directory "$RUNNER_TEMP/octoform-pages"
+
+      - name: Validate the pushed Pages tree
+        env:
+          DOCS_LINE: ${{ steps.release.outputs.docs_line }}
+          DOCS_VERSION: ${{ steps.release.outputs.docs_version }}
+          PROMOTE_ALIASES: ${{ steps.release.outputs.promote_aliases }}
+        run: |
+          if [ "$PROMOTE_ALIASES" = "true" ]; then
+            node scripts/validate-deployment.mjs site "$RUNNER_TEMP/octoform-pages" \
+              "$DOCS_VERSION" "$DOCS_LINE" latest stable
+          else
+            node scripts/validate-deployment.mjs site "$RUNNER_TEMP/octoform-pages" \
+              "$DOCS_VERSION"
+          fi
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
@@ -105,7 +168,60 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy documentation
         id: deployment
         uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128
+
+  release:
+    name: Verify and record documentation release
+    needs:
+      - build
+      - deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Check out released sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+
+      - name: Verify public version and aliases
+        env:
+          DOCS_LINE: ${{ needs.build.outputs.docs_line }}
+          DOCS_VERSION: ${{ needs.build.outputs.docs_version }}
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
+          PROMOTE_ALIASES: ${{ needs.build.outputs.promote_aliases }}
+        run: |
+          if [ "$PROMOTE_ALIASES" = "true" ]; then
+            node scripts/verify-pages.mjs "$PAGE_URL" "$DOCS_VERSION" "$DOCS_LINE" latest stable
+          else
+            node scripts/verify-pages.mjs "$PAGE_URL" "$DOCS_VERSION"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          APPLICATION_VERSION: ${{ needs.build.outputs.application_version }}
+          DOCS_TAG: ${{ needs.build.outputs.docs_tag }}
+          DOCS_VERSION: ${{ needs.build.outputs.docs_version }}
+          PROMOTE_ALIASES: ${{ needs.build.outputs.promote_aliases }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$DOCS_TAG" > /dev/null 2>&1; then
+            echo "Release $DOCS_TAG already exists."
+          else
+            LATEST_FLAG="--latest=false"
+            if [ "$PROMOTE_ALIASES" = "true" ]; then
+              LATEST_FLAG="--latest"
+            fi
+            gh release create "$DOCS_TAG" --verify-tag --generate-notes \
+              "$LATEST_FLAG" \
+              --title "Octoform documentation $DOCS_VERSION for Octoform $APPLICATION_VERSION"
+          fi

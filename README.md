@@ -10,8 +10,9 @@ governance tool for GitHub repositories.
 
 The published site is available at
 <https://hector-ae21.github.io/octoform-docs/>. Documentation is versioned by
-Octoform `MAJOR.MINOR`; every version identifies the exact application patch it
-describes.
+complete `MAJOR.MINOR.PATCH`. Documentation and Octoform share `MAJOR.MINOR`,
+while their patch numbers advance independently. Every version identifies the
+exact application patch it describes.
 
 ## Local development
 
@@ -41,6 +42,11 @@ npm run verify
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for content requirements, versioning,
 security boundaries, and the pull-request workflow.
+
+Every revision merged into the default `v0.x` branch passes the complete verification suite,
+receives the next documentation patch tag and GitHub Release, and is published
+to its immutable Pages path. The matching `MAJOR.MINOR`, `latest`, and `stable`
+aliases move only after the pushed Pages tree matches the generated site.
 
 ## Privacy
 
