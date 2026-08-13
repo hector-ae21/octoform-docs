@@ -17,6 +17,7 @@ try {
   const context = await browser.newContext({
     acceptDownloads: true,
     colorScheme: 'dark',
+    reducedMotion: 'reduce',
     viewport: { width: 1440, height: 900 },
   });
   const page = await context.newPage();
@@ -268,12 +269,32 @@ try {
     await page.setViewportSize({ width, height });
     for (const path of responsivePages) {
       await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => new Promise((resolveFrame) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolveFrame));
+      }));
       const geometry = await page.evaluate(() => ({
         clientWidth: document.documentElement.clientWidth,
         scrollWidth: document.documentElement.scrollWidth,
+        offenders: [...document.querySelectorAll('body *')]
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              element: `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ''}${[
+                ...element.classList,
+              ].map((name) => `.${name}`).join('')}`,
+              left: Math.round(rect.left * 10) / 10,
+              right: Math.round(rect.right * 10) / 10,
+              scrollWidth: element.scrollWidth,
+              clientWidth: element.clientWidth,
+            };
+          })
+          .filter(({ left, right }) => left < -1 || right > document.documentElement.clientWidth + 1)
+          .slice(0, 12),
       }));
       if (geometry.scrollWidth > geometry.clientWidth + 1) {
-        throw new Error(`${path} overflows horizontally at the ${name} viewport`);
+        throw new Error(
+          `${path} overflows horizontally at the ${name} viewport: ${JSON.stringify(geometry)}`,
+        );
       }
       const containedSurfaces = await page.evaluate(() => [
         ...document.querySelectorAll('.highlight, .md-typeset__table, .octoform-diagram'),
