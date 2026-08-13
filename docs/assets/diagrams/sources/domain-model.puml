@@ -1,0 +1,91 @@
+@startuml domain-model
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam roundCorner 12
+skinparam defaultFontName Arial
+skinparam defaultFontColor #DDEBFF
+skinparam ArrowColor #67E8F9
+skinparam ArrowThickness 2
+skinparam class {
+  BackgroundColor #10284A
+  BorderColor #38BDF8
+  HeaderBackgroundColor #173B69
+  FontColor #F8FAFC
+  AttributeFontColor #DDEBFF
+}
+
+class Configuration {
+  owner
+  imports
+  classify
+  audit
+}
+
+class PolicySet {
+  manage
+  features
+  merge
+  security
+  default_branch
+  ensure_branches
+}
+
+class RulesetPolicy {
+  name
+  target_branches
+  required_approvals
+  block_force_push
+}
+
+class EnvironmentPolicy {
+  name
+  reviewers
+}
+
+class FilePolicy {
+  path
+  from
+  mode
+}
+
+class RepositoryState {
+  name
+  visibility
+  default_branch
+}
+
+class RepositoryDetail {
+  settings
+  structure
+}
+
+class RepositoryStructure {
+  environments
+  rulesets
+  branches
+}
+
+class Change {
+  repository
+  key
+  from
+  to
+  blocked
+  warning
+}
+
+class AppliedChange {
+  outcome
+  error
+}
+
+Configuration "1" *-- "1..*" PolicySet : resolves
+PolicySet "1" *-- "0..*" RulesetPolicy
+PolicySet "1" *-- "0..*" EnvironmentPolicy
+PolicySet "1" *-- "0..*" FilePolicy
+RepositoryState <|-- RepositoryDetail
+RepositoryDetail "1" *-- "0..1" RepositoryStructure
+Change <|-- AppliedChange
+PolicySet ..> Change : desired state
+RepositoryDetail ..> Change : observed state
+@enduml

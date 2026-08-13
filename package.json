@@ -10,9 +10,9 @@
   "scripts": {
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.venv\" \"#site\"",
     "lint:spelling": "cspell --no-progress --show-suggestions \"**/*.{md,yml,yaml,json,toml,mjs,css}\"",
-    "validate:mermaid": "node scripts/validate-mermaid.mjs",
+    "render:diagrams": "node scripts/render-diagrams.mjs",
+    "validate:diagrams": "node scripts/render-diagrams.mjs --check",
     "validate:secrets": "node scripts/scan-secrets.mjs",
-    "prepare:privacy": "node scripts/prepare-privacy-assets.mjs",
     "build": "node scripts/build.mjs",
     "validate:html": "html-validate \"site/**/*.html\"",
     "validate:links": "node scripts/validate-links.mjs",
@@ -26,7 +26,6 @@
     "html-validate": "11.6.2",
     "http-server": "14.1.1",
     "markdownlint-cli2": "0.23.2",
-    "mermaid": "11.16.1",
     "playwright": "1.62.1"
   }
 }

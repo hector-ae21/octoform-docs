@@ -9,19 +9,13 @@ Octoform separates declaration, observation, planning, and mutation. The planner
 is deterministic: the same normalized desired and observed state produces the
 same ordered changes.
 
-```mermaid
-flowchart LR
-    Operator[Operator or CI] --> Config[octoform.yml]
-    Config --> Resolve[Resolve effective policy]
-    GitHub[GitHub API] --> Observe[Observe current state]
-    Resolve --> Plan[Build deterministic plan]
-    Observe --> Plan
-    Plan --> Report[Report drift and blocked changes]
-    Report --> Confirm{Apply approved?}
-    Confirm -->|No| Stop[No mutation]
-    Confirm -->|Yes| Apply[Apply ordered changes]
-    Apply --> GitHub
-```
+<div class="octoform-diagram" role="region" aria-label="Scrollable domain model diagram" tabindex="0" markdown>
+
+![UML class diagram showing configuration policy and observed repository state converging into planned and applied changes](../assets/diagrams/domain-model.svg)
+
+</div>
+
+[Open the PlantUML source](../assets/diagrams/sources/domain-model.puml)
 
 ## Core safety properties
 

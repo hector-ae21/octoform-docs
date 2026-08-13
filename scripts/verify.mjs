@@ -12,9 +12,8 @@ const mkdocs = process.env.MKDOCS ??
 
 runNpm('lint:markdown');
 runNpm('lint:spelling');
-runNpm('validate:mermaid');
+runNpm('validate:diagrams');
 runNpm('validate:secrets');
-runNpm('prepare:privacy');
 run(mkdocs, ['build', '--strict']);
 runNpm('validate:html');
 runNpm('validate:links');

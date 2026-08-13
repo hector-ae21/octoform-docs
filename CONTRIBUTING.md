@@ -15,8 +15,8 @@ securing, troubleshooting, or contributing to the product.
 
 ## Development setup
 
-Use Python 3.13 and Node.js 24. Dependencies are exact and lock files are
-required for reproducible CI builds.
+Use Python 3.13, Node.js 24, and Docker. Dependencies and the PlantUML container
+digest are exact so local and CI builds render the same content.
 
 === "macOS and Linux"
 
@@ -24,6 +24,7 @@ required for reproducible CI builds.
     python3.13 -m venv .venv
     .venv/bin/python -m pip install --require-hashes -r requirements.lock
     npm ci
+    npm run render:diagrams
     .venv/bin/mkdocs serve
     ```
 
@@ -33,6 +34,7 @@ required for reproducible CI builds.
     py -3.13 -m venv .venv
     .venv\Scripts\python -m pip install --require-hashes -r requirements.lock
     npm ci
+    npm run render:diagrams
     .venv\Scripts\mkdocs serve
     ```
 
@@ -42,10 +44,10 @@ required for reproducible CI builds.
 npm run verify
 ```
 
-The command checks Markdown, spelling, Mermaid syntax, a strict MkDocs build,
-generated HTML, internal and external links, external runtime resources,
-representative WCAG 2.2 AA accessibility, and
-common secret patterns. It must finish without rewriting tracked sources.
+The command checks Markdown, spelling, PlantUML sources and generated SVG, a
+strict MkDocs build, generated HTML, internal and external links, external
+runtime resources, representative WCAG 2.2 AA accessibility, and common secret
+patterns. It must finish without rewriting tracked sources.
 
 ## Versioning
 

@@ -12,8 +12,8 @@ theme:
   name: material
   custom_dir: overrides
   language: en
-  logo: assets/logo.svg
-  favicon: assets/favicon.svg
+  logo: assets/brand/octoform-mark.png
+  favicon: assets/brand/octoform-favicon.png
   font: false
   icon:
     repo: fontawesome/brands/github
@@ -73,11 +73,7 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.snippets
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
