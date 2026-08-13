@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Octoform</title>
+  <path fill="currentColor" d="M20 4h24l16 16v24L44 60H20L4 44V20L20 4Zm3.3 8L12 23.3v17.4L23.3 52h17.4L52 40.7V23.3L40.7 12H23.3Z"/>
+  <circle cx="32" cy="32" r="10" fill="currentColor"/>
+  <circle cx="32" cy="32" r="4" fill="#fff"/>
+</svg>
+

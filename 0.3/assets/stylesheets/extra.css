@@ -1,0 +1,78 @@
+:root {
+  --md-primary-fg-color: #6750a4;
+  --md-primary-fg-color--light: #8069bd;
+  --md-primary-fg-color--dark: #4f378b;
+  --md-accent-fg-color: #007f78;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #8f7ad1;
+  --md-primary-fg-color--light: #aa98e5;
+  --md-primary-fg-color--dark: #6750a4;
+  --md-accent-fg-color: #50d5c8;
+}
+
+.md-tabs__link {
+  opacity: 1;
+}
+
+.md-typeset a:not(.md-button) {
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.12em;
+}
+
+.md-typeset .go,
+.md-typeset .nv {
+  color: #686868;
+}
+
+.md-copyright {
+  color: #8b8b8b;
+}
+
+.octoform-hero {
+  margin: 2.4rem 0 3rem;
+  max-width: 54rem;
+}
+
+.octoform-hero h1 {
+  font-size: clamp(2.4rem, 7vw, 4.4rem);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.octoform-hero > p {
+  font-size: 1.15rem;
+  max-width: 44rem;
+}
+
+.octoform-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.octoform-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  margin: 1.5rem 0 2.5rem;
+}
+
+.octoform-card {
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.55rem;
+  padding: 1.1rem 1.25rem;
+}
+
+.octoform-card h3 {
+  margin: 0 0 0.45rem;
+}
+
+.octoform-card p:last-child {
+  margin-bottom: 0;
+}
