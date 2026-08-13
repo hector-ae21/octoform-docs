@@ -1,0 +1,39 @@
+{
+  "version": "0.2",
+  "language": "en,en-GB",
+  "useGitignore": true,
+  "files": [
+    "**/*.{md,yml,yaml,json,toml,mjs,css}"
+  ],
+  "ignorePaths": [
+    ".cache/**",
+    ".venv/**",
+    "docs/assets/vendor/**",
+    "node_modules/**",
+    "package-lock.json",
+    "requirements.lock",
+    "site/**"
+  ],
+  "words": [
+    "Arrechea",
+    "AKIA",
+    "codeql",
+    "fontawesome",
+    "frontmatter",
+    "gitleaks",
+    "inlinehilite",
+    "javascripts",
+    "mkdocs",
+    "networkidle",
+    "octoform",
+    "pousr",
+    "pymdownx",
+    "ruleset",
+    "rulesets",
+    "squidfunk",
+    "tasklist",
+    "twemoji",
+    "venv",
+    "WCAG"
+  ]
+}

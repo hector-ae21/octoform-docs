@@ -1,0 +1,4 @@
+.cache/
+.venv/
+node_modules/
+site/

@@ -1,0 +1,110 @@
+name: Publish versioned documentation
+
+on:
+  workflow_dispatch:
+    inputs:
+      docs_version:
+        description: Documentation MAJOR.MINOR version
+        required: true
+        default: "0.3"
+        type: string
+      application_version:
+        description: Exact Octoform MAJOR.MINOR.PATCH release
+        required: true
+        default: "0.3.1"
+        type: string
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  NO_MKDOCS_2_WARNING: "true"
+
+jobs:
+  build:
+    name: Build immutable documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - name: Check out complete history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements.lock
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install Python dependencies
+        run: python -m pip install --require-hashes -r requirements.lock
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Install the accessibility browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Validate release identity
+        env:
+          APPLICATION_VERSION: ${{ inputs.application_version }}
+          DOCS_VERSION: ${{ inputs.docs_version }}
+        run: node scripts/validate-release.mjs "$DOCS_VERSION" "$APPLICATION_VERSION"
+
+      - name: Verify documentation
+        run: npm run verify
+
+      - name: Configure documentation publisher
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Publish immutable version and aliases
+        env:
+          DOCS_VERSION: ${{ inputs.docs_version }}
+        run: |
+          mike deploy --branch gh-pages --update-aliases "$DOCS_VERSION" latest stable
+          mike set-default --push --branch gh-pages latest
+
+      - name: Prepare complete versioned site
+        run: |
+          git fetch origin gh-pages
+          git worktree add --detach "$RUNNER_TEMP/octoform-pages" origin/gh-pages
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: ${{ runner.temp }}/octoform-pages
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+      pages: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128

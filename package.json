@@ -1,0 +1,32 @@
+{
+  "name": "octoform-docs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Development and verification tools for the Octoform documentation site",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.8.0"
+  },
+  "scripts": {
+    "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.venv\" \"#site\"",
+    "lint:spelling": "cspell --no-progress --show-suggestions \"**/*.{md,yml,yaml,json,toml,mjs,css}\"",
+    "validate:mermaid": "node scripts/validate-mermaid.mjs",
+    "validate:secrets": "node scripts/scan-secrets.mjs",
+    "prepare:privacy": "node scripts/prepare-privacy-assets.mjs",
+    "build": "node scripts/build.mjs",
+    "validate:html": "html-validate \"site/**/*.html\"",
+    "validate:links": "node scripts/validate-links.mjs",
+    "validate:privacy": "node scripts/validate-privacy.mjs",
+    "validate:a11y": "node scripts/validate-a11y.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "cspell": "10.0.1",
+    "html-validate": "11.6.2",
+    "http-server": "14.1.1",
+    "markdownlint-cli2": "0.23.2",
+    "mermaid": "11.16.1",
+    "playwright": "1.62.1"
+  }
+}

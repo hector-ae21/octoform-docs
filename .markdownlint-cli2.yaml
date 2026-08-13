@@ -1,0 +1,19 @@
+config:
+  default: true
+  line-length: false
+  no-duplicate-heading:
+    siblings_only: true
+  single-title: false
+  code-block-style: false
+  no-inline-html:
+    allowed_elements:
+      - div
+      - span
+      - kbd
+      - sup
+globs:
+  - "**/*.md"
+ignores:
+  - "node_modules/**"
+  - ".venv/**"
+  - "site/**"

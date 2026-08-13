@@ -1,0 +1,37 @@
+name: Documentation problem
+description: Report missing, inaccurate, unclear, or unsafe Octoform documentation.
+title: "docs: "
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping make Octoform easier and safer to use.
+  - type: input
+    id: page
+    attributes:
+      label: Page or section
+      description: Link to the affected page when available.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Octoform version
+      placeholder: 0.3.1
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+      description: Do not include tokens, private repository names, or sensitive output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What would help?
+    validations:
+      required: true
+
