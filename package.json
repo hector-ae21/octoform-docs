@@ -9,7 +9,7 @@
   },
   "scripts": {
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.venv\" \"#site\"",
-    "lint:spelling": "cspell --no-progress --show-suggestions \"**/*.{md,yml,yaml,json,toml,mjs,css}\"",
+    "lint:spelling": "cspell --no-progress --show-suggestions \"**/*.{md,yml,yaml,json,toml,mjs,css,puml,iuml}\"",
     "render:diagrams": "node scripts/render-diagrams.mjs",
     "validate:diagrams": "node scripts/render-diagrams.mjs --check",
     "validate:examples": "node scripts/validate-examples.mjs",

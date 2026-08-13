@@ -3,7 +3,7 @@
   "language": "en,en-GB",
   "useGitignore": true,
   "files": [
-    "**/*.{md,yml,yaml,json,toml,mjs,css}"
+    "**/*.{md,yml,yaml,json,toml,mjs,css,puml,iuml}"
   ],
   "ignorePaths": [
     ".cache/**",
@@ -23,6 +23,7 @@
     "frontmatter",
     "gitleaks",
     "inlinehilite",
+    "iuml",
     "javascripts",
     "mkdocs",
     "networkidle",
@@ -38,9 +39,16 @@
     "lockfiles",
     "resilientmq",
     "squidfunk",
+    "skinparam",
+    "startuml",
+    "enduml",
+    "endswitch",
+    "endwhile",
+    "footbox",
     "tasklist",
     "tsvg",
     "twemoji",
+    "usecase",
     "venv",
     "WCAG"
   ]

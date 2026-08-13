@@ -1,0 +1,38 @@
+@startuml runtime-components
+!include _theme.iuml
+left to right direction
+
+actor "CLI user" as User
+component "TypeScript consumer" as Consumer
+file "YAML policy\nand imports" as YAML
+cloud "GitHub REST API" as GitHub
+
+package "Octoform process" {
+  component "CLI adapter" as CLI
+  component "Public API" as PublicAPI
+  component "Configuration\nresolver" as Resolver
+  component "Command services\naudit / classify / properties\nplan / apply" as Commands
+  component "Desired-state\nplanner" as Planner
+  component "Report formatter" as Report
+  component "GitHub client\nand capability probes" as Client
+  component "Change applier" as Applier
+}
+
+User --> CLI
+Consumer --> PublicAPI
+CLI --> Resolver
+CLI --> Commands
+PublicAPI --> Resolver
+PublicAPI --> Planner
+YAML --> Resolver
+Resolver --> Commands : normalized Config
+Commands --> Client : discovery and reads
+Commands --> Planner : policy + observed state
+Planner --> Report : Change[]
+Commands --> Report : audit / classification
+Commands --> Applier : confirmed Change[]
+Applier --> Client : grouped mutations
+Client --> GitHub : Octokit requests
+GitHub --> Client : state, status, headers
+Report --> CLI : human-readable output
+@enduml

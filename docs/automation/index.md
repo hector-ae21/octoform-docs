@@ -5,6 +5,10 @@ description: Run read-only Octoform audits and carefully protected apply operati
 
 # CI/CD automation
 
+The [automation architecture view](../architecture/index.md#automation-patterns)
+shows how pull-request planning, scheduled observation, and protected apply
+must use different trust boundaries.
+
 Automation should make drift visible more often than it changes state. Begin
 with a scheduled read-only job and introduce apply only after the policy,
 repository selection, credentials, and approval boundary are established.

@@ -1,0 +1,22 @@
+@startuml system-context
+!include _theme.iuml
+left to right direction
+
+actor "Repository\noperator" as Operator
+actor "CI/CD\nautomation" as Automation
+actor "TypeScript\napplication" as Application
+
+rectangle "Octoform 0.3.1\n\nSoftware system that resolves declarative policy,\nobserves GitHub state, produces a deterministic diff,\nand applies only confirmed executable changes." as Octoform
+
+cloud "GitHub.com\n\nRepository and organization APIs\nand governed resources" as GitHub
+
+Operator -right-> Octoform : configure and confirm; receive plans and outcomes
+Automation -right-> Octoform : audit or protected execution; receive report and exit code
+Application -right-> Octoform : call ESM exports; receive typed results
+Octoform -right-> GitHub : read state and apply permitted changes\nthrough the REST API
+
+note bottom of Octoform
+  Current boundary: one owner per resolved configuration.
+  Version 0.3.1 uses the GitHub REST API only.
+end note
+@enduml

@@ -5,6 +5,10 @@ description: Token lifecycle, permission boundaries, planning guarantees, redact
 
 # Security and trust
 
+Start with the [trust and data-flow diagram](../architecture/index.md#trust-and-data-flow)
+for the credential, process, network, GitHub, and logging boundaries described
+throughout this guide.
+
 Octoform has no authority of its own. It can observe and mutate only what the
 supplied GitHub token, owner role, repository selection, feature availability,
 and API endpoint permit.

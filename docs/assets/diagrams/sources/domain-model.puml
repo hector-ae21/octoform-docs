@@ -1,18 +1,5 @@
 @startuml domain-model
-skinparam backgroundColor transparent
-skinparam shadowing false
-skinparam roundCorner 12
-skinparam defaultFontName Arial
-skinparam defaultFontColor #DDEBFF
-skinparam ArrowColor #67E8F9
-skinparam ArrowThickness 2
-skinparam class {
-  BackgroundColor #10284A
-  BorderColor #38BDF8
-  HeaderBackgroundColor #173B69
-  FontColor #F8FAFC
-  AttributeFontColor #DDEBFF
-}
+!include _theme.iuml
 
 class Configuration {
   owner
