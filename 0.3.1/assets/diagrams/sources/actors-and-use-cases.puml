@@ -1,0 +1,24 @@
+@startuml actors-and-use-cases
+!include _theme.iuml
+left to right direction
+
+actor "Repository\noperator" as Operator
+
+rectangle "Octoform 0.3.1 · interactive governance" {
+  usecase "Audit repository\nmetadata" as Audit
+  usecase "Preview desired-state\nchanges" as Plan
+  usecase "Confirm and apply\na displayed plan" as Apply
+  usecase "Propose missing\nrepository types" as Classify
+  usecase "Persist classification\nproposals" as PersistTypes
+  usecase "Synchronize custom\nproperty schema" as Properties
+}
+
+Operator --> Audit
+Operator --> Plan
+Operator --> Apply
+Operator --> Classify
+Operator --> PersistTypes
+Operator --> Properties
+Apply ..> Plan : <<include>>
+PersistTypes ..> Classify : <<extend>>
+@enduml

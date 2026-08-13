@@ -1,0 +1,29 @@
+@startuml policy-resolution
+!include _theme.iuml
+
+start
+:Receive normalized Config and RepoState;
+:Initialize an empty effective PolicySet;
+:Overlay defaults field by field;
+if (Repository has a resolved type?) then (yes)
+  :Find matching types.<type> policy;
+  :Overlay type policy field by field;
+endif
+if (repos.<name> exists?) then (yes)
+  :Overlay named repository policy;
+endif
+
+note right
+  Concrete scalar: replace inherited value
+  null scalar: cancel inherited value
+  omitted scalar: preserve inherited value
+  declared collection: replace inherited collection
+end note
+
+if (Effective manage is false?) then (yes)
+  :Return inventory-only policy boundary;
+else (no)
+  :Return effective desired-state policy;
+endif
+stop
+@enduml

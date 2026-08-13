@@ -1,0 +1,54 @@
+@startuml runtime-components
+!include _theme.iuml
+top to bottom direction
+
+actor "CLI user or workflow" as User
+component "TypeScript consumer" as Consumer
+file "YAML policy and imports" as YAML
+cloud "GitHub REST API" as GitHub
+
+package "Interface adapters" {
+  component "CLI parser and dispatcher" as CLI
+  component "Public ESM exports" as PublicAPI
+  component "Report formatter" as Report
+}
+
+package "Application orchestration" {
+  component "Command services\n\naudit · classify · properties sync\nplan · apply" as Commands
+}
+
+package "Domain and configuration" {
+  component "Configuration loader\nand import composer" as Loader
+  component "Repository selector" as Selector
+  component "Policy resolver" as Resolver
+  component "Desired-state planner" as Planner
+}
+
+package "GitHub infrastructure" {
+  component "Repository observer" as Observer
+  component "Capability probes" as Capabilities
+  component "Change applier" as Applier
+  component "Octokit client" as Client
+}
+
+User --> CLI
+Consumer --> PublicAPI
+YAML --> Loader
+CLI --> Commands : validated command intent
+PublicAPI --> Commands : service invocation
+PublicAPI --> Planner : pure planning export
+Commands --> Loader : normalized Config
+Commands --> Selector : discovered repository set
+Commands --> Resolver : effective PolicySet
+Commands --> Observer : policy-relevant state
+Commands --> Capabilities : availability evidence
+Commands --> Planner : desired + observed + evidence
+Commands --> Applier : confirmed executable Change[]
+Commands --> Report : findings, changes and outcomes
+Report --> CLI
+Selector --> Client
+Observer --> Client
+Capabilities --> Client
+Applier --> Client
+Client --> GitHub : authenticated REST
+@enduml
