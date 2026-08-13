@@ -10,7 +10,6 @@ const mkdocs = process.env.MKDOCS ??
   (existsSync(windowsMkDocs) ? windowsMkDocs : existsSync(unixMkDocs) ? unixMkDocs : 'mkdocs');
 
 process.env.NO_MKDOCS_2_WARNING = 'true';
-runNpm('prepare:privacy');
 run(mkdocs, ['build', '--strict']);
 
 function runNpm(script) {

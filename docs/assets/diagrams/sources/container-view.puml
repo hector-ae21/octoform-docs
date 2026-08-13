@@ -1,0 +1,30 @@
+@startuml container-view
+!include _theme.iuml
+left to right direction
+
+actor "Operator" as Operator
+actor "Automation" as Automation
+
+rectangle "Trusted workstation or CI runner" as Runtime {
+  component "Node.js process\nOctoform CLI / ESM library" as Octoform
+  file "octoform.yml\nand imports" as Config
+  file "Declared seed files" as Seeds
+  rectangle "Process environment\nGITHUB_TOKEN / GH_TOKEN" as Token
+}
+
+cloud "GitHub.com" as GitHub {
+  component "REST API" as REST
+  database "Repository and\norganization state" as State
+}
+
+Operator --> Octoform : commands and confirmation
+Automation --> Octoform : read-only or protected command
+Config --> Octoform : desired policy
+Seeds --> Octoform : create-if-missing content
+Token --> Octoform : authentication in memory
+Octoform --> REST : HTTPS requests through Octokit
+REST --> State : read / permitted mutation
+REST --> Octoform : observed state and API evidence
+Octoform --> Operator : plans, findings and outcomes
+Octoform --> Automation : console report and exit code
+@enduml

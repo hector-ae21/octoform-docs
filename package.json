@@ -9,10 +9,11 @@
   },
   "scripts": {
     "lint:markdown": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#.venv\" \"#site\"",
-    "lint:spelling": "cspell --no-progress --show-suggestions \"**/*.{md,yml,yaml,json,toml,mjs,css}\"",
-    "validate:mermaid": "node scripts/validate-mermaid.mjs",
+    "lint:spelling": "cspell --no-progress --show-suggestions \"**/*.{md,yml,yaml,json,toml,mjs,css,puml,iuml}\"",
+    "render:diagrams": "node scripts/render-diagrams.mjs",
+    "validate:diagrams": "node scripts/render-diagrams.mjs --check",
+    "validate:examples": "node scripts/validate-examples.mjs",
     "validate:secrets": "node scripts/scan-secrets.mjs",
-    "prepare:privacy": "node scripts/prepare-privacy-assets.mjs",
     "build": "node scripts/build.mjs",
     "validate:html": "html-validate \"site/**/*.html\"",
     "validate:links": "node scripts/validate-links.mjs",
@@ -22,11 +23,11 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
+    "@hector21/octoform": "0.3.1",
     "cspell": "10.0.1",
     "html-validate": "11.6.2",
     "http-server": "14.1.1",
     "markdownlint-cli2": "0.23.2",
-    "mermaid": "11.16.1",
     "playwright": "1.62.1"
   }
 }

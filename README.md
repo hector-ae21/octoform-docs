@@ -19,17 +19,21 @@ Prerequisites:
 
 - Python 3.13
 - Node.js 24
+- Docker, for the digest-pinned PlantUML renderer
 
 ```console
 python -m venv .venv
 .venv/bin/python -m pip install --require-hashes -r requirements.lock
 npm ci
+npm run render:diagrams
 .venv/bin/mkdocs serve
 ```
 
 On Windows PowerShell, replace `.venv/bin/` with `.venv/Scripts/`.
 
-Run every deterministic check with:
+The Node toolchain installs the exact documented Octoform release and validates
+every published configuration example against its real parser. Run every
+deterministic check with:
 
 ```console
 npm run verify
@@ -41,8 +45,8 @@ security boundaries, and the pull-request workflow.
 ## Privacy
 
 The site has no analytics, advertising, cookie banner, remote font request, or
-third-party diagram renderer. Fonts use the reader's system stack and Mermaid
-is served from the published site itself.
+third-party diagram renderer. Fonts use the reader's system stack and PlantUML
+diagrams are rendered locally to static SVG during verification.
 
 ## Licence
 

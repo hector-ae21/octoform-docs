@@ -8,6 +8,7 @@ config:
   no-inline-html:
     allowed_elements:
       - div
+      - p
       - span
       - kbd
       - sup
