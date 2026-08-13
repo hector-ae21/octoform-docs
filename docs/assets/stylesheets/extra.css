@@ -242,6 +242,7 @@
   border: 0.05rem solid color-mix(in srgb, var(--octo-border) 72%, transparent);
   border-radius: 0.65rem;
   box-shadow: 0 0.7rem 1.8rem rgb(9 24 47 / 14%);
+  max-width: 100%;
   overflow: hidden;
 }
 
@@ -411,6 +412,11 @@
 
 .octoform-grid--journey {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.octoform-grid > *,
+.octoform-split > * {
+  min-width: 0;
 }
 
 .octoform-card {
