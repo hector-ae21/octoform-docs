@@ -12,6 +12,7 @@ const mkdocs = process.env.MKDOCS ??
 
 runNpm('lint:markdown');
 runNpm('lint:spelling');
+runNpm('test:release');
 runNpm('validate:diagrams');
 runNpm('validate:examples');
 runNpm('validate:secrets');
