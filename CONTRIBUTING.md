@@ -44,10 +44,11 @@ digest are exact so local and CI builds render the same content.
 npm run verify
 ```
 
-The command checks Markdown, spelling, PlantUML sources and generated SVG, a
-strict MkDocs build, generated HTML, internal and external links, external
-runtime resources, representative WCAG 2.2 AA accessibility, and common secret
-patterns. It must finish without rewriting tracked sources.
+The command checks Markdown, spelling, every example against the exact published
+Octoform package, PlantUML sources and generated SVG, a strict MkDocs build,
+generated HTML, internal and external links, external runtime resources,
+representative WCAG 2.2 AA accessibility, and common secret patterns. It must
+finish without rewriting tracked sources.
 
 ## Versioning
 

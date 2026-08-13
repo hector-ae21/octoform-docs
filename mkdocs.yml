@@ -72,7 +72,8 @@ markdown_extensions:
       line_spans: __span
   - pymdownx.inlinehilite
   - pymdownx.keys
-  - pymdownx.snippets
+  - pymdownx.snippets:
+      check_paths: true
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
@@ -96,9 +97,21 @@ extra:
 
 nav:
   - Home: index.md
-  - Get started: getting-started/index.md
+  - Get started:
+      - First plan: getting-started/index.md
+      - Core concepts: concepts/index.md
+  - Configuration: configuration/index.md
+  - Commands: commands/index.md
+  - Guides:
+      - Plan and apply: guides/plan-and-apply.md
+      - CI/CD automation: automation/index.md
+  - Examples: examples/index.md
   - Security: security/index.md
   - Architecture: architecture/index.md
-  - Reference: reference/index.md
+  - Reference:
+      - Overview: reference/index.md
+      - 0.3.1 behavior baseline: reference/v0.3.1-baseline.md
+      - GitHub API surface: reference/github-api-surface.md
+  - Troubleshooting: troubleshooting/index.md
   - Releases: releases/index.md
   - Contributing: contributing/index.md

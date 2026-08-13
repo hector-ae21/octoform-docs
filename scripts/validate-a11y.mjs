@@ -12,7 +12,19 @@ await new Promise((resolveListen) => server.listen(0, '127.0.0.1', resolveListen
 const address = server.address();
 if (!address || typeof address === 'string') throw new Error('Unable to start accessibility server');
 const origin = `http://127.0.0.1:${address.port}`;
-const paths = ['/', '/getting-started/', '/security/', '/architecture/'];
+const paths = [
+  '/',
+  '/getting-started/',
+  '/configuration/',
+  '/commands/',
+  '/guides/plan-and-apply/',
+  '/automation/',
+  '/examples/',
+  '/security/',
+  '/architecture/',
+  '/reference/github-api-surface/',
+  '/troubleshooting/',
+];
 const browser = await chromium.launch({ headless: true });
 const violations = [];
 

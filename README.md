@@ -31,7 +31,9 @@ npm run render:diagrams
 
 On Windows PowerShell, replace `.venv/bin/` with `.venv/Scripts/`.
 
-Run every deterministic check with:
+The Node toolchain installs the exact documented Octoform release and validates
+every published configuration example against its real parser. Run every
+deterministic check with:
 
 ```console
 npm run verify
