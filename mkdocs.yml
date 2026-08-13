@@ -162,4 +162,7 @@ nav:
   - Security: security/index.md
   - Releases:
       - Release overview: releases/index.md
+      - Versioning and URLs: releases/versioning.md
+      - Update Octoform: releases/updating.md
+      - Publication guarantees: releases/publication.md
       - Contributing: contributing/index.md

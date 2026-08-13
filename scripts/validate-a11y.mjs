@@ -35,36 +35,55 @@ const paths = [
   '/architecture/trust/trust-and-data-flow/',
   '/reference/github-api-surface/',
   '/troubleshooting/',
+  '/releases/',
+  '/releases/publication/',
+];
+const mobilePaths = [
+  '/',
+  '/guides/',
+  '/examples/minimal/',
+  '/configuration/branches-and-rulesets/',
+  '/architecture/behavior/state-models/',
+  '/security/',
+  '/releases/',
 ];
 const browser = await chromium.launch({ headless: true });
 const violations = [];
+let scanCount = 0;
 
 try {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 1200 } });
-  const page = await context.newPage();
-  for (const path of paths) {
-    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
-    const result = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-      .analyze();
-    for (const violation of result.violations) {
-      for (const node of violation.nodes) {
-        violations.push(
-          `${path}: ${violation.id} (${violation.impact ?? 'unknown'}) ${violation.help}\n` +
-            `  target: ${node.target.join(' ')}\n` +
-            `  ${node.failureSummary ?? node.html}`,
-        );
+  const scenarios = [
+    ['desktop', { width: 1440, height: 1200 }, paths],
+    ['mobile', { width: 390, height: 844 }, mobilePaths],
+  ];
+  for (const [name, viewport, scenarioPaths] of scenarios) {
+    const context = await browser.newContext({ viewport });
+    const page = await context.newPage();
+    for (const path of scenarioPaths) {
+      await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+      const result = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+        .analyze();
+      scanCount += 1;
+      for (const violation of result.violations) {
+        for (const node of violation.nodes) {
+          violations.push(
+            `${name} ${path}: ${violation.id} (${violation.impact ?? 'unknown'}) ${violation.help}\n` +
+              `  target: ${node.target.join(' ')}\n` +
+              `  ${node.failureSummary ?? node.html}`,
+          );
+        }
       }
     }
+    await context.close();
   }
-  await context.close();
 } finally {
   await browser.close();
   await new Promise((resolveClose, reject) => server.close((error) => (error ? reject(error) : resolveClose())));
 }
 
 if (violations.length) throw new Error(`Accessibility violations:\n${violations.join('\n')}`);
-console.log(`Validated WCAG 2.2 AA accessibility on ${paths.length} representative pages.`);
+console.log(`Validated WCAG 2.2 AA accessibility across ${scanCount} desktop and mobile page scans.`);
 
 function serveStaticFile(request, response) {
   const requestPath = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname);

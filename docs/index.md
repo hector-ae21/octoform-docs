@@ -2,7 +2,6 @@
 title: Govern GitHub repositories as declared state
 description: Review and apply consistent GitHub repository governance from one explicit policy.
 hide:
-  - navigation
   - toc
 ---
 

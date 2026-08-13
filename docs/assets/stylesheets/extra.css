@@ -447,6 +447,12 @@
   }
 }
 
+@media screen and (min-width: 76.25em) {
+  .md-main__inner:has(.octoform-hero) .md-sidebar--primary {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 60em) {
   .octoform-hero {
     gap: 1.5rem;

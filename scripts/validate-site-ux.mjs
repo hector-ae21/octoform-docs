@@ -109,13 +109,59 @@ try {
     }
   }
 
+  const responsivePages = [
+    '/',
+    '/guides/',
+    '/examples/shared-presets/',
+    '/configuration/branches-and-rulesets/',
+    '/architecture/behavior/state-models/',
+    '/releases/',
+  ];
+  const viewports = [
+    ['desktop', 1440, 1000],
+    ['tablet', 820, 1180],
+    ['mobile', 390, 844],
+  ];
+  for (const [name, width, height] of viewports) {
+    await page.setViewportSize({ width, height });
+    for (const path of responsivePages) {
+      await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+      const geometry = await page.evaluate(() => ({
+        clientWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+      }));
+      if (geometry.scrollWidth > geometry.clientWidth + 1) {
+        throw new Error(`${path} overflows horizontally at the ${name} viewport`);
+      }
+      if ((await page.locator('main').count()) !== 1 || !(await page.locator('main h1').isVisible())) {
+        throw new Error(`${path} does not expose one visible main heading at the ${name} viewport`);
+      }
+      if ((await page.locator('header').count()) !== 1 || (await page.locator('footer').count()) !== 1) {
+        throw new Error(`${path} is missing a header or footer landmark at the ${name} viewport`);
+      }
+      if (width < 960) {
+        const drawerControl = page.locator('.md-header label[for="__drawer"]');
+        if (!(await drawerControl.isVisible())) {
+          throw new Error(`${path} has no visible navigation drawer control at the ${name} viewport`);
+        }
+        await drawerControl.click();
+        if (!(await page.locator('.md-sidebar--primary').isVisible())) {
+          throw new Error(`${path} navigation drawer does not open at the ${name} viewport`);
+        }
+        await page.keyboard.press('Escape');
+      }
+    }
+  }
+
   await context.close();
 } finally {
   await browser.close();
   await new Promise((resolveClose, reject) => server.close((error) => (error ? reject(error) : resolveClose())));
 }
 
-console.log('Validated primary navigation, active context, sparse sidebars, and direct example downloads.');
+console.log(
+  'Validated primary navigation, active context, sparse sidebars, direct downloads, and responsive layouts.',
+);
 
 function serveStaticFile(request, response) {
   const requestPath = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname);
