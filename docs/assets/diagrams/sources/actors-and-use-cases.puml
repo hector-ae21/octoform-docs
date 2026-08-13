@@ -3,21 +3,22 @@
 left to right direction
 
 actor "Repository\noperator" as Operator
-actor "CI/CD\nworkflow" as Automation
-actor "TypeScript\nconsumer" as Consumer
 
-rectangle "Octoform 0.3.1" {
-  usecase "Govern repositories interactively\n\nAudit metadata\nClassify repositories\nSynchronize custom properties\nPlan desired state\nConfirm and apply the displayed plan" as Govern
-  usecase "Run governance in automation\n\nRead-only audit\nRead-only plan\nExternally protected apply" as Automate
-  usecase "Embed the public TypeScript API\n\nLoad normalized configuration\nReuse exported planning services" as Embed
+rectangle "Octoform 0.3.1 · interactive governance" {
+  usecase "Audit repository\nmetadata" as Audit
+  usecase "Preview desired-state\nchanges" as Plan
+  usecase "Confirm and apply\na displayed plan" as Apply
+  usecase "Propose missing\nrepository types" as Classify
+  usecase "Persist classification\nproposals" as PersistTypes
+  usecase "Synchronize custom\nproperty schema" as Properties
 }
 
-actor "GitHub\nREST API" as GitHub
-
-Operator -right-> Govern
-Automation -right-> Automate
-Consumer -right-> Embed
-Govern -right- GitHub
-Automate -right- GitHub
-Embed -right- GitHub
+Operator --> Audit
+Operator --> Plan
+Operator --> Apply
+Operator --> Classify
+Operator --> PersistTypes
+Operator --> Properties
+Apply ..> Plan : <<include>>
+PersistTypes ..> Classify : <<extend>>
 @enduml

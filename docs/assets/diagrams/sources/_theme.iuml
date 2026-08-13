@@ -84,3 +84,10 @@ skinparam note {
   BorderColor #A78BFA
   FontColor #F8FAFC
 }
+skinparam state {
+  BackgroundColor #10284A
+  BorderColor #38BDF8
+  FontColor #F8FAFC
+  StartColor #67E8F9
+  EndColor #A78BFA
+}

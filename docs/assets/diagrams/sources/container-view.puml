@@ -3,28 +3,36 @@
 left to right direction
 
 actor "Operator" as Operator
-actor "Automation" as Automation
+actor "CI/CD workflow" as Automation
+component "TypeScript application" as Consumer
 
-rectangle "Trusted workstation or CI runner" as Runtime {
-  component "Node.js process\nOctoform CLI / ESM library" as Octoform
-  file "octoform.yml\nand imports" as Config
-  file "Declared seed files" as Seeds
-  rectangle "Process environment\nGITHUB_TOKEN / GH_TOKEN" as Token
+package "Trusted workstation or CI runner" {
+  component "Octoform Node.js process\nCLI adapter and ESM library" as Process
+  component "Octokit client\nREST transport" as Octokit
+  file "Root YAML and imports\nDeclared desired state" as Config
+  file "Local seed files\nCreate-if-missing content" as Seeds
+  rectangle "Process environment\nGITHUB_TOKEN or GH_TOKEN" as Token
+  rectangle "Standard output and error\nHuman-readable report" as Console
 }
 
-cloud "GitHub.com" as GitHub {
+package "GitHub.com boundary" {
   component "REST API" as REST
-  database "Repository and\norganization state" as State
+  database "Owner and repository state" as State
 }
 
-Operator --> Octoform : commands and confirmation
-Automation --> Octoform : read-only or protected command
-Config --> Octoform : desired policy
-Seeds --> Octoform : create-if-missing content
-Token --> Octoform : authentication in memory
-Octoform --> REST : HTTPS requests through Octokit
-REST --> State : read / permitted mutation
-REST --> Octoform : observed state and API evidence
-Octoform --> Operator : plans, findings and outcomes
-Octoform --> Automation : console report and exit code
+Operator --> Process : command, filters and confirmation
+Automation --> Process : command and protected inputs
+Consumer --> Process : ESM imports and function calls
+Config --> Process : configuration composition
+Seeds --> Process : declared file content
+Token --> Octokit : bearer credential in memory
+Process --> Octokit : observation and mutation requests
+Octokit --> REST : authenticated HTTPS
+REST --> State : read or authorized mutation
+State --> REST : current values
+REST --> Octokit : response, headers or error
+Octokit --> Process : state and capability evidence
+Process --> Console : findings, plans and outcomes
+Console --> Operator
+Console --> Automation
 @enduml

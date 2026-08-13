@@ -1,78 +1,94 @@
 @startuml domain-model
 !include _theme.iuml
 
-class Configuration {
-  owner
-  imports
-  classify
-  audit
+class Config {
+  owner: string
+  imports: string[]
+  defaults: PolicySet
+  types: Map
+  repos: Map
+  classify: ClassifyConfig
+  audit: AuditConfig
 }
 
 class PolicySet {
-  manage
-  features
-  merge
-  security
-  default_branch
-  ensure_branches
+  manage: boolean
+  features: FeaturePolicy
+  merge: MergePolicy
+  security: SecurityPolicy
+  repo: RepoPolicy
+  default_branch: DefaultBranchPolicy
+  ensure_branches: string[]
 }
 
 class RulesetPolicy {
-  name
-  target_branches
-  required_approvals
-  block_force_push
+  name: string
+  target_branches: string[]
+  required_approvals: number
+  required_checks: string[]
 }
 
 class EnvironmentPolicy {
-  name
-  reviewers
+  name: string
+  reviewers: string[]
 }
 
 class FilePolicy {
-  path
-  from
-  mode
+  path: string
+  from: string
+  mode: create-if-missing
 }
 
-class RepositoryState {
-  name
-  visibility
-  default_branch
+class RepoState {
+  name: string
+  visibility: public | private | internal
+  archived: boolean
+  default_branch: string
+  type: string
 }
 
-class RepositoryDetail {
-  settings
-  structure
+class RepoDetail {
+  settings: Map
 }
 
-class RepositoryStructure {
-  environments
-  rulesets
-  branches
+class RepoStructure {
+  environments: ExistingEnvironment[]
+  rulesets: ExistingRuleset[]
+  files: Map
+  branches: Map
+  workflowsNamingDefaultBranch: string[]
+}
+
+class CapabilityEvidence {
+  ownerKind: org | user
+  authenticatedOwner: boolean
+  rulesets: available | unavailable | unknown
 }
 
 class Change {
-  repository
-  key
-  from
-  to
-  blocked
-  warning
+  repo: string
+  key: string
+  from: unknown
+  to: unknown
+  blocked: string
+  warning: string
+  payload: unknown
 }
 
 class AppliedChange {
-  outcome
-  error
+  outcome: success | failed
+  error: string
 }
 
-Configuration "1" *-- "1..*" PolicySet : resolves
+Config "1" *-- "0..*" PolicySet : precedence layers
 PolicySet "1" *-- "0..*" RulesetPolicy
 PolicySet "1" *-- "0..*" EnvironmentPolicy
 PolicySet "1" *-- "0..*" FilePolicy
-RepositoryState <|-- RepositoryDetail
-RepositoryDetail "1" *-- "0..1" RepositoryStructure
-Change <|-- AppliedChange
-PolicySet ..> Change : desired state
-RepositoryDetail ..> Change : observed state
+RepoState <|-- RepoDetail
+RepoDetail "1" *-- "0..1" RepoStructure
+RepoDetail "1" o-- "0..1" CapabilityEvidence
+PolicySet ..> Change : desired values
+RepoDetail ..> Change : observed values
+CapabilityEvidence ..> Change : availability
+Change "1" --> "0..1" AppliedChange : attempted as
 @enduml
