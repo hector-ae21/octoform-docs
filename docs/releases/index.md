@@ -15,7 +15,7 @@ This documentation release line describes Octoform `0.3.1`.
 
 Documentation uses complete `MAJOR.MINOR.PATCH` versions. Its `MAJOR.MINOR`
 matches Octoform, while the documentation patch advances independently whenever
-approved content reaches `main`. The version selector shows the exact immutable
+approved content reaches the default `v0.x` branch. The version selector shows the exact immutable
 documentation patch currently being read.
 
 Every published patch has an annotated Git tag and a GitHub Release. The `0.3`,

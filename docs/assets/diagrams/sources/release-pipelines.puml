@@ -21,7 +21,7 @@ AppCI -> NPM : OIDC trusted publish with provenance
 NPM --> AppCI : immutable package version
 AppCI -> Releases : create verified-tag release
 
-Maintainer -> DocsRepo : merge reviewed documentation to main
+Maintainer -> DocsRepo : merge reviewed documentation to default v0.x
 DocsRepo -> DocsCI : trigger verification and publication
 DocsCI -> DocsCI : lint, build, examples, UML, links, privacy, WCAG
 DocsCI -> DocsCI : resolve docs patch and validate release line
@@ -35,7 +35,7 @@ DocsCI --> Maintainer : versioned public documentation
 
 note over NPM, Pages
   Application publishing follows the version-branch merge automatically.
-  Every main revision becomes one immutable documentation patch.
+  Every default-branch revision becomes one immutable documentation patch.
   Documentation and application share MAJOR.MINOR; patch differs.
 end note
 @enduml

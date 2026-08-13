@@ -181,7 +181,7 @@ Copyable, version-compatible workflow examples are in the
 The application release begins automatically after a reviewed merge advances a
 version branch and introduces a new complete package version. npm publishing
 uses trusted OIDC credentials and provenance. Documentation publication is an
-automatic release from `main`. Documentation uses complete `MAJOR.MINOR.PATCH`
+automatic release from the default `v0.x` branch. Documentation uses complete `MAJOR.MINOR.PATCH`
 versions and shares `MAJOR.MINOR` with the exact Octoform version it documents;
 their patch numbers advance independently.
 

@@ -4,7 +4,7 @@ run-name: Publish documentation from ${{ github.sha }}
 on:
   push:
     branches:
-      - main
+      - v0.x
   workflow_dispatch:
 
 concurrency:
@@ -66,8 +66,8 @@ jobs:
           REUSED_RELEASE: ${{ steps.release.outputs.reused }}
           SOURCE_REF: ${{ github.ref }}
         run: |
-          if [ "$SOURCE_REF" != "refs/heads/main" ] && [ "$REUSED_RELEASE" != "true" ]; then
-            echo "Manual publication must target main or an existing documentation release tag." >&2
+          if [ "$SOURCE_REF" != "refs/heads/v0.x" ] && [ "$REUSED_RELEASE" != "true" ]; then
+            echo "Manual publication must target v0.x or an existing documentation release tag." >&2
             exit 1
           fi
 
