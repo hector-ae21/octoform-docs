@@ -21,7 +21,6 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tabs.link
-    - navigation.footer
     - navigation.indexes
     - navigation.instant
     - navigation.sections
@@ -102,7 +101,12 @@ extra:
 nav:
   - Home: index.md
   - Get started:
-      - Quick start: getting-started/index.md
+      - Get started overview: getting-started/index.md
+      - Install Octoform: getting-started/installation.md
+      - Authenticate safely: getting-started/authentication.md
+      - Write the first policy: getting-started/first-policy.md
+      - Produce the first plan: getting-started/first-plan.md
+      - Apply and verify: getting-started/safe-apply.md
       - Core concepts: concepts/index.md
   - Guides:
       - Guides overview: guides/index.md

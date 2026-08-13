@@ -17,7 +17,7 @@ enforcement.
 --8<-- "docs/examples/files/audit-only/octoform.yml"
 ```
 
-[:material-download:](files/audit-only/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the audit-only policy YAML" title="Download YAML" }
+[:material-download: Download YAML](files/audit-only/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the audit-only policy YAML" }
 
 </div>
 

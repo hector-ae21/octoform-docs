@@ -15,6 +15,11 @@ const origin = `http://127.0.0.1:${address.port}`;
 const paths = [
   '/',
   '/getting-started/',
+  '/getting-started/installation/',
+  '/getting-started/authentication/',
+  '/getting-started/first-policy/',
+  '/getting-started/first-plan/',
+  '/getting-started/safe-apply/',
   '/configuration/',
   '/configuration/branches-and-rulesets/',
   '/configuration/security-settings/',
@@ -40,6 +45,8 @@ const paths = [
 ];
 const mobilePaths = [
   '/',
+  '/getting-started/',
+  '/getting-started/authentication/',
   '/guides/',
   '/examples/minimal/',
   '/configuration/branches-and-rulesets/',
