@@ -17,6 +17,7 @@ try {
   const context = await browser.newContext({
     acceptDownloads: true,
     colorScheme: 'dark',
+    reducedMotion: 'reduce',
     viewport: { width: 1440, height: 900 },
   });
   const page = await context.newPage();
@@ -100,6 +101,49 @@ try {
   }
   if (await page.locator('.md-footer__inner').count()) {
     throw new Error('Previous and next page navigation must not be rendered');
+  }
+
+  const navigationMetrics = new Map();
+  for (const path of [
+    '/configuration/document-composition/',
+    '/configuration/selection-and-precedence/',
+  ]) {
+    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+    navigationMetrics.set(path, await page.evaluate(() => Object.fromEntries(
+      [...document.querySelectorAll('.md-sidebar--primary a.md-nav__link')]
+        .filter((link) => link.getClientRects().length > 0)
+        .filter((link) => ['Document composition', 'Selection and precedence'].includes(link.textContent.trim()))
+        .map((link) => {
+          const style = getComputedStyle(link);
+          return [link.textContent.trim(), {
+            fontWeight: style.fontWeight,
+            height: link.getBoundingClientRect().height,
+          }];
+        }),
+    )));
+  }
+  const firstNavigation = navigationMetrics.get('/configuration/document-composition/');
+  const secondNavigation = navigationMetrics.get('/configuration/selection-and-precedence/');
+  for (const label of ['Document composition', 'Selection and precedence']) {
+    if (!firstNavigation?.[label] || !secondNavigation?.[label]) {
+      throw new Error(`Unable to compare navigation metrics for ${label}`);
+    }
+    if (
+      firstNavigation[label].fontWeight !== secondNavigation[label].fontWeight ||
+      Math.abs(firstNavigation[label].height - secondNavigation[label].height) > 1
+    ) {
+      throw new Error(
+        `${label} changes typography when selected: ` +
+          `${JSON.stringify(firstNavigation[label])} -> ${JSON.stringify(secondNavigation[label])}`,
+      );
+    }
+  }
+
+  await page.goto(`${origin}/security/`, { waitUntil: 'networkidle' });
+  const securityTab = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
+  if (securityTab !== 'Security') throw new Error(`Expected Security to be active, received ${securityTab}`);
+  if (await page.locator('.md-sidebar--primary:visible').count()) {
+    throw new Error('A top-level leaf page must not retain a primary sidebar on desktop');
   }
 
   await page.goto(`${origin}/examples/minimal/`, { waitUntil: 'networkidle' });
@@ -204,27 +248,71 @@ try {
 
   const responsivePages = [
     '/',
-    '/guides/',
+    '/security/',
+    '/getting-started/authentication/',
     '/examples/shared-presets/',
     '/configuration/branches-and-rulesets/',
     '/architecture/behavior/state-models/',
+    '/reference/github-api-surface/',
     '/releases/',
   ];
   const viewports = [
+    ['wide desktop', 1920, 1080],
     ['desktop', 1440, 1000],
+    ['compact desktop', 1024, 900],
     ['tablet', 820, 1180],
+    ['compact tablet', 768, 1024],
     ['mobile', 390, 844],
+    ['compact mobile', 320, 720],
   ];
   for (const [name, width, height] of viewports) {
     await page.setViewportSize({ width, height });
     for (const path of responsivePages) {
       await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
-      const geometry = await page.evaluate(() => ({
-        clientWidth: document.documentElement.clientWidth,
-        scrollWidth: document.documentElement.scrollWidth,
+      await page.evaluate(() => new Promise((resolveFrame) => {
+        requestAnimationFrame(() => requestAnimationFrame(resolveFrame));
       }));
-      if (geometry.scrollWidth > geometry.clientWidth + 1) {
-        throw new Error(`${path} overflows horizontally at the ${name} viewport`);
+      const geometry = await page.evaluate(() => {
+        const clientWidth = document.documentElement.clientWidth;
+        const visibleOverflow = [...document.querySelectorAll('header, main, main *, footer, footer *')]
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            const scrollSurface = element.closest(
+              '.highlight, .md-sidebar__scrollwrap, .md-typeset__table, .octoform-diagram',
+            );
+            return {
+              element: `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ''}${[
+                ...element.classList,
+              ].map((name) => `.${name}`).join('')}`,
+              insideScrollSurface: Boolean(scrollSurface && scrollSurface !== element),
+              left: Math.round(rect.left * 10) / 10,
+              right: Math.round(rect.right * 10) / 10,
+            };
+          })
+          .filter(({ insideScrollSurface, left, right }) => !insideScrollSurface && (
+            (left < -1 && right > 1) || (right > clientWidth + 1 && left < clientWidth - 1)
+          ))
+          .slice(0, 12);
+        return {
+          clientWidth,
+          documentScrollWidth: document.documentElement.scrollWidth,
+          rootOverflowX: getComputedStyle(document.documentElement).overflowX,
+          visibleOverflow,
+        };
+      });
+      if (geometry.visibleOverflow.length > 0) {
+        throw new Error(
+          `${path} exposes content outside the ${name} viewport: ${JSON.stringify(geometry)}`,
+        );
+      }
+      const containedSurfaces = await page.evaluate(() => [
+        ...document.querySelectorAll('.highlight, .md-typeset__table, .octoform-diagram'),
+      ].map((element) => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left, right: rect.right };
+      }));
+      if (containedSurfaces.some(({ left, right }) => left < -1 || right > width + 1)) {
+        throw new Error(`${path} exposes code, table, or diagram content outside its viewport at ${name}`);
       }
       if ((await page.locator('main').count()) !== 1 || !(await page.locator('main h1').isVisible())) {
         throw new Error(`${path} does not expose one visible main heading at the ${name} viewport`);
@@ -232,7 +320,8 @@ try {
       if ((await page.locator('header').count()) !== 1 || (await page.locator('footer').count()) !== 1) {
         throw new Error(`${path} is missing a header or footer landmark at the ${name} viewport`);
       }
-      if (width < 960) {
+      const tabsVisible = await page.locator('.md-tabs').isVisible();
+      if (!tabsVisible) {
         const drawerControl = page.locator('.md-header label[for="__drawer"]');
         if (!(await drawerControl.isVisible())) {
           throw new Error(`${path} has no visible navigation drawer control at the ${name} viewport`);
@@ -242,6 +331,10 @@ try {
           throw new Error(`${path} navigation drawer does not open at the ${name} viewport`);
         }
         await page.keyboard.press('Escape');
+      } else {
+        if (await page.locator('.md-header label[for="__drawer"]:visible').count()) {
+          throw new Error(`${path} unexpectedly exposes a drawer control at the ${name} viewport`);
+        }
       }
     }
   }
