@@ -43,8 +43,8 @@ npm run verify
 ```
 
 The command checks Markdown, spelling, Mermaid syntax, a strict MkDocs build,
-generated HTML, internal links, external runtime resources, representative
-WCAG 2.2 AA accessibility, and
+generated HTML, internal and external links, external runtime resources,
+representative WCAG 2.2 AA accessibility, and
 common secret patterns. It must finish without rewriting tracked sources.
 
 ## Versioning
