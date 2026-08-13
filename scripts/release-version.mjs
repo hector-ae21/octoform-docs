@@ -47,14 +47,14 @@ export function parseTagReferences(output) {
 }
 
 /**
- * Resolves the immutable documentation release assigned to a source commit.
+ * Resolves the immutable publication assigned to a documentation source commit.
  *
  * @param {{applicationVersion: string, allTags: string[], commitTags: string[]}} input
- * @returns {{applicationVersion: string, docsVersion: string, docsTag: string, docsLine: string, reused: boolean, promoteAliases: boolean}}
+ * @returns {{applicationVersion: string, applicationLine: string, publicationVersion: string, publicationTag: string, reused: boolean, publishProductVersion: boolean}}
  */
 export function resolveDocumentationRelease({ applicationVersion, allTags, commitTags }) {
   const application = parseCompleteVersion(applicationVersion, 'Octoform version');
-  const docsLine = `${application.major}.${application.minor}`;
+  const applicationLine = `${application.major}.${application.minor}`;
   const parseTag = (tag) => {
     if (!tag.startsWith('v')) return undefined;
     try {
@@ -76,29 +76,31 @@ export function resolveDocumentationRelease({ applicationVersion, allTags, commi
     if (!existing.some(({ tag }) => tag === current.tag)) {
       throw new Error(`Commit tag ${current.tag} is missing from the repository tag set`);
     }
-    if (`${current.major}.${current.minor}` !== docsLine) {
+    if (`${current.major}.${current.minor}` !== applicationLine) {
       throw new Error(
-        `Existing documentation tag ${current.tag} does not match Octoform release line ${docsLine}`,
+        `Existing documentation tag ${current.tag} does not match Octoform release line ${applicationLine}`,
       );
     }
     return {
       applicationVersion: application.version,
-      docsVersion: current.version,
-      docsTag: current.tag,
-      docsLine,
+      applicationLine,
+      publicationVersion: current.version,
+      publicationTag: current.tag,
       reused: true,
-      promoteAliases: current.patch === Math.max(...linePatches),
+      publishProductVersion: current.patch === Math.max(...linePatches),
     };
   }
   const patch = linePatches.length === 0 ? 0 : Math.max(...linePatches) + 1;
-  if (!Number.isSafeInteger(patch)) throw new Error(`Documentation patch overflow for ${docsLine}`);
-  const docsVersion = `${docsLine}.${patch}`;
+  if (!Number.isSafeInteger(patch)) {
+    throw new Error(`Documentation publication patch overflow for ${applicationLine}`);
+  }
+  const publicationVersion = `${applicationLine}.${patch}`;
   return {
     applicationVersion: application.version,
-    docsVersion,
-    docsTag: `v${docsVersion}`,
-    docsLine,
+    applicationLine,
+    publicationVersion,
+    publicationTag: `v${publicationVersion}`,
     reused: false,
-    promoteAliases: true,
+    publishProductVersion: true,
   };
 }

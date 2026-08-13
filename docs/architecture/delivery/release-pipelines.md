@@ -1,12 +1,14 @@
 ---
 title: Release pipelines
-description: Understand immutable Octoform package releases and independently patched versioned documentation.
+description: Understand immutable Octoform package releases, documentation publications, and product-version Pages deployment.
 ---
 
 # Release pipelines
 
 Application and documentation publication are automated but remain distinct.
-They share a release line while preserving independent patch histories.
+The package version identifies behavior. The documentation publication tag
+identifies an editorial source revision, while Mike exposes the exact package
+version described by that revision.
 
 <div class="octoform-diagram" role="region" aria-label="Scrollable UML release pipeline sequence diagram" tabindex="0" markdown>
 
@@ -25,9 +27,12 @@ with provenance, and a GitHub Release.
 ## Documentation release
 
 Every reviewed revision reaching the default `v0.x` branch is verified and
-published as a complete documentation patch. The documentation `MAJOR.MINOR`
-matches the exact Octoform release line it describes, while `PATCH` advances
-independently. Immutable patch paths remain available; `0.3`, `latest`, and
-`stable` aliases move only after successful verification and deployment.
+receives a complete immutable publication tag. That editorial patch advances
+independently within the documented Octoform `MAJOR.MINOR` line. Mike deploys
+the exact pinned Octoform version—not the editorial tag—and updates `0.3`,
+`latest`, and `stable` only after successful verification and deployment.
+
+For example, publication tag `v0.3.25` can update the public `0.3.1` product
+documentation while the pinned package remains Octoform `0.3.1`.
 
 See [Releases](../../releases/index.md) for the reader-facing version contract.

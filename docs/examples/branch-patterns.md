@@ -17,7 +17,7 @@ repository's release model.
 --8<-- "docs/examples/files/branch-patterns/octoform.yml"
 ```
 
-[:material-download:](files/branch-patterns/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the branch-pattern policy YAML" title="Download YAML" }
+[:material-download: Download YAML](files/branch-patterns/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the branch-pattern policy YAML" }
 
 </div>
 

@@ -31,6 +31,50 @@ try {
   if (await page.locator('.md-sidebar:visible').count()) {
     throw new Error('Home must not render an empty sidebar');
   }
+  const activeHomeTab = page.locator('.md-tabs__item--active .md-tabs__link');
+  const homeTabStyle = await activeHomeTab.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { background: style.backgroundColor, decoration: style.textDecorationLine };
+  });
+  if (homeTabStyle.background === 'rgba(0, 0, 0, 0)' || homeTabStyle.decoration !== 'none') {
+    throw new Error('The active primary tab must use a filled selected state without an underline');
+  }
+  const homeSpacing = await page.evaluate(() => {
+    const tabs = document.querySelector('.md-tabs');
+    const hero = document.querySelector('.octoform-hero');
+    if (!tabs || !hero) return undefined;
+    return hero.getBoundingClientRect().top - tabs.getBoundingClientRect().bottom;
+  });
+  if (homeSpacing === undefined || homeSpacing < 8 || homeSpacing > 55) {
+    throw new Error(`Unexpected Home spacing below primary navigation: ${homeSpacing}`);
+  }
+
+  await page.goto(`${origin}/getting-started/`, { waitUntil: 'networkidle' });
+  const journeyLinks = await page.locator('.octoform-grid--journey .octoform-card > p a').count();
+  if (journeyLinks !== 6) throw new Error(`Get started exposes ${journeyLinks} journey links; expected 6`);
+  const getStartedEntries = await page.locator('.md-sidebar--primary a.md-nav__link:visible').allTextContents();
+  for (const expected of [
+    'Install Octoform',
+    'Authenticate safely',
+    'Write the first policy',
+    'Produce the first plan',
+    'Apply and verify',
+    'Core concepts',
+  ]) {
+    if (!getStartedEntries.some((entry) => entry.trim() === expected)) {
+      throw new Error(`Get started sidebar does not expose ${expected}`);
+    }
+  }
+  const activeSidebarShadow = await page
+    .locator('.md-sidebar--primary .md-nav__link--active:visible')
+    .first()
+    .evaluate((element) => getComputedStyle(element).boxShadow);
+  if (!activeSidebarShadow.includes('inset')) {
+    throw new Error(`Primary sidebar active state retains an elevated title shadow: ${activeSidebarShadow}`);
+  }
+  if (await page.locator('.md-footer__inner').count()) {
+    throw new Error('Previous and next page navigation must not be rendered');
+  }
 
   await page.goto(`${origin}/examples/minimal/`, { waitUntil: 'networkidle' });
   const activeTab = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
@@ -42,6 +86,23 @@ try {
   const downloadLink = page.locator('.octoform-example-download');
   if ((await downloadLink.getAttribute('download')) !== 'octoform.yml') {
     throw new Error('Minimal policy download does not declare the expected filename');
+  }
+  if ((await downloadLink.textContent())?.trim() !== 'Download YAML') {
+    throw new Error('Minimal policy download must expose a readable action label');
+  }
+  const exampleGeometry = await page.evaluate(() => {
+    const code = document.querySelector('.octoform-example .highlight');
+    const download = document.querySelector('.octoform-example-download');
+    if (!code || !download) return undefined;
+    const codeRect = code.getBoundingClientRect();
+    const downloadRect = download.getBoundingClientRect();
+    return {
+      downloadBelowCode: downloadRect.top >= codeRect.bottom,
+      codeShadow: getComputedStyle(code).boxShadow,
+    };
+  });
+  if (!exampleGeometry?.downloadBelowCode || exampleGeometry.codeShadow === 'none') {
+    throw new Error('Code example and download action do not use the expected elevated layout');
   }
   const [download] = await Promise.all([page.waitForEvent('download'), downloadLink.click()]);
   if (download.suggestedFilename() !== 'octoform.yml') {
@@ -107,6 +168,12 @@ try {
     if (!(await page.locator('a[href*="/assets/diagrams/sources/"]').count())) {
       throw new Error(`${path} does not link to reviewed PlantUML source`);
     }
+    const sourceBelowDiagram = await page.evaluate(() => {
+      const diagram = document.querySelector('.octoform-diagram');
+      const source = diagram?.nextElementSibling?.querySelector('a[href*="/assets/diagrams/sources/"]');
+      return Boolean(source);
+    });
+    if (!sourceBelowDiagram) throw new Error(`${path} does not group its diagram with the source action`);
   }
 
   const responsivePages = [
@@ -160,7 +227,7 @@ try {
 }
 
 console.log(
-  'Validated primary navigation, active context, sparse sidebars, direct downloads, and responsive layouts.',
+  'Validated selected navigation, Get started, sidebar hierarchy, code actions, diagrams, and responsive layouts.',
 );
 
 function serveStaticFile(request, response) {

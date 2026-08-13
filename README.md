@@ -44,9 +44,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for content requirements, versioning,
 security boundaries, and the pull-request workflow.
 
 Every revision merged into the default `v0.x` branch passes the complete verification suite,
-receives the next documentation patch tag and GitHub Release, and is published
-to its immutable Pages path. The matching `MAJOR.MINOR`, `latest`, and `stable`
-aliases move only after the pushed Pages tree matches the generated site.
+receives the next immutable editorial publication tag and GitHub Release, and
+updates the Pages path named after the exact Octoform version it documents. The
+matching `MAJOR.MINOR`, `latest`, and `stable` aliases move only after the pushed
+Pages tree matches the generated site.
 
 ## Privacy
 

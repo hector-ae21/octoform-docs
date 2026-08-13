@@ -17,7 +17,7 @@ personal account and avoids organization custom properties.
 --8<-- "docs/examples/files/personal-account/octoform.yml"
 ```
 
-[:material-download:](files/personal-account/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the personal-account policy YAML" title="Download YAML" }
+[:material-download: Download YAML](files/personal-account/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the personal-account policy YAML" }
 
 </div>
 

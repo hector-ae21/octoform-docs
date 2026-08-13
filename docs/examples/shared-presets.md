@@ -16,7 +16,7 @@ configurations import the same project-type and security presets.
 --8<-- "docs/examples/files/shared-presets/org.octoform.yml"
 ```
 
-[:material-download:](files/shared-presets/org.octoform.yml){ .octoform-example-download download="org.octoform.yml" aria-label="Download the organization root YAML" title="Download YAML" }
+[:material-download: Download YAML](files/shared-presets/org.octoform.yml){ .octoform-example-download download="org.octoform.yml" aria-label="Download the organization root YAML" }
 
 </div>
 
@@ -28,7 +28,7 @@ configurations import the same project-type and security presets.
 --8<-- "docs/examples/files/shared-presets/personal.octoform.yml"
 ```
 
-[:material-download:](files/shared-presets/personal.octoform.yml){ .octoform-example-download download="personal.octoform.yml" aria-label="Download the personal-account root YAML" title="Download YAML" }
+[:material-download: Download YAML](files/shared-presets/personal.octoform.yml){ .octoform-example-download download="personal.octoform.yml" aria-label="Download the personal-account root YAML" }
 
 </div>
 
@@ -40,7 +40,7 @@ configurations import the same project-type and security presets.
 --8<-- "docs/examples/files/shared-presets/presets/npm-library.yml"
 ```
 
-[:material-download:](files/shared-presets/presets/npm-library.yml){ .octoform-example-download download="npm-library.yml" aria-label="Download the npm-library preset YAML" title="Download YAML" }
+[:material-download: Download YAML](files/shared-presets/presets/npm-library.yml){ .octoform-example-download download="npm-library.yml" aria-label="Download the npm-library preset YAML" }
 
 </div>
 
@@ -52,7 +52,7 @@ configurations import the same project-type and security presets.
 --8<-- "docs/examples/files/shared-presets/presets/security-baseline.yml"
 ```
 
-[:material-download:](files/shared-presets/presets/security-baseline.yml){ .octoform-example-download download="security-baseline.yml" aria-label="Download the security baseline preset YAML" title="Download YAML" }
+[:material-download: Download YAML](files/shared-presets/presets/security-baseline.yml){ .octoform-example-download download="security-baseline.yml" aria-label="Download the security baseline preset YAML" }
 
 </div>
 

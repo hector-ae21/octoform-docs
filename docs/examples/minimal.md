@@ -16,7 +16,7 @@ under the owner. Everything else remains unmanaged.
 --8<-- "docs/examples/files/minimal/octoform.yml"
 ```
 
-[:material-download:](files/minimal/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the minimal policy YAML" title="Download YAML" }
+[:material-download: Download YAML](files/minimal/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the minimal policy YAML" }
 
 </div>
 

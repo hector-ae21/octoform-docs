@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import {
   parseCompleteVersion,
@@ -12,11 +13,11 @@ test('selects patch zero for the first documentation release line', () => {
     resolveDocumentationRelease({ applicationVersion: '0.3.1', allTags: [], commitTags: [] }),
     {
       applicationVersion: '0.3.1',
-      docsVersion: '0.3.0',
-      docsTag: 'v0.3.0',
-      docsLine: '0.3',
+      applicationLine: '0.3',
+      publicationVersion: '0.3.0',
+      publicationTag: 'v0.3.0',
       reused: false,
-      promoteAliases: true,
+      publishProductVersion: true,
     },
   );
 });
@@ -27,8 +28,9 @@ test('increments only the patch within the matching release line', () => {
     allTags: ['v0.2.9', 'v0.3.0', 'v0.3.4', 'not-a-release'],
     commitTags: [],
   });
-  assert.equal(result.docsVersion, '0.3.5');
-  assert.equal(result.docsLine, '0.3');
+  assert.equal(result.publicationVersion, '0.3.5');
+  assert.equal(result.applicationVersion, '0.3.8');
+  assert.equal(result.applicationLine, '0.3');
 });
 
 test('reuses the release assigned to the same source commit', () => {
@@ -37,9 +39,10 @@ test('reuses the release assigned to the same source commit', () => {
     allTags: ['v0.3.0', 'v0.3.1'],
     commitTags: ['v0.3.1'],
   });
-  assert.equal(result.docsVersion, '0.3.1');
+  assert.equal(result.publicationVersion, '0.3.1');
+  assert.equal(result.applicationVersion, '0.3.9');
   assert.equal(result.reused, true);
-  assert.equal(result.promoteAliases, true);
+  assert.equal(result.publishProductVersion, true);
 });
 
 test('does not move aliases backwards when recovering an older tagged commit', () => {
@@ -48,8 +51,8 @@ test('does not move aliases backwards when recovering an older tagged commit', (
     allTags: ['v0.3.0', 'v0.3.1'],
     commitTags: ['v0.3.0'],
   });
-  assert.equal(result.docsVersion, '0.3.0');
-  assert.equal(result.promoteAliases, false);
+  assert.equal(result.publicationVersion, '0.3.0');
+  assert.equal(result.publishProductVersion, false);
 });
 
 test('resolves lightweight and annotated tags to their commits', () => {
@@ -81,18 +84,38 @@ test('rejects a commit tagged for a different Octoform release line', () => {
 
 test('validates source metadata and exact Octoform dependency', () => {
   assert.doesNotThrow(() => validateReleaseIdentity({
-    docsVersion: '0.3.7',
+    publicationVersion: '0.3.7',
     applicationVersion: '0.3.1',
     packageJson: JSON.stringify({ devDependencies: { '@hector21/octoform': '0.3.1' } }),
-    releasePage: 'docs_line: "0.3"\napplication_version: "0.3.1"',
+    releasePage: 'application_line: "0.3"\napplication_version: "0.3.1"',
   }));
 });
 
 test('rejects documentation and application release-line drift', () => {
   assert.throws(() => validateReleaseIdentity({
-    docsVersion: '0.4.0',
+    publicationVersion: '0.4.0',
     applicationVersion: '0.3.1',
     packageJson: JSON.stringify({ devDependencies: { '@hector21/octoform': '0.3.1' } }),
-    releasePage: 'docs_line: "0.4"\napplication_version: "0.3.1"',
+    releasePage: 'application_line: "0.3"\napplication_version: "0.3.1"',
   }), /release lines do not match/u);
+});
+
+test('keeps the product version independent from a later editorial publication patch', () => {
+  const result = resolveDocumentationRelease({
+    applicationVersion: '0.3.1',
+    allTags: Array.from({ length: 25 }, (_, patch) => `v0.3.${patch}`),
+    commitTags: [],
+  });
+  assert.equal(result.publicationVersion, '0.3.25');
+  assert.equal(result.publicationTag, 'v0.3.25');
+  assert.equal(result.applicationVersion, '0.3.1');
+  assert.equal(result.applicationLine, '0.3');
+});
+
+test('publishes the product version to Mike and uses the editorial version only for release records', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/publish.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /mike deploy[\s\S]*"\$APPLICATION_VERSION"/u);
+  assert.doesNotMatch(workflow, /mike deploy[\s\S]{0,180}"\$PUBLICATION_VERSION"/u);
+  assert.match(workflow, /gh release create "\$PUBLICATION_TAG"/u);
+  assert.match(workflow, /Documentation publication \$PUBLICATION_VERSION for Octoform \$APPLICATION_VERSION/u);
 });
