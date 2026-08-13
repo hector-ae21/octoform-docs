@@ -52,12 +52,15 @@ finish without rewriting tracked sources.
 
 ## Versioning
 
-Published documentation is immutable by `MAJOR.MINOR`. The version selector is
-provided by Mike. Older versions display a warning and remain available for
-operators who have not upgraded Octoform.
+Published documentation uses complete `MAJOR.MINOR.PATCH` versions. Its
+`MAJOR.MINOR` must match the documented Octoform release line; documentation
+patches advance independently. Every merge to `main` creates an immutable tag,
+GitHub Release, and Pages version automatically. The line, `latest`, and
+`stable` aliases move to that verified version. Older patches remain available
+for operators who need an earlier documentation snapshot.
 
 ## Pull requests
 
-Use a focused branch from `v0.x`. The pull-request workflow builds and uploads
+Use a focused branch from `main`. The pull-request workflow builds and uploads
 an isolated preview artifact; it cannot deploy the public site. Include the
 application issue or release that establishes any behavior you document.

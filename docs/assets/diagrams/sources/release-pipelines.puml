@@ -21,17 +21,21 @@ AppCI -> NPM : OIDC trusted publish with provenance
 NPM --> AppCI : immutable package version
 AppCI -> Releases : create verified-tag release
 
-Maintainer -> DocsRepo : merge matching documentation PR
-DocsRepo -> DocsCI : documentation verification
+Maintainer -> DocsRepo : merge reviewed documentation to main
+DocsRepo -> DocsCI : trigger verification and publication
 DocsCI -> DocsCI : lint, build, examples, UML, links, privacy, WCAG
-Maintainer -> DocsCI : dispatch docs MAJOR.MINOR\nfor exact app MAJOR.MINOR.PATCH
-DocsCI -> DocsCI : validate release identity and rebuild
-DocsCI -> DocsRepo : mike deploy immutable version\nand latest/stable aliases
-DocsCI -> Pages : deploy complete gh-pages history
-Pages --> Maintainer : versioned public documentation
+DocsCI -> DocsCI : resolve docs patch and validate release line
+DocsCI -> DocsRepo : create annotated docs vX.Y.Z tag
+DocsCI -> DocsRepo : mike deploy immutable patch\nand line/latest/stable aliases
+DocsCI -> Pages : deploy verified gh-pages artifact
+Pages --> DocsCI : deployment URL
+DocsCI -> Pages : verify version and aliases over HTTPS
+DocsCI -> DocsRepo : create GitHub Release
+DocsCI --> Maintainer : versioned public documentation
 
 note over NPM, Pages
   Application publishing follows the version-branch merge automatically.
-  Documentation publishing is an explicit, version-paired dispatch.
+  Every main revision becomes one immutable documentation patch.
+  Documentation and application share MAJOR.MINOR; patch differs.
 end note
 @enduml

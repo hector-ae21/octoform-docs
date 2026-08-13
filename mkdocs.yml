@@ -4,7 +4,7 @@ site_author: Hector Arrechea
 site_url: https://hector-ae21.github.io/octoform-docs/
 repo_name: hector-ae21/octoform-docs
 repo_url: https://github.com/hector-ae21/octoform-docs
-edit_uri: edit/v0.x/docs/
+edit_uri: edit/main/docs/
 copyright: Copyright &copy; 2026 Hector Arrechea
 strict: true
 

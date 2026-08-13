@@ -1,22 +1,28 @@
 ---
 title: Releases
-description: Match an Octoform application release with its immutable documentation version.
-docs_version: "0.3"
+description: Match each immutable documentation patch with its exact Octoform release.
+docs_line: "0.3"
 application_version: "0.3.1"
 ---
 
 # Releases
 
-This documentation version describes Octoform `0.3.1`.
+This documentation release line describes Octoform `0.3.1`.
 
 | Documentation | Application | Status |
 | --- | --- | --- |
-| `0.3` | `0.3.1` | Current |
+| `0.3.x` | `0.3.1` | Current release line |
 
-Documentation versions use `MAJOR.MINOR` because compatible application patches
-share one contract. A page states the exact patch used for its verification.
-Published versions are immutable; corrections are released through the current
-source line and retain older documentation for users who have not upgraded.
+Documentation uses complete `MAJOR.MINOR.PATCH` versions. Its `MAJOR.MINOR`
+matches Octoform, while the documentation patch advances independently whenever
+approved content reaches `main`. The version selector shows the exact immutable
+documentation patch currently being read.
 
-See the [application changelog](https://github.com/hector-ae21/octoform/blob/v0.x/CHANGELOG.md)
-for patch-level changes and upgrade notes.
+Every published patch has an annotated Git tag and a GitHub Release. The `0.3`,
+`latest`, and `stable` aliases point to the newest successfully verified patch;
+older patch URLs remain available and unchanged.
+
+See the [documentation releases](https://github.com/hector-ae21/octoform-docs/releases)
+for the publication history and the
+[application changelog](https://github.com/hector-ae21/octoform/blob/v0.x/CHANGELOG.md)
+for Octoform behavior changes and upgrade notes.
