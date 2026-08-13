@@ -52,22 +52,11 @@
 }
 
 .md-tabs__link {
+  border: 0.05rem solid transparent;
+  border-radius: 0.45rem;
   opacity: 1;
-  position: relative;
-  transition: color 150ms ease;
-}
-
-.md-tabs__link::after {
-  background: var(--octo-cyan);
-  border-radius: 999px;
-  bottom: 0.3rem;
-  content: "";
-  height: 0.12rem;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%) scaleX(0);
-  transition: transform 150ms ease;
-  width: calc(100% - 0.8rem);
+  padding: 0.38rem 0.68rem;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
 .md-tabs__item--active .md-tabs__link,
@@ -76,8 +65,11 @@
   color: #fff;
 }
 
-.md-tabs__item--active .md-tabs__link::after {
-  transform: translateX(-50%) scaleX(1);
+.md-tabs__item--active .md-tabs__link {
+  background: rgb(103 232 249 / 12%);
+  border-color: rgb(103 232 249 / 30%);
+  box-shadow: 0 0.28rem 0.8rem rgb(2 8 23 / 18%);
+  color: #a5f3fc;
 }
 
 .md-grid {
@@ -85,7 +77,11 @@
 }
 
 .md-main__inner {
-  margin-top: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.md-main__inner:has(.octoform-hero) {
+  margin-top: 0.7rem;
 }
 
 .md-sidebar__scrollwrap {
@@ -103,11 +99,17 @@
 .md-sidebar--primary .md-nav__title,
 .md-sidebar--secondary .md-nav__title {
   background: transparent;
-  box-shadow: none;
+  box-shadow: none !important;
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.md-sidebar--primary .md-nav__title::after,
+.md-sidebar--primary .md-nav__title::before {
+  box-shadow: none !important;
+  display: none;
 }
 
 .md-sidebar .md-nav__link {
@@ -126,18 +128,33 @@
 }
 
 .md-sidebar .md-nav__link--active {
-  background: rgb(8 145 178 / 13%);
-  box-shadow: inset 0.16rem 0 var(--octo-cyan);
+  background: rgb(8 145 178 / 10%);
+  box-shadow: inset 0.13rem 0 var(--octo-cyan) !important;
   color: var(--md-typeset-a-color);
   font-weight: 700;
 }
 
+.md-sidebar--primary .md-nav[data-md-level="1"] > .md-nav__list > .md-nav__item--nested > .md-nav__link,
+.md-sidebar--primary .md-nav[data-md-level="2"] > .md-nav__list > .md-nav__item--nested > .md-nav__link {
+  color: var(--octo-ink);
+  font-weight: 750;
+  margin-top: 0.75rem;
+}
+
+.md-sidebar--primary .md-nav[data-md-level="2"] > .md-nav__list {
+  margin-left: 0.55rem;
+}
+
+.md-sidebar--primary .md-nav[data-md-level="3"] > .md-nav__list {
+  margin-left: 0.85rem;
+}
+
 .md-sidebar--primary .md-nav[data-md-level="2"] .md-nav__link {
-  padding-left: 0.75rem;
+  padding-left: 0.65rem;
 }
 
 .md-sidebar--primary .md-nav[data-md-level="3"] .md-nav__link {
-  padding-left: 1.25rem;
+  padding-left: 0.9rem;
 }
 
 .md-sidebar--secondary .md-nav__list {
@@ -195,10 +212,26 @@
 }
 
 .md-typeset .highlight {
-  border: 0.05rem solid var(--octo-border);
+  background: color-mix(in srgb, var(--md-code-bg-color) 92%, var(--octo-panel));
+  border: 0.05rem solid color-mix(in srgb, var(--octo-border) 72%, transparent);
   border-radius: 0.65rem;
-  box-shadow: 0 0.5rem 1.5rem rgb(9 24 47 / 8%);
+  box-shadow: 0 0.7rem 1.8rem rgb(9 24 47 / 14%);
   overflow: hidden;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .highlight {
+  box-shadow: 0 0.8rem 2rem rgb(0 0 0 / 28%);
+}
+
+.md-typeset .highlight > .filename {
+  background: color-mix(in srgb, var(--octo-panel) 82%, var(--md-code-bg-color));
+  border-bottom: 0;
+  box-shadow: inset 0 -0.05rem color-mix(in srgb, var(--octo-border) 58%, transparent);
+  padding-block: 0.68rem;
+}
+
+.md-typeset .highlight pre {
+  border: 0;
 }
 
 .md-typeset .admonition,
@@ -246,7 +279,7 @@
   display: grid;
   gap: clamp(2rem, 6vw, 5rem);
   grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
-  margin: 1rem auto 3rem;
+  margin: 0.45rem auto 3rem;
   max-width: 78rem;
   overflow: hidden;
   padding: clamp(2rem, 4.5vw, 4rem);
@@ -342,6 +375,10 @@
   margin: 1.5rem 0 2.5rem;
 }
 
+.octoform-grid--journey {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .octoform-card {
   background: var(--octo-panel);
   border: 0.05rem solid var(--octo-border);
@@ -390,55 +427,83 @@
 }
 
 .octoform-example {
-  position: relative;
+  margin-bottom: 1.5rem;
 }
 
 .octoform-example > p:last-child {
-  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.55rem 0 0;
 }
 
 .octoform-example-download {
   align-items: center;
-  border-radius: 0.25rem;
-  color: var(--md-default-fg-color--light) !important;
+  background: rgb(8 145 178 / 8%);
+  border: 0.05rem solid rgb(8 145 178 / 32%);
+  border-radius: 999px;
+  color: var(--md-typeset-a-color) !important;
   display: inline-flex;
-  height: 1.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  gap: 0.35rem;
+  min-height: 1.8rem;
   justify-content: center;
-  position: absolute;
-  right: 2.35rem;
+  padding: 0.25rem 0.68rem;
   text-decoration: none !important;
-  top: 0.34rem;
-  transition: background-color 120ms ease, color 120ms ease;
-  width: 1.5rem;
-  z-index: 3;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
 .octoform-example-download:hover,
 .octoform-example-download:focus-visible {
-  background: var(--md-accent-fg-color--transparent);
+  background: rgb(8 145 178 / 16%);
+  border-color: var(--octo-cyan);
   color: var(--md-accent-fg-color) !important;
 }
 
 .octoform-example-download svg {
   fill: currentcolor;
-  height: 1rem;
-  width: 1rem;
+  height: 0.9rem;
+  width: 0.9rem;
 }
 
 .octoform-diagram {
-  background: #07111f;
-  border: 0.05rem solid #294568;
+  background:
+    radial-gradient(circle at 50% 0, rgb(103 232 249 / 7%), transparent 38%),
+    #07111f;
+  border: 0.05rem solid #36567d;
   border-radius: 0.75rem;
   box-shadow: var(--octo-shadow);
-  margin: 1.5rem 0;
+  margin: 1.5rem 0 0.7rem;
   overflow: auto;
-  padding: 1.25rem;
+  padding: clamp(1rem, 2.5vw, 1.75rem);
 }
 
 .octoform-diagram img {
   display: block;
   margin: 0 auto;
   min-width: 42rem;
+}
+
+.octoform-diagram + p {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0;
+}
+
+.octoform-diagram + p > a {
+  align-items: center;
+  background: rgb(109 40 217 / 8%);
+  border: 0.05rem solid rgb(109 40 217 / 28%);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.28rem 0.7rem;
+  text-decoration: none;
+}
+
+.md-footer__inner {
+  display: none;
 }
 
 @media screen and (max-width: 76.2344em) {
@@ -484,6 +549,7 @@
 
 @media screen and (max-width: 44.9844em) {
   .octoform-grid,
+  .octoform-grid--journey,
   .octoform-split {
     grid-template-columns: 1fr;
   }

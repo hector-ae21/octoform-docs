@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Understand how each approved Octoform documentation revision becomes a verified immutable release.">
+        <meta name="description" content="Understand how an approved documentation source revision updates the matching Octoform product documentation safely.">
       
       
         <meta name="author" content="Hector Arrechea">
@@ -475,6 +475,16 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -527,6 +537,146 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Octoform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authenticate safely
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write the first policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/first-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produce the first plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/safe-apply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apply and verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -2718,10 +2868,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#release-resolution" class="md-nav__link">
+  <a href="#resolve-two-identities" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release resolution
+        Resolve two identities
       
     </span>
   </a>
@@ -2729,10 +2879,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#published-artefacts" class="md-nav__link">
+  <a href="#publication-sequence" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Published artefacts
+        Publication sequence
       
     </span>
   </a>
@@ -2821,10 +2971,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#release-resolution" class="md-nav__link">
+  <a href="#resolve-two-identities" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release resolution
+        Resolve two identities
       
     </span>
   </a>
@@ -2832,10 +2982,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#published-artefacts" class="md-nav__link">
+  <a href="#publication-sequence" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Published artefacts
+        Publication sequence
       
     </span>
   </a>
@@ -2864,12 +3014,13 @@
 
 <h1 id="publication-guarantees">Publication guarantees<a class="headerlink" href="#publication-guarantees" title="Permanent link">&para;</a></h1>
 <p>Every approved revision reaching the default <code>v0.x</code> branch is verified and
-published automatically. Publication does not require a separate <code>main</code> branch.</p>
+published automatically. Publication does not require a separate <code>main</code> branch
+or an npm release.</p>
 <h2 id="verification-gate">Verification gate<a class="headerlink" href="#verification-gate" title="Permanent link">&para;</a></h2>
-<p>The release workflow rejects publication unless all required checks pass:</p>
+<p>The workflow rejects publication unless all required checks pass:</p>
 <ul>
 <li>Markdown and spelling validation.</li>
-<li>Release-version and deployment tests.</li>
+<li>Publication-identity and deployment tests.</li>
 <li>Deterministic local PlantUML rendering.</li>
 <li>Exact example parsing with the documented Octoform package.</li>
 <li>Credential-pattern scanning.</li>
@@ -2878,25 +3029,31 @@ published automatically. Publication does not require a separate <code>main</cod
 <li>Runtime privacy checks for external resources.</li>
 <li>Navigation, direct-download, responsive, and WCAG 2.2 AA checks.</li>
 </ul>
-<h2 id="release-resolution">Release resolution<a class="headerlink" href="#release-resolution" title="Permanent link">&para;</a></h2>
-<p>The workflow reads the documented application version and confirms that the
-documentation release shares its <code>MAJOR.MINOR</code>. It reuses a documentation tag
-already assigned to the same source commit or increments only the documentation
-patch for a new revision.</p>
-<p>Prerelease, build-metadata, or incomplete versions are rejected. Publication
-uses complete <code>MAJOR.MINOR.PATCH</code> versions only.</p>
-<h2 id="published-artefacts">Published artefacts<a class="headerlink" href="#published-artefacts" title="Permanent link">&para;</a></h2>
+<h2 id="resolve-two-identities">Resolve two identities<a class="headerlink" href="#resolve-two-identities" title="Permanent link">&para;</a></h2>
+<p>The workflow reads the exact Octoform dependency from <code>package.json</code>. That
+complete version becomes the Mike version and public product path.</p>
+<p>Independently, the workflow finds documentation tags in the matching
+<code>MAJOR.MINOR</code> line. It reuses a tag already assigned to the same commit or
+increments the latest editorial patch for a new source revision. Prerelease,
+build-metadata, and incomplete versions are rejected.</p>
+<p>An older tagged commit can be verified again, but it cannot replace the current
+product site or move aliases backwards.</p>
+<h2 id="publication-sequence">Publication sequence<a class="headerlink" href="#publication-sequence" title="Permanent link">&para;</a></h2>
 <ol>
-<li>An annotated documentation tag identifies the source revision.</li>
-<li>A GitHub Release records the published documentation patch.</li>
-<li><code>mike</code> writes an immutable patch directory to the Pages branch.</li>
-<li>Release-line, <code>latest</code>, and <code>stable</code> aliases are updated when appropriate.</li>
-<li>GitHub Pages deploys the verified tree.</li>
-<li>HTTPS checks confirm the immutable version and aliases serve the expected
-   source revision.</li>
+<li>Verify source, examples, diagrams, generated site, links, privacy,
+   interaction, and accessibility.</li>
+<li>Create an annotated publication tag naming both the editorial revision and
+   documented Octoform version.</li>
+<li>Replace the Mike directory named after the exact Octoform version.</li>
+<li>Update the release-line, <code>latest</code>, and <code>stable</code> redirects after validating
+   the pushed Pages tree.</li>
+<li>Deploy GitHub Pages and verify the product version and aliases over HTTPS.</li>
+<li>Create a GitHub Release for the immutable documentation publication tag.</li>
 </ol>
-<p>Older immutable paths remain untouched. Recovery of an older tagged source can
-rebuild its immutable path without moving aliases backward.</p>
+<p>The source tag remains immutable. The product path can receive later editorial
+corrections only while the pinned Octoform dependency remains exactly the same.
+Changing the dependency creates or updates the corresponding product-version
+path instead.</p>
 <p>The <a href="../../architecture/delivery/release-pipelines/">release pipeline architecture</a>
 shows the relationship between package and documentation publication.</p>
 
@@ -2933,46 +3090,6 @@ shows the relationship between package and documentation publication.</p>
       </main>
       
         <footer class="md-footer">
-  
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="../updating/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Update Octoform">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Update Octoform
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="../../contributing/" class="md-footer__link md-footer__link--next" aria-label="Next: Contributing">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Contributing
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -3024,7 +3141,7 @@ shows the relationship between package and documentation publication.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
       <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>

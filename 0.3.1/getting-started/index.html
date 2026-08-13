@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Install Octoform 0.3.1, authenticate safely, validate a policy, and produce a first read-only plan.">
+        <meta name="description" content="Move from a clean environment to a reviewed Octoform plan and a deliberately approved first change.">
       
       
         <meta name="author" content="Hector Arrechea">
@@ -18,7 +18,7 @@
         <link rel="prev" href="..">
       
       
-        <link rel="next" href="../concepts/">
+        <link rel="next" href="installation/">
       
       
         
@@ -477,6 +477,16 @@
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -532,6 +542,146 @@
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Install Octoform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authenticate safely
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="first-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write the first policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="first-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produce the first plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="safe-apply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apply and verify
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
               
             
               
@@ -2730,6 +2880,89 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Journey
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Journey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-octoform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install Octoform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authenticate-safely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authenticate safely
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#write-one-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Write one policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#produce-a-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Produce a plan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apply-and-verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apply and verify
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#understand-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Understand the model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-you-need" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2741,76 +2974,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-the-exact-release" class="md-nav__link">
+  <a href="#where-to-go-afterwards" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install the exact release
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#provide-the-token" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Provide the token
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#create-a-deliberately-small-policy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Create a deliberately small policy
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#produce-the-first-plan" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Produce the first plan
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#narrow-the-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Narrow the review
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#apply-only-after-review" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply only after review
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verify-and-recover" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify and recover
+        Where to go afterwards
       
     </span>
   </a>
@@ -2838,126 +3005,100 @@
 
 
 <h1 id="get-started">Get started<a class="headerlink" href="#get-started" title="Permanent link">&para;</a></h1>
-<p>This path takes you from a clean environment to a reviewed, read-only plan. It
-does not change a repository.</p>
+<p>Build confidence before granting write access. This journey begins with an
+exact package version and a narrow read-only plan, then introduces <code>apply</code> only
+after the desired and observed states are clear.</p>
+<div class="octoform-callout">
+<p><strong>Safe starting point:</strong> the first four stages do not change GitHub. The final
+stage mutates only the repository and setting you explicitly review.</p>
+</div>
+<h2 id="journey">Journey<a class="headerlink" href="#journey" title="Permanent link">&para;</a></h2>
+<div class="octoform-grid octoform-grid--journey">
+<div class="octoform-card octoform-step">
+<p><span class="octoform-step-number">01 · Runtime</span></p>
+<h3 id="install-octoform">Install Octoform<a class="headerlink" href="#install-octoform" title="Permanent link">&para;</a></h3>
+<p>Pin the documented package, choose how to invoke it, and verify the executable.</p>
+<p><a href="installation/">Prepare the CLI</a></p>
+</div>
+<div class="octoform-card octoform-step">
+<p><span class="octoform-step-number">02 · Identity</span></p>
+<h3 id="authenticate-safely">Authenticate safely<a class="headerlink" href="#authenticate-safely" title="Permanent link">&para;</a></h3>
+<p>Select a credential for interactive or automated use and expose it only to the
+current process.</p>
+<p><a href="authentication/">Choose authentication</a></p>
+</div>
+<div class="octoform-card octoform-step">
+<p><span class="octoform-step-number">03 · Intent</span></p>
+<h3 id="write-one-policy">Write one policy<a class="headerlink" href="#write-one-policy" title="Permanent link">&para;</a></h3>
+<p>Declare a single managed value and leave every omitted repository setting
+untouched.</p>
+<p><a href="first-policy/">Create the first policy</a></p>
+</div>
+<div class="octoform-card octoform-step">
+<p><span class="octoform-step-number">04 · Evidence</span></p>
+<h3 id="produce-a-plan">Produce a plan<a class="headerlink" href="#produce-a-plan" title="Permanent link">&para;</a></h3>
+<p>Read GitHub state, narrow the repository selection, and interpret changes,
+warnings, and capability blocks.</p>
+<p><a href="first-plan/">Review the first plan</a></p>
+</div>
+<div class="octoform-card octoform-step">
+<p><span class="octoform-step-number">05 · Change</span></p>
+<h3 id="apply-and-verify">Apply and verify<a class="headerlink" href="#apply-and-verify" title="Permanent link">&para;</a></h3>
+<p>Approve the exact plan, confirm the result, and plan again to prove the desired
+state is converged.</p>
+<p><a href="safe-apply/">Apply deliberately</a></p>
+</div>
+<div class="octoform-card">
+<h3 id="understand-the-model">Understand the model<a class="headerlink" href="#understand-the-model" title="Permanent link">&para;</a></h3>
+<p>Learn why omitted values are unmanaged, how precedence is resolved, and why an
+uncertain operation is blocked instead of guessed.</p>
+<p><a href="../concepts/">Read core concepts</a></p>
+</div>
+</div>
 <h2 id="what-you-need">What you need<a class="headerlink" href="#what-you-need" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Requirement</th>
 <th>Minimum</th>
-<th>Why it is needed</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Node.js</td>
 <td><code>20</code></td>
-<td>Octoform is an ESM command-line package</td>
+<td>Run the ESM command-line package</td>
 </tr>
 <tr>
-<td>GitHub identity</td>
+<td>GitHub owner</td>
 <td>Personal account or organization</td>
-<td>Becomes the policy <code>owner</code></td>
+<td>Identify the repository owner to inspect</td>
 </tr>
 <tr>
-<td>GitHub token</td>
-<td>Repository read access</td>
-<td>Discovers repositories and observed settings</td>
+<td>GitHub credential</td>
+<td>Read access to the selected repositories</td>
+<td>Obtain observed state and capability evidence</td>
 </tr>
 <tr>
-<td>Local file</td>
-<td><code>octoform.yml</code></td>
-<td>Declares only the state you intend to manage</td>
+<td>Local YAML file</td>
+<td>One explicit policy</td>
+<td>Declare only the state Octoform may manage</td>
 </tr>
 </tbody>
 </table>
-<p>Use a fine-grained personal access token for an interactive first run. For
-automation, prefer a short-lived GitHub App installation token with access
-limited to the repositories and permissions your policy requires.</p>
-<h2 id="install-the-exact-release">Install the exact release<a class="headerlink" href="#install-the-exact-release" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Run without a global installation</label><label for="__tabbed_1_2">Install globally</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">npx --yes @hector21/octoform@0.3.1 --help</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">npm install --global @hector21/octoform@0.3.1</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">octoform --help</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
-<p>Pinning the patch makes the command behavior match this documentation. Review
-the <a href="../releases/">release page</a> before upgrading.</p>
-<h2 id="provide-the-token">Provide the token<a class="headerlink" href="#provide-the-token" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">macOS and Linux</label><label for="__tabbed_2_2">PowerShell</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">GITHUB_TOKEN</span><span class="o">=</span><span class="s2">&quot;your-token&quot;</span>
-</span></code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">$env:GITHUB_TOKEN</span> <span class="p">=</span> <span class="s2">&quot;your-token&quot;</span>
-</span></code></pre></div>
-</div>
-</div>
-</div>
-<p>Octoform reads <code>GITHUB_TOKEN</code>, then <code>GH_TOKEN</code>. Do not place a token in
-<code>octoform.yml</code>, a committed workflow, an example, command history, or issue.</p>
-<h2 id="create-a-deliberately-small-policy">Create a deliberately small policy<a class="headerlink" href="#create-a-deliberately-small-policy" title="Permanent link">&para;</a></h2>
-<div class="highlight"><span class="filename">octoform.yml</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">your-account</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">defaults</span><span class="p">:</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">merge</span><span class="p">:</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">delete_branch_on_merge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span></code></pre></div>
-<p>Replace <code>your-account</code> with the login that owns the repositories. Octoform
-asks GitHub whether the login is a personal account or organization; the file
-does not declare that distinction.</p>
-<p>The policy manages one value. Every omitted setting remains unmanaged.</p>
-<h2 id="produce-the-first-plan">Produce the first plan<a class="headerlink" href="#produce-the-first-plan" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">octoform plan --config octoform.yml</span>
-</span></code></pre></div>
-<p>A successful plan exits <code>0</code> and ends by stating that nothing was changed. It
-may contain:</p>
+<p>Use a disposable or low-risk repository for the first apply. A representative
+repository is useful; a production-critical repository is not required to
+learn the workflow.</p>
+<h2 id="where-to-go-afterwards">Where to go afterwards<a class="headerlink" href="#where-to-go-afterwards" title="Permanent link">&para;</a></h2>
 <ul>
-<li>changes, showing observed and desired values;</li>
-<li>blocked changes, with the evidence Octoform could not obtain or use;</li>
-<li>warnings, where an available change has a known consequence;</li>
-<li>no changes, when the declared state already matches GitHub.</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Do not treat a blocked change as completed</p>
-<p>A block means Octoform cannot prove that operation safe or available for
-the owner, repository, visibility, and token involved. Adjust permissions
-or policy, then plan again.</p>
-</div>
-<h2 id="narrow-the-review">Narrow the review<a class="headerlink" href="#narrow-the-review" title="Permanent link">&para;</a></h2>
-<p>Use a repository selector when evaluating a new policy:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="go">octoform plan --config octoform.yml --repo sample-repository</span>
-</span></code></pre></div>
-<p>If you use repository types, you can instead select one type:</p>
-<div class="highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">octoform plan --config octoform.yml --type library</span>
-</span></code></pre></div>
-<h2 id="apply-only-after-review">Apply only after review<a class="headerlink" href="#apply-only-after-review" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="go">octoform apply --config octoform.yml --repo sample-repository</span>
-</span></code></pre></div>
-<p><code>apply</code> presents its plan and asks for confirmation. Answering anything other
-than <code>y</code> declines the operation and exits <code>1</code> without mutation. The <code>--yes</code>
-option is intended for an already protected automation path, not a first run.</p>
-<h2 id="verify-and-recover">Verify and recover<a class="headerlink" href="#verify-and-recover" title="Permanent link">&para;</a></h2>
-<p>Run the same plan again. An idempotent result reports no remaining changes.
-If an operation failed, Octoform reports the affected change and GitHub error;
-successful independent operations are not rolled back. Correct the cause and
-plan again before retrying.</p>
-<p>Next:</p>
-<ul>
-<li>understand <a href="../concepts/">tri-state policy and precedence</a>;</li>
-<li>review the <a href="../configuration/">complete configuration reference</a>;</li>
-<li>learn the <a href="../guides/plan-and-apply/">plan and apply operating procedure</a>;</li>
-<li>choose a <a href="../examples/">validated example</a>.</li>
+<li>Use <a href="../examples/">validated examples</a> as starting points for broader
+  policies.</li>
+<li>Follow the full <a href="../guides/plan-and-apply/">plan and apply operating procedure</a>
+  before routine use.</li>
+<li>Move recurring checks into <a href="../automation/">CI/CD automation</a>.</li>
+<li>Consult the <a href="../configuration/">configuration reference</a> for exact
+  fields, precedence, and applicability.</li>
 </ul>
 
 
@@ -2993,46 +3134,6 @@ plan again before retrying.</p>
       </main>
       
         <footer class="md-footer">
-  
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Home
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="../concepts/" class="md-footer__link md-footer__link--next" aria-label="Next: Core concepts">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Core concepts
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
-    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -3084,7 +3185,7 @@ plan again before retrying.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.annotate", "content.code.copy", "content.tabs.link", "navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
