@@ -82,6 +82,33 @@ try {
     if (!activeLinks) throw new Error(`${path} has no visible active reference entry`);
   }
 
+  const architecturePages = [
+    '/architecture/requirements/actors-and-use-cases/',
+    '/architecture/requirements/system-context/',
+    '/architecture/software/container-view/',
+    '/architecture/software/runtime-components/',
+    '/architecture/software/domain-model/',
+    '/architecture/behavior/configuration-loading/',
+    '/architecture/behavior/policy-resolution/',
+    '/architecture/behavior/repository-selection/',
+    '/architecture/behavior/plan-and-apply/',
+    '/architecture/behavior/state-models/',
+    '/architecture/trust/trust-and-data-flow/',
+    '/architecture/delivery/automation-patterns/',
+    '/architecture/delivery/release-pipelines/',
+  ];
+  for (const path of architecturePages) {
+    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+    const section = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
+    if (section !== 'Architecture') throw new Error(`${path} is not represented inside Architecture navigation`);
+    if (!(await page.locator('.octoform-diagram img').count())) {
+      throw new Error(`${path} does not expose its architecture diagram`);
+    }
+    if (!(await page.locator('a[href*="/assets/diagrams/sources/"]').count())) {
+      throw new Error(`${path} does not link to reviewed PlantUML source`);
+    }
+  }
+
   await context.close();
 } finally {
   await browser.close();

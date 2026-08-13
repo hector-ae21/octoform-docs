@@ -5,7 +5,7 @@ description: Run read-only Octoform audits and carefully protected apply operati
 
 # CI/CD automation
 
-The [automation architecture view](../architecture/index.md#automation-patterns)
+The [automation architecture view](../architecture/delivery/automation-patterns.md)
 shows how pull-request planning, scheduled observation, and protected apply
 must use different trust boundaries.
 

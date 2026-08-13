@@ -28,6 +28,11 @@ const paths = [
   '/examples/shared-presets/',
   '/security/',
   '/architecture/',
+  '/architecture/requirements/actors-and-use-cases/',
+  '/architecture/software/domain-model/',
+  '/architecture/behavior/configuration-loading/',
+  '/architecture/behavior/state-models/',
+  '/architecture/trust/trust-and-data-flow/',
   '/reference/github-api-surface/',
   '/troubleshooting/',
 ];

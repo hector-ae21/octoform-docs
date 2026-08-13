@@ -140,7 +140,25 @@ nav:
       - Audited evidence:
           - 0.3.1 behavior baseline: reference/v0.3.1-baseline.md
           - GitHub API surface: reference/github-api-surface.md
-  - Architecture: architecture/index.md
+  - Architecture:
+      - Architecture overview: architecture/index.md
+      - Requirements:
+          - Actors and use cases: architecture/requirements/actors-and-use-cases.md
+          - System context: architecture/requirements/system-context.md
+      - Software structure:
+          - Container view: architecture/software/container-view.md
+          - Runtime components: architecture/software/runtime-components.md
+          - Domain model: architecture/software/domain-model.md
+      - Behavior:
+          - Configuration loading: architecture/behavior/configuration-loading.md
+          - Policy resolution: architecture/behavior/policy-resolution.md
+          - Repository selection: architecture/behavior/repository-selection.md
+          - Plan and apply: architecture/behavior/plan-and-apply.md
+          - State models: architecture/behavior/state-models.md
+      - Trust and delivery:
+          - Trust and data flow: architecture/trust/trust-and-data-flow.md
+          - Automation patterns: architecture/delivery/automation-patterns.md
+          - Release pipelines: architecture/delivery/release-pipelines.md
   - Security: security/index.md
   - Releases:
       - Release overview: releases/index.md

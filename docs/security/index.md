@@ -5,7 +5,7 @@ description: Token lifecycle, permission boundaries, planning guarantees, redact
 
 # Security and trust
 
-Start with the [trust and data-flow diagram](../architecture/index.md#trust-and-data-flow)
+Start with the [trust and data-flow diagram](../architecture/trust/trust-and-data-flow.md)
 for the credential, process, network, GitHub, and logging boundaries described
 throughout this guide.
 
