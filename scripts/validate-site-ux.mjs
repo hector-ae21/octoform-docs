@@ -99,8 +99,50 @@ try {
       );
     }
   }
+  await page.goto(`${origin}/getting-started/first-policy/`, { waitUntil: 'networkidle' });
+  const sidebarAlignment = await page.evaluate(() => {
+    const visibleLink = (label) => [...document.querySelectorAll(
+      '.md-sidebar--primary a.md-nav__link',
+    )].find((link) => (
+      link.textContent.trim() === label && link.getClientRects().length > 0
+    ));
+    const section = visibleLink('Get started');
+    const child = visibleLink('Install Octoform');
+    if (!section || !child) return undefined;
+    return {
+      childLeft: child.getBoundingClientRect().left,
+      sectionLeft: section.getBoundingClientRect().left,
+    };
+  });
+  if (!sidebarAlignment || sidebarAlignment.sectionLeft > sidebarAlignment.childLeft + 1) {
+    throw new Error(`Primary sidebar hierarchy is reversed: ${JSON.stringify(sidebarAlignment)}`);
+  }
   if (await page.locator('.md-footer__inner').count()) {
     throw new Error('Previous and next page navigation must not be rendered');
+  }
+
+  await page.goto(`${origin}/reference/`, { waitUntil: 'networkidle' });
+  const tableGeometry = await page.evaluate(() => {
+    const heading = document.querySelector('#programmatic-api');
+    const tableWrapper = heading
+      ? [...document.querySelectorAll('.md-typeset__table')]
+        .find((wrapper) => heading.compareDocumentPosition(wrapper) & Node.DOCUMENT_POSITION_FOLLOWING)
+      : undefined;
+    const table = tableWrapper?.querySelector('table');
+    const article = document.querySelector('.md-content__inner');
+    if (!tableWrapper || !table || !article) return undefined;
+    return {
+      articleWidth: article.getBoundingClientRect().width,
+      tableWidth: table.getBoundingClientRect().width,
+      wrapperWidth: tableWrapper.getBoundingClientRect().width,
+    };
+  });
+  if (
+    !tableGeometry
+    || Math.abs(tableGeometry.wrapperWidth - tableGeometry.tableWidth) > 2
+    || tableGeometry.tableWidth >= tableGeometry.articleWidth - 20
+  ) {
+    throw new Error(`Desktop table does not fit its content: ${JSON.stringify(tableGeometry)}`);
   }
 
   const navigationMetrics = new Map();
@@ -163,16 +205,31 @@ try {
   const exampleGeometry = await page.evaluate(() => {
     const code = document.querySelector('.octoform-example .highlight');
     const download = document.querySelector('.octoform-example-download');
-    if (!code || !download) return undefined;
+    const filename = code?.querySelector(':scope > .filename');
+    const codeSurface = code?.querySelector(':scope > pre');
+    if (!code || !download || !filename || !codeSurface) return undefined;
     const codeRect = code.getBoundingClientRect();
+    const filenameRect = filename.getBoundingClientRect();
+    const surfaceRect = codeSurface.getBoundingClientRect();
     const downloadRect = download.getBoundingClientRect();
     return {
       downloadBelowCode: downloadRect.top >= codeRect.bottom,
-      codeShadow: getComputedStyle(code).boxShadow,
+      filenameAboveCode: filenameRect.bottom <= surfaceRect.top,
+      filenameBackground: getComputedStyle(filename).backgroundColor,
+      surfaceShadow: getComputedStyle(codeSurface).boxShadow,
+      wrapperShadow: getComputedStyle(code).boxShadow,
     };
   });
-  if (!exampleGeometry?.downloadBelowCode || exampleGeometry.codeShadow === 'none') {
-    throw new Error('Code example and download action do not use the expected elevated layout');
+  if (
+    !exampleGeometry?.downloadBelowCode
+    || !exampleGeometry.filenameAboveCode
+    || exampleGeometry.filenameBackground !== 'rgba(0, 0, 0, 0)'
+    || exampleGeometry.surfaceShadow === 'none'
+    || exampleGeometry.wrapperShadow !== 'none'
+  ) {
+    throw new Error(
+      `Code filename and source do not use distinct surfaces: ${JSON.stringify(exampleGeometry)}`,
+    );
   }
   const [download] = await Promise.all([page.waitForEvent('download'), downloadLink.click()]);
   if (download.suggestedFilename() !== 'octoform.yml') {
