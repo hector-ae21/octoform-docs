@@ -1,15 +1,15 @@
 ---
 title: Releases
 description: Choose the correct Octoform documentation, understand compatibility, and trace immutable releases.
-docs_line: "0.3"
+application_line: "0.3"
 application_version: "0.3.1"
 ---
 
 # Releases
 
-This release line documents `@hector21/octoform@0.3.1`. Application and
-documentation releases are immutable and traceable, but their patch numbers
-advance independently.
+This site documents `@hector21/octoform@0.3.1`. The version selector names the
+product being documented. Separate immutable tags and GitHub Releases identify
+each approved editorial publication of these pages.
 
 <div class="octoform-grid" markdown>
 
@@ -17,8 +17,8 @@ advance independently.
 
 ## Match a version
 
-Understand application versions, documentation patches, aliases, immutable
-URLs, and the version selector.
+Understand product versions, publication revisions, aliases, stable URLs, and
+the version selector.
 
 [Read versioning and URLs](versioning.md)
 
@@ -50,9 +50,9 @@ deployment produced from the default branch.
 
 ## Current compatibility
 
-| Documentation line | Application | Runtime | Status |
+| Documentation | Application | Runtime | Status |
 | --- | --- | --- | --- |
-| [`0.3.x`](versioning.md) | [`0.3.1`](https://github.com/hector-ae21/octoform/releases/tag/v0.3.1) | Node.js 20 or newer | Current documented release line |
+| [`0.3.1`](versioning.md) | [`0.3.1`](https://github.com/hector-ae21/octoform/releases/tag/v0.3.1) | Node.js 20 or newer | Current documented product version |
 
 Use the version selector when operating another release line. Commands,
 configuration, permissions, capability behavior, and limitations should always
@@ -60,8 +60,8 @@ come from documentation matched to the installed application.
 
 ## Release records
 
-- [Documentation releases](https://github.com/hector-ae21/octoform-docs/releases)
-  record each published documentation patch.
+- [Documentation publications](https://github.com/hector-ae21/octoform-docs/releases)
+  record each approved source revision and the Octoform version it documents.
 - [Application changelog](https://github.com/hector-ae21/octoform/blob/v0.x/CHANGELOG.md)
   records Octoform behavior changes and upgrade notes.
 - [npm package versions](https://www.npmjs.com/package/@hector21/octoform?activeTab=versions)

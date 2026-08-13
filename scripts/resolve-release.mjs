@@ -20,11 +20,11 @@ const commitTags = tagReferences
 const release = resolveDocumentationRelease({ applicationVersion, allTags, commitTags });
 const output = {
   application_version: release.applicationVersion,
-  docs_version: release.docsVersion,
-  docs_tag: release.docsTag,
-  docs_line: release.docsLine,
+  application_line: release.applicationLine,
+  publication_version: release.publicationVersion,
+  publication_tag: release.publicationTag,
   reused: String(release.reused),
-  promote_aliases: String(release.promoteAliases),
+  publish_product_version: String(release.publishProductVersion),
 };
 
 if (process.env.GITHUB_OUTPUT) {

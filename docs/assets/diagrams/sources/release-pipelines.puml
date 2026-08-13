@@ -24,18 +24,19 @@ AppCI -> Releases : create verified-tag release
 Maintainer -> DocsRepo : merge reviewed documentation to default v0.x
 DocsRepo -> DocsCI : trigger verification and publication
 DocsCI -> DocsCI : lint, build, examples, UML, links, privacy, WCAG
-DocsCI -> DocsCI : resolve docs patch and validate release line
-DocsCI -> DocsRepo : create annotated docs vX.Y.Z tag
-DocsCI -> DocsRepo : mike deploy immutable patch\nand line/latest/stable aliases
+DocsCI -> DocsCI : read exact Octoform package version
+DocsCI -> DocsCI : resolve independent editorial patch
+DocsCI -> DocsRepo : create annotated publication vX.Y.Z tag
+DocsCI -> DocsRepo : mike deploy exact product version\nand line/latest/stable aliases
 DocsCI -> Pages : deploy verified gh-pages artifact
 Pages --> DocsCI : deployment URL
-DocsCI -> Pages : verify version and aliases over HTTPS
-DocsCI -> DocsRepo : create GitHub Release
-DocsCI --> Maintainer : versioned public documentation
+DocsCI -> Pages : verify product version and aliases over HTTPS
+DocsCI -> DocsRepo : create publication GitHub Release
+DocsCI --> Maintainer : corrected product documentation
 
 note over NPM, Pages
   Application publishing follows the version-branch merge automatically.
-  Every default-branch revision becomes one immutable documentation patch.
-  Documentation and application share MAJOR.MINOR; patch differs.
+  Every default-branch revision receives one immutable publication tag.
+  Mike displays the exact documented application version, not that tag.
 end note
 @enduml

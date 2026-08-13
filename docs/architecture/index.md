@@ -44,7 +44,7 @@ code to an external diagram service.
 | --- | --- |
 | [Trust and data flow](trust/trust-and-data-flow.md) | Identify credential, configuration, network, GitHub, and logging boundaries. |
 | [Automation patterns](delivery/automation-patterns.md) | Separate pull-request planning, scheduled auditing, and protected apply. |
-| [Release pipelines](delivery/release-pipelines.md) | Relate application releases, documentation patches, immutable tags, and deployment. |
+| [Release pipelines](delivery/release-pipelines.md) | Relate application releases, editorial publication tags, product versions, and deployment. |
 
 ## Cross-cutting safety properties
 
