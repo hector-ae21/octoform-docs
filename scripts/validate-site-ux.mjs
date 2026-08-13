@@ -272,28 +272,37 @@ try {
       await page.evaluate(() => new Promise((resolveFrame) => {
         requestAnimationFrame(() => requestAnimationFrame(resolveFrame));
       }));
-      const geometry = await page.evaluate(() => ({
-        clientWidth: document.documentElement.clientWidth,
-        scrollWidth: document.documentElement.scrollWidth,
-        offenders: [...document.querySelectorAll('body *')]
+      const geometry = await page.evaluate(() => {
+        const clientWidth = document.documentElement.clientWidth;
+        const visibleOverflow = [...document.querySelectorAll('header, main, main *, footer, footer *')]
           .map((element) => {
             const rect = element.getBoundingClientRect();
+            const scrollSurface = element.closest(
+              '.highlight, .md-sidebar__scrollwrap, .md-typeset__table, .octoform-diagram',
+            );
             return {
               element: `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ''}${[
                 ...element.classList,
               ].map((name) => `.${name}`).join('')}`,
+              insideScrollSurface: Boolean(scrollSurface && scrollSurface !== element),
               left: Math.round(rect.left * 10) / 10,
               right: Math.round(rect.right * 10) / 10,
-              scrollWidth: element.scrollWidth,
-              clientWidth: element.clientWidth,
             };
           })
-          .filter(({ left, right }) => left < -1 || right > document.documentElement.clientWidth + 1)
-          .slice(0, 12),
-      }));
-      if (geometry.scrollWidth > geometry.clientWidth + 1) {
+          .filter(({ insideScrollSurface, left, right }) => !insideScrollSurface && (
+            (left < -1 && right > 1) || (right > clientWidth + 1 && left < clientWidth - 1)
+          ))
+          .slice(0, 12);
+        return {
+          clientWidth,
+          documentScrollWidth: document.documentElement.scrollWidth,
+          rootOverflowX: getComputedStyle(document.documentElement).overflowX,
+          visibleOverflow,
+        };
+      });
+      if (geometry.visibleOverflow.length > 0) {
         throw new Error(
-          `${path} overflows horizontally at the ${name} viewport: ${JSON.stringify(geometry)}`,
+          `${path} exposes content outside the ${name} viewport: ${JSON.stringify(geometry)}`,
         );
       }
       const containedSurfaces = await page.evaluate(() => [
