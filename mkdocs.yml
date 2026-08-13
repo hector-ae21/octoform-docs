@@ -119,10 +119,27 @@ nav:
       - Troubleshooting: troubleshooting/index.md
   - Reference:
       - Reference overview: reference/index.md
-      - Configuration: configuration/index.md
-      - Commands: commands/index.md
-      - 0.3.1 behavior baseline: reference/v0.3.1-baseline.md
-      - GitHub API surface: reference/github-api-surface.md
+      - Configuration:
+          - Configuration overview: configuration/index.md
+          - Document composition: configuration/document-composition.md
+          - Selection and precedence: configuration/selection-and-precedence.md
+          - Classification and audit: configuration/classification-and-audit.md
+          - Repository settings: configuration/repository-settings.md
+          - Security settings: configuration/security-settings.md
+          - Branches and rulesets: configuration/branches-and-rulesets.md
+          - Environments: configuration/environments.md
+          - Files: configuration/files.md
+      - Command line:
+          - Command overview: commands/index.md
+          - Audit: commands/audit.md
+          - Plan: commands/plan.md
+          - Apply: commands/apply.md
+          - Classify: commands/classify.md
+          - Properties sync: commands/properties-sync.md
+          - Authentication and exit codes: commands/execution-contract.md
+      - Audited evidence:
+          - 0.3.1 behavior baseline: reference/v0.3.1-baseline.md
+          - GitHub API surface: reference/github-api-surface.md
   - Architecture: architecture/index.md
   - Security: security/index.md
   - Releases:

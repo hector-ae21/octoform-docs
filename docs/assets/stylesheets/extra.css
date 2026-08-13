@@ -111,8 +111,10 @@
 }
 
 .md-sidebar .md-nav__link {
+  align-items: center;
   border-radius: 0.38rem;
   margin-top: 0.18rem;
+  min-height: 1.6rem;
   padding: 0.38rem 0.48rem;
   text-decoration: none;
   transition: background-color 120ms ease, color 120ms ease;

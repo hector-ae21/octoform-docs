@@ -70,6 +70,18 @@ try {
     }
   }
 
+  const referencePages = [
+    '/configuration/branches-and-rulesets/',
+    '/commands/apply/',
+  ];
+  for (const path of referencePages) {
+    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+    const section = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
+    if (section !== 'Reference') throw new Error(`${path} is not represented inside Reference navigation`);
+    const activeLinks = await page.locator('.md-sidebar--primary .md-nav__link--active:visible').count();
+    if (!activeLinks) throw new Error(`${path} has no visible active reference entry`);
+  }
+
   await context.close();
 } finally {
   await browser.close();

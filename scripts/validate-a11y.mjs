@@ -16,7 +16,11 @@ const paths = [
   '/',
   '/getting-started/',
   '/configuration/',
+  '/configuration/branches-and-rulesets/',
+  '/configuration/security-settings/',
   '/commands/',
+  '/commands/apply/',
+  '/commands/execution-contract/',
   '/guides/plan-and-apply/',
   '/automation/',
   '/examples/',
@@ -31,7 +35,7 @@ const browser = await chromium.launch({ headless: true });
 const violations = [];
 
 try {
-  const context = await browser.newContext();
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1200 } });
   const page = await context.newPage();
   for (const path of paths) {
     await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });

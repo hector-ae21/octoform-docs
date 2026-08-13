@@ -10,16 +10,46 @@ explain how to operate it; this section records the contract and its evidence.
 
 ## Product contract
 
-- [Configuration reference](../configuration/index.md) — every accepted field,
-  precedence rule, endpoint mapping, and unsupported boundary.
-- [Command reference](../commands/index.md) — commands, options, prompts, output, token
-  behavior, and exit codes.
-- [Behavior baseline](v0.3.1-baseline.md) — audited package contents, API use,
-  permissions, and confirmed limitations.
-- [GitHub API surface register](github-api-surface.md) — reviewed disposition
-  of relevant REST operations and GraphQL mutations.
-- [Machine-readable API register](github-api-surface.json) — complete generated
-  operation data.
+<div class="octoform-grid" markdown>
+
+<div class="octoform-card" markdown>
+
+### Configuration
+
+Every accepted field, precedence rule, observation boundary, plan result,
+endpoint mapping, recovery path, and unsupported case.
+
+[Browse configuration](../configuration/index.md)
+
+</div>
+
+<div class="octoform-card" markdown>
+
+### Command line
+
+Read/write boundaries, options, selection, confirmation, output, partial
+failure, authentication, and exit codes.
+
+[Browse CLI commands](../commands/index.md)
+
+</div>
+
+<div class="octoform-card" markdown>
+
+### Audited evidence
+
+Published package contents, confirmed implementation behavior, permissions,
+limitations, and the reviewed GitHub API disposition register.
+
+[Open the 0.3.1 baseline](v0.3.1-baseline.md)
+
+</div>
+
+</div>
+
+The [GitHub API surface register](github-api-surface.md) records relevant REST
+and GraphQL operations. Its [machine-readable source](github-api-surface.json)
+contains the complete generated operation data.
 
 ## Programmatic API
 
