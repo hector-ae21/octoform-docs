@@ -39,6 +39,17 @@ try {
   if (homeTabStyle.background === 'rgba(0, 0, 0, 0)' || homeTabStyle.decoration !== 'none') {
     throw new Error('The active primary tab must use a filled selected state without an underline');
   }
+  const tabGeometry = await page.evaluate(() => {
+    const links = [...document.querySelectorAll('.md-tabs__link')];
+    return links.slice(0, -1).map((link, index) => {
+      const current = link.getBoundingClientRect();
+      const next = links[index + 1].getBoundingClientRect();
+      return next.left - current.right;
+    });
+  });
+  if (tabGeometry.some((gap) => Math.abs(gap) > 1)) {
+    throw new Error(`Primary tabs are not contiguous: ${tabGeometry.join(', ')}`);
+  }
   const homeSpacing = await page.evaluate(() => {
     const tabs = document.querySelector('.md-tabs');
     const hero = document.querySelector('.octoform-hero');
@@ -71,6 +82,21 @@ try {
     .evaluate((element) => getComputedStyle(element).boxShadow);
   if (!activeSidebarShadow.includes('inset')) {
     throw new Error(`Primary sidebar active state retains an elevated title shadow: ${activeSidebarShadow}`);
+  }
+  const liftedSection = page.locator(
+    '.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > ' +
+      '.md-nav__link.md-nav__container',
+  );
+  if (await liftedSection.count()) {
+    const liftedStyle = await liftedSection.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { background: style.backgroundColor, shadow: style.boxShadow };
+    });
+    if (liftedStyle.shadow !== 'none' || liftedStyle.background !== 'rgba(0, 0, 0, 0)') {
+      throw new Error(
+        `Lifted primary section retains Material elevation: ${JSON.stringify(liftedStyle)}`,
+      );
+    }
   }
   if (await page.locator('.md-footer__inner').count()) {
     throw new Error('Previous and next page navigation must not be rendered');
