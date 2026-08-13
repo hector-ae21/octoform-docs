@@ -51,12 +51,31 @@
   border-bottom: 0.05rem solid rgb(125 211 252 / 18%);
 }
 
+.md-tabs__list {
+  align-items: center;
+  gap: 0;
+}
+
+.md-tabs__item {
+  height: auto;
+  padding-inline: 0;
+}
+
 .md-tabs__link {
   border: 0.05rem solid transparent;
-  border-radius: 0.45rem;
+  border-radius: 0;
+  margin-top: 0;
   opacity: 1;
-  padding: 0.38rem 0.68rem;
+  padding: 0.42rem 0.78rem;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.md-tabs__item:first-child .md-tabs__link {
+  border-radius: 0.42rem 0 0 0.42rem;
+}
+
+.md-tabs__item:last-child .md-tabs__link {
+  border-radius: 0 0.42rem 0.42rem 0;
 }
 
 .md-tabs__item--active .md-tabs__link,
@@ -110,6 +129,12 @@
 .md-sidebar--primary .md-nav__title::before {
   box-shadow: none !important;
   display: none;
+}
+
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active >
+  .md-nav__link.md-nav__container {
+  background: transparent;
+  box-shadow: none !important;
 }
 
 .md-sidebar .md-nav__link {
