@@ -1,0 +1,47 @@
+@startuml trust-and-data-flow
+!include _theme.iuml
+left to right direction
+
+package "Operator-controlled boundary" {
+  file "Reviewed YAML policy" as Config
+  file "Reviewed seed files" as Seeds
+  rectangle "Environment secret\nGITHUB_TOKEN / GH_TOKEN" as Secret
+  component "Octoform process" as Process
+  rectangle "Console and CI log" as Output
+}
+
+cloud "Network trust boundary" as Network
+package "GitHub-controlled boundary" {
+  component "GitHub REST API" as API
+  database "Repository and\norganization state" as State
+}
+
+Config --> Process : desired values and local paths
+Seeds --> Process : content only when policy declares it
+Secret --> Process : read into process memory
+Process --> Network : authenticated HTTPS request
+Network --> API : bearer credential in transit
+API --> State : authorized read or mutation
+State --> API : current state
+API --> Network : response or error
+Network --> Process : observed values and capability evidence
+Process --> Output : findings, plan and outcomes
+
+note top of Secret
+  Use the minimum permissions needed.
+  Store CI credentials as protected secrets.
+  Rotate or revoke after suspected exposure.
+end note
+
+note bottom of Process
+  0.3 reads tokens from the environment.
+  It has no token field in configuration and
+  no machine-readable plan artifact to persist.
+end note
+
+note bottom of Output
+  Review logs before sharing them. GitHub errors
+  and repository names can still be sensitive even
+  when the credential itself is not printed.
+end note
+@enduml

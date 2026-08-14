@@ -1,0 +1,23 @@
+# A read-only configuration suitable for a scheduled compliance report.
+# It declares audit rules and nothing else: no defaults, no types, no repos.
+# That is the point — `audit` is the one command that cannot change anything,
+# and a configuration with no policies in it cannot become an `apply` that
+# does something nobody reviewed, however it is invoked.
+#
+# This is also the answer to "what does a read-only configuration look like",
+# which is worth having as an example in its own right: auditing a fleet you
+# are not ready to reconfigure yet is the sensible way to start.
+#
+# `sample-maintainer` is fictitious. Replace it with the personal account or
+# organization whose repositories the token is allowed to inspect.
+owner: sample-maintainer
+
+audit:
+  # No require_type: this account has no custom properties (they are an
+  # organisation feature) and does not classify its repositories, so asking
+  # for a type would report every single repository as a finding forever.
+  require_description:
+    visibility: public
+  require_topics:
+    visibility: public
+  max_topics: 8
