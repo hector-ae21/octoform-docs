@@ -108,7 +108,7 @@ nav:
       - Produce the first plan: getting-started/first-plan.md
       - Apply and verify: getting-started/safe-apply.md
       - Core concepts: concepts/index.md
-  - Guides:
+  - Guides & examples:
       - Guides overview: guides/index.md
       - Plan and apply: guides/plan-and-apply.md
       - CI/CD automation: automation/index.md
@@ -163,7 +163,12 @@ nav:
           - Trust and data flow: architecture/trust/trust-and-data-flow.md
           - Automation patterns: architecture/delivery/automation-patterns.md
           - Release pipelines: architecture/delivery/release-pipelines.md
-  - Security: security/index.md
+  - Security:
+      - Security overview: security/index.md
+      - Trust and data boundaries: security/trust-and-data.md
+      - Credentials and permissions: security/credentials-and-permissions.md
+      - Secure automation: security/secure-automation.md
+      - Incidents and recovery: security/incidents-and-recovery.md
   - Releases:
       - Release overview: releases/index.md
       - Versioning and URLs: releases/versioning.md

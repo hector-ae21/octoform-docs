@@ -20,7 +20,7 @@ stage mutates only the repository and setting you explicitly review.
 
 <div class="octoform-grid octoform-grid--journey" markdown>
 
-<div class="octoform-card octoform-step" markdown>
+<div class="octoform-card octoform-card--linked octoform-step" markdown>
 
 <span class="octoform-step-number">01 · Runtime</span>
 
@@ -32,7 +32,7 @@ Pin the documented package, choose how to invoke it, and verify the executable.
 
 </div>
 
-<div class="octoform-card octoform-step" markdown>
+<div class="octoform-card octoform-card--linked octoform-step" markdown>
 
 <span class="octoform-step-number">02 · Identity</span>
 
@@ -45,7 +45,7 @@ current process.
 
 </div>
 
-<div class="octoform-card octoform-step" markdown>
+<div class="octoform-card octoform-card--linked octoform-step" markdown>
 
 <span class="octoform-step-number">03 · Intent</span>
 
@@ -58,7 +58,7 @@ untouched.
 
 </div>
 
-<div class="octoform-card octoform-step" markdown>
+<div class="octoform-card octoform-card--linked octoform-step" markdown>
 
 <span class="octoform-step-number">04 · Evidence</span>
 
@@ -71,7 +71,7 @@ warnings, and capability blocks.
 
 </div>
 
-<div class="octoform-card octoform-step" markdown>
+<div class="octoform-card octoform-card--linked octoform-step" markdown>
 
 <span class="octoform-step-number">05 · Change</span>
 
@@ -84,7 +84,9 @@ state is converged.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked octoform-step" markdown>
+
+<span class="octoform-step-number">06 · Model</span>
 
 ### Understand the model
 

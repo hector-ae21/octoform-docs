@@ -12,7 +12,7 @@ explain how to operate it; this section records the contract and its evidence.
 
 <div class="octoform-grid" markdown>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ### Configuration
 
@@ -23,7 +23,7 @@ endpoint mapping, recovery path, and unsupported case.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ### Command line
 
@@ -34,7 +34,7 @@ failure, authentication, and exit codes.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ### Audited evidence
 

@@ -16,7 +16,7 @@ Owners and repositories are intentionally fictitious.
 
 <div class="octoform-grid" markdown>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Minimal policy
 
@@ -27,7 +27,7 @@ smallest configuration that produces a mutable plan.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Audit only
 
@@ -38,7 +38,7 @@ or making mutation possible.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Personal account
 
@@ -49,7 +49,7 @@ depending on organization custom properties.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Branch patterns
 
@@ -60,7 +60,7 @@ set of maintained branches.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Scheduled audit
 
@@ -71,7 +71,7 @@ the same file.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Shared presets
 
