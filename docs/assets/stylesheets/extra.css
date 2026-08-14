@@ -463,8 +463,31 @@
   padding: 1.45rem;
 }
 
+.octoform-card--linked {
+  display: flex;
+  flex-direction: column;
+}
+
+.octoform-card h2,
 .octoform-card h3 {
-  margin: 0 0 0.55rem;
+  border-top: 0;
+  margin: 0 0 0.85rem;
+  padding-top: 0;
+}
+
+.octoform-card h2::after,
+.octoform-card h3::after {
+  background: var(--octo-border);
+  content: "";
+  display: block;
+  height: 0.05rem;
+  margin-top: 0.72rem;
+  width: 100%;
+}
+
+.octoform-card--linked > p:last-child {
+  margin-top: auto;
+  padding-top: 0.85rem;
 }
 
 .octoform-card p:last-child {

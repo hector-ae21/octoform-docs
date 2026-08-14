@@ -11,7 +11,7 @@ for reaching it. For exact field shapes and command behavior, use the
 
 <div class="octoform-grid" markdown>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Review and apply policy
 
@@ -22,7 +22,7 @@ changes, and recover from partial failure.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Automate safely
 
@@ -33,7 +33,7 @@ with credentials appropriate to each boundary.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Start from a validated policy
 

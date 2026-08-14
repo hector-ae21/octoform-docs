@@ -25,7 +25,15 @@ try {
   await page.goto(`${origin}/`, { waitUntil: 'networkidle' });
   const tabs = await page.locator('.md-tabs__link').allTextContents();
   const normalizedTabs = tabs.map((tab) => tab.trim()).filter(Boolean);
-  const expectedTabs = ['Home', 'Get started', 'Guides', 'Reference', 'Architecture', 'Security', 'Releases'];
+  const expectedTabs = [
+    'Home',
+    'Get started',
+    'Guides & examples',
+    'Reference',
+    'Architecture',
+    'Security',
+    'Releases',
+  ];
   if (JSON.stringify(normalizedTabs) !== JSON.stringify(expectedTabs)) {
     throw new Error(`Unexpected primary navigation: ${normalizedTabs.join(', ')}`);
   }
@@ -181,16 +189,45 @@ try {
     }
   }
 
-  await page.goto(`${origin}/security/`, { waitUntil: 'networkidle' });
-  const securityTab = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
-  if (securityTab !== 'Security') throw new Error(`Expected Security to be active, received ${securityTab}`);
-  if (await page.locator('.md-sidebar--primary:visible').count()) {
-    throw new Error('A top-level leaf page must not retain a primary sidebar on desktop');
+  const securityPages = [
+    ['Security', '/security/'],
+    ['Trust and data boundaries', '/security/trust-and-data/'],
+    ['Credentials and permissions', '/security/credentials-and-permissions/'],
+    ['Secure automation', '/security/secure-automation/'],
+    ['Incidents and recovery', '/security/incidents-and-recovery/'],
+  ];
+  for (const [label, path] of securityPages) {
+    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+    const securityTab = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
+    if (securityTab !== 'Security') {
+      throw new Error(`${path} is not represented inside Security navigation`);
+    }
+    if (!(await page.locator('.md-sidebar--primary:visible').count())) {
+      throw new Error(`${path} does not expose the Security primary sidebar`);
+    }
+    const sidebarEntries = (await page
+      .locator('.md-sidebar--primary a.md-nav__link:visible')
+      .allTextContents())
+      .map((entry) => entry.trim());
+    for (const [expectedLabel] of securityPages) {
+      if (!sidebarEntries.includes(expectedLabel)) {
+        throw new Error(`${path} does not expose the ${expectedLabel} Security entry`);
+      }
+    }
+    const activeEntry = (await page
+      .locator('.md-sidebar--primary a.md-nav__link--active:visible')
+      .first()
+      .textContent())?.trim();
+    if (activeEntry !== label) {
+      throw new Error(`${path} selects ${activeEntry} instead of ${label}`);
+    }
   }
 
   await page.goto(`${origin}/examples/minimal/`, { waitUntil: 'networkidle' });
   const activeTab = (await page.locator('.md-tabs__item--active .md-tabs__link').textContent())?.trim();
-  if (activeTab !== 'Guides') throw new Error(`Expected Guides to be active, received ${activeTab}`);
+  if (activeTab !== 'Guides & examples') {
+    throw new Error(`Expected Guides & examples to be active, received ${activeTab}`);
+  }
   if (!(await page.locator('.md-sidebar--primary .md-nav__link--active:visible').count())) {
     throw new Error('Example page has no visible active entry in the primary sidebar');
   }
@@ -309,6 +346,99 @@ try {
     }
   }
 
+  const linkedCardPages = [
+    ['/getting-started/', 6],
+    ['/guides/', 3],
+    ['/examples/', 6],
+    ['/reference/', 3],
+    ['/security/', 4],
+    ['/releases/', 3],
+  ];
+  for (const [path, expectedCards] of linkedCardPages) {
+    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+    const cardGeometry = await page.evaluate(() => [...document.querySelectorAll(
+      '.octoform-card--linked',
+    )].map((card) => {
+      const heading = card.querySelector(':scope > h2, :scope > h3');
+      const body = heading
+        ? [...card.children].find((element) => (
+          element.tagName === 'P'
+          && (heading.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING)
+        ))
+        : undefined;
+      const action = card.querySelector(':scope > p:last-child > a');
+      const headingStyle = heading ? getComputedStyle(heading) : undefined;
+      const dividerStyle = heading ? getComputedStyle(heading, '::after') : undefined;
+      return {
+        actionBottom: action?.getBoundingClientRect().bottom,
+        cardTop: card.getBoundingClientRect().top,
+        dividerContent: dividerStyle?.content,
+        dividerDisplay: dividerStyle?.display,
+        headingBeforeBody: Boolean(
+          heading && body && (heading.compareDocumentPosition(body) & Node.DOCUMENT_POSITION_FOLLOWING),
+        ),
+        headingBorderTop: headingStyle?.borderTopWidth,
+      };
+    }));
+    if (cardGeometry.length !== expectedCards) {
+      throw new Error(`${path} exposes ${cardGeometry.length} linked cards; expected ${expectedCards}`);
+    }
+    if (cardGeometry.some((card) => (
+      !card.headingBeforeBody
+      || card.headingBorderTop !== '0px'
+      || card.dividerDisplay !== 'block'
+      || card.dividerContent === 'none'
+      || card.actionBottom === undefined
+    ))) {
+      throw new Error(
+        `${path} does not render title, divider, content, and action in order: ` +
+          JSON.stringify(cardGeometry),
+      );
+    }
+    const rows = Map.groupBy(cardGeometry, (card) => Math.round(card.cardTop ?? 0));
+    for (const row of rows.values()) {
+      const actionBottoms = row.map((card) => card.actionBottom);
+      if (Math.max(...actionBottoms) - Math.min(...actionBottoms) > 2) {
+        throw new Error(`${path} does not bottom-align actions within a card row`);
+      }
+    }
+  }
+
+  const cardGridPages = [
+    '/',
+    '/getting-started/',
+    '/guides/',
+    '/examples/',
+    '/reference/',
+    '/security/',
+    '/releases/',
+  ];
+  for (const path of cardGridPages) {
+    await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
+    const gridVariants = await page.evaluate(() => [...document.querySelectorAll(
+      '.octoform-grid',
+    )].map((grid) => {
+      const cards = [...grid.querySelectorAll(':scope > .octoform-card')];
+      return {
+        cards: cards.length,
+        linked: new Set(cards.map((card) => card.classList.contains('octoform-card--linked'))).size,
+        stepLabels: cards.filter((card) => card.querySelector(
+          ':scope > .octoform-step-number, :scope > p > .octoform-step-number',
+        )).length,
+        steps: new Set(cards.map((card) => card.classList.contains('octoform-step'))).size,
+        stepCards: cards.filter((card) => card.classList.contains('octoform-step')).length,
+      };
+    }));
+    if (gridVariants.some((grid) => (
+      grid.cards === 0
+      || grid.linked !== 1
+      || grid.steps !== 1
+      || (grid.stepCards > 0 && grid.stepLabels !== grid.cards)
+    ))) {
+      throw new Error(`${path} mixes incompatible card variants in one grid: ${JSON.stringify(gridVariants)}`);
+    }
+  }
+
   const referencePages = [
     '/configuration/branches-and-rulesets/',
     '/commands/apply/',
@@ -357,6 +487,7 @@ try {
   const responsivePages = [
     '/',
     '/security/',
+    '/security/credentials-and-permissions/',
     '/getting-started/authentication/',
     '/examples/shared-presets/',
     '/configuration/branches-and-rulesets/',
@@ -454,7 +585,7 @@ try {
 }
 
 console.log(
-  'Validated selected navigation, Get started, sidebar hierarchy, code actions, diagrams, and responsive layouts.',
+  'Validated selected navigation, uniform card grids, Security navigation, sidebar hierarchy, code actions, diagrams, and responsive layouts.',
 );
 
 function serveStaticFile(request, response) {

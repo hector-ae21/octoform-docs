@@ -13,7 +13,7 @@ each approved editorial publication of these pages.
 
 <div class="octoform-grid" markdown>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Match a version
 
@@ -24,7 +24,7 @@ the version selector.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Update safely
 
@@ -35,7 +35,7 @@ produce a narrow plan, and retain a recovery path.
 
 </div>
 
-<div class="octoform-card" markdown>
+<div class="octoform-card octoform-card--linked" markdown>
 
 ## Verify publication
 
