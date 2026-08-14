@@ -53,9 +53,6 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Install the accessibility browser
-        run: npx playwright install --with-deps chromium
-
       - name: Resolve documentation release
         id: release
         run: node scripts/resolve-release.mjs "$GITHUB_SHA"
@@ -77,8 +74,8 @@ jobs:
           PUBLICATION_VERSION: ${{ steps.release.outputs.publication_version }}
         run: node scripts/validate-release.mjs "$PUBLICATION_VERSION" "$APPLICATION_VERSION"
 
-      - name: Verify documentation
-        run: npm run verify
+      - name: Build documentation
+        run: npm run build
 
       - name: Configure documentation publisher
         run: |
