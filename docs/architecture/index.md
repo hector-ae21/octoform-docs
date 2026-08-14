@@ -1,11 +1,11 @@
 ---
 title: Architecture
-description: Navigate the requirements, software structure, behavior, state, trust, and delivery views of Octoform 0.3.1.
+description: Navigate the requirements, software structure, behavior, state, trust, and delivery views of Octoform 0.3.
 ---
 
 # Architecture
 
-These views explain how Octoform `0.3.1` turns reviewed YAML into observable,
+These views explain how Octoform `0.3` turns reviewed YAML into observable,
 planned, and explicitly confirmed GitHub operations. They describe the released
 system and exclude planned multi-owner or organization-management features.
 
@@ -44,7 +44,7 @@ code to an external diagram service.
 | --- | --- |
 | [Trust and data flow](trust/trust-and-data-flow.md) | Identify credential, configuration, network, GitHub, and logging boundaries. |
 | [Automation patterns](delivery/automation-patterns.md) | Separate pull-request planning, scheduled auditing, and protected apply. |
-| [Release pipelines](delivery/release-pipelines.md) | Relate application releases, editorial publication tags, product versions, and deployment. |
+| [Release pipelines](delivery/release-pipelines.md) | Relate application patches, documentation lines, editorial publication tags, and deployment. |
 
 ## Cross-cutting safety properties
 

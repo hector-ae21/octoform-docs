@@ -1,11 +1,11 @@
 import { setTimeout as delay } from 'node:timers/promises';
-import { parseCompleteVersion } from './release-version.mjs';
+import { parseReleaseLine } from './release-version.mjs';
 
 const [baseUrlInput, version, ...aliases] = process.argv.slice(2);
 if (!baseUrlInput || !version) {
   throw new Error('Usage: verify-pages BASE_URL VERSION [ALIAS...]');
 }
-parseCompleteVersion(version, 'Documentation version');
+parseReleaseLine(version, 'Documentation version');
 const baseUrl = new URL(baseUrlInput.endsWith('/') ? baseUrlInput : `${baseUrlInput}/`);
 await verifyText(new URL(`${version}/`, baseUrl), ['Octoform', new URL(`${version}/`, baseUrl).href]);
 await verifyText(new URL(`${version}/configuration/`, baseUrl), ['Octoform', 'Configuration']);

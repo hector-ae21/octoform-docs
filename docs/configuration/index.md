@@ -1,6 +1,6 @@
 ---
 title: Configuration reference
-description: Navigate every field and policy block accepted by Octoform 0.3.1.
+description: Navigate every field and policy block accepted by Octoform 0.3.
 ---
 
 # Configuration reference
@@ -63,7 +63,7 @@ the [plan command](../commands/plan.md) for interpreting the resulting diff.
 
 - Archived repositories are observed but receive no planned mutations.
 - An unreadable current value produces a blocked change, not an assumed value.
-- Octoform `0.3.1` never deletes undeclared rulesets, environments, branches,
+- Octoform `0.3` never deletes undeclared rulesets, environments, branches,
   or repository files.
 - `features.discussions` is accepted but blocked because the released REST
   integration cannot mutate it.

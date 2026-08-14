@@ -1,13 +1,13 @@
 ---
 title: Validated examples
-description: Choose and download a complete Octoform 0.3.1 configuration for a focused governance workflow.
+description: Choose and download a complete Octoform 0.3 configuration for a focused governance workflow.
 ---
 
 # Validated examples
 
-Every root configuration in this catalogue is loaded with the exact published
-`@hector21/octoform@0.3.1` package before the documentation can be released.
-Owners and repositories are intentionally fictitious.
+Every root configuration in this catalogue is loaded with the exact Octoform
+patch pinned by the documentation build before publication. Owners and
+repositories are intentionally fictitious.
 
 !!! tip "Start with a plan"
 

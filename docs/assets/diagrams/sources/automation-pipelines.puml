@@ -14,7 +14,7 @@ case (Scheduled observation)
   :Run octoform audit;
   :Publish findings to the run summary;
   note right
-    In 0.3.1, audit findings still exit 0.
+    In 0.3, audit findings still exit 0.
     Parse or review the report if drift must gate CI.
   end note
 case (Protected application)

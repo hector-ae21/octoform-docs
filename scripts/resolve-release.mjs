@@ -24,7 +24,7 @@ const output = {
   publication_version: release.publicationVersion,
   publication_tag: release.publicationTag,
   reused: String(release.reused),
-  publish_product_version: String(release.publishProductVersion),
+  publish_documentation_line: String(release.publishDocumentationLine),
 };
 
 if (process.env.GITHUB_OUTPUT) {

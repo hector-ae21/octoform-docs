@@ -1,12 +1,12 @@
 ---
 title: Repository files
-description: Seed missing repository files without overwriting existing content in Octoform 0.3.1.
+description: Seed missing repository files without overwriting existing content in Octoform 0.3.
 ---
 
 # Repository files
 
 File policy copies a reviewed local source only when the target path does not
-exist. Octoform `0.3.1` intentionally has no overwrite or deletion mode.
+exist. Octoform `0.3` intentionally has no overwrite or deletion mode.
 
 ## `files`
 

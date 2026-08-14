@@ -37,7 +37,7 @@ converted into a guessed current value.
 ## Consistency boundary
 
 The plan is a point-in-time comparison, not a stored artifact. Octoform
-`0.3.1` has no serializable plan format and cannot apply a plan produced by an
+`0.3` has no serializable plan format and cannot apply a plan produced by an
 earlier process. [`apply`](apply.md) invokes the same planning implementation,
 shows that invocation's changes, and retains them in memory for confirmation.
 

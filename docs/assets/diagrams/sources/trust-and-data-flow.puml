@@ -34,7 +34,7 @@ note top of Secret
 end note
 
 note bottom of Process
-  0.3.1 reads tokens from the environment.
+  0.3 reads tokens from the environment.
   It has no token field in configuration and
   no machine-readable plan artifact to persist.
 end note

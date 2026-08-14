@@ -4,6 +4,11 @@ import { fileURLToPath } from 'node:url';
 import { loadConfig } from '@hector21/octoform';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const packageData = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
+const applicationVersion = packageData.devDependencies?.['@hector21/octoform'];
+if (typeof applicationVersion !== 'string') {
+  throw new Error('package.json must pin @hector21/octoform exactly');
+}
 const examples = resolve(root, 'docs/examples/files');
 const roots = [
   'audit-only/octoform.yml',
@@ -24,4 +29,6 @@ for (const relative of roots) {
   loadConfig(path);
 }
 
-console.log(`Validated ${roots.length} example roots with @hector21/octoform@0.3.1.`);
+console.log(
+  `Validated ${roots.length} example roots with @hector21/octoform@${applicationVersion}.`,
+);

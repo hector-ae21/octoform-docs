@@ -49,12 +49,15 @@ test('rejects symbolic-link aliases', async (context) => {
   );
 });
 
-async function createFixture(context, { aliases = ['0.3', 'latest', 'stable'] } = {}) {
+async function createFixture(
+  context,
+  { aliases = ['0.3.0', '0.3.1', '0.3.2', 'latest', 'stable'] } = {},
+) {
   const root = await mkdtemp(resolve(tmpdir(), 'octoform-docs-release-'));
   context.after(() => rm(root, { recursive: true, force: true }));
   const builtDirectory = resolve(root, 'site');
   const publishedDirectory = resolve(root, 'published');
-  const version = '0.3.0';
+  const version = '0.3';
   await mkdir(resolve(builtDirectory, 'configuration'), { recursive: true });
   await writeFile(resolve(builtDirectory, 'index.html'), '<h1>Octoform</h1>');
   await writeFile(resolve(builtDirectory, 'configuration', 'index.html'), 'Configuration');

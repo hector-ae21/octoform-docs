@@ -21,7 +21,7 @@ meaning of success.
 | Pattern | Command | Credential | Mutation control |
 | --- | --- | --- | --- |
 | Pull-request validation | `plan` | Read-only for required repositories and settings | No apply step exists |
-| Scheduled observation | `audit` | Read-only inventory access | Findings are reported; `0.3.1` still exits `0` |
+| Scheduled observation | `audit` | Read-only inventory access | Findings are reported; `0.3` still exits `0` |
 | Protected application | `apply --yes` | Minimum write permissions loaded only after approval | Trusted ref, reviewed policy, protected environment, controlled logs |
 
 Because the released package has no immutable plan artifact, a separate plan

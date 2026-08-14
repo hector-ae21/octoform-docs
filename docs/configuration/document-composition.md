@@ -1,6 +1,6 @@
 ---
 title: Document composition
-description: Define the owner, compose reusable imports, and exclude repositories from Octoform 0.3.1.
+description: Define the owner, compose reusable imports, and exclude repositories from Octoform 0.3.
 ---
 
 # Document composition
