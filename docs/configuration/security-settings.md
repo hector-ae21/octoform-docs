@@ -1,6 +1,6 @@
 ---
 title: Security settings
-description: Configure repository security features while respecting GitHub capability evidence in Octoform 0.3.1.
+description: Configure repository security features while respecting GitHub capability evidence in Octoform 0.3.
 ---
 
 # Security settings

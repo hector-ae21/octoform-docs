@@ -1,6 +1,6 @@
 ---
 title: Branches and rulesets
-description: Rename default branches, ensure branches, and manage repository rulesets safely with Octoform 0.3.1.
+description: Rename default branches, ensure branches, and manage repository rulesets safely with Octoform 0.3.
 ---
 
 # Branches and rulesets
@@ -54,7 +54,7 @@ source default branch is unavailable, creation is blocked or fails without
 inventing a commit.
 
 Recovery is manual deletion in GitHub after checking open pull requests and
-downstream automation; Octoform `0.3.1` does not model branch deletion.
+downstream automation; Octoform `0.3` does not model branch deletion.
 
 ## `rulesets`
 
@@ -91,6 +91,12 @@ new one and leaves the old resource untouched.
 
 ### Private repository capability
 
+!!! info "Available since 0.3.1"
+
+    Per-repository capability probing for private repositories owned by
+    personal accounts applies to Octoform `0.3.1` and later patches in the
+    `0.3` line.
+
 GitHub enforces private-repository rulesets only when the owner context and
 credential expose the capability. Octoform probes the default branch's
 protection, which follows the same availability boundary:
@@ -108,4 +114,4 @@ encode plan names.
 
 Declare the previous modeled values to correct an existing named ruleset.
 Delete unwanted superseded rulesets directly in GitHub after review; deletion
-is outside the `0.3.1` contract.
+is outside the `0.3` contract.

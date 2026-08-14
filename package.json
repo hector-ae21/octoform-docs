@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
-    "@hector21/octoform": "0.3.1",
+    "@hector21/octoform": "0.3.2",
     "cspell": "10.0.1",
     "html-validate": "11.6.2",
     "http-server": "14.1.1",

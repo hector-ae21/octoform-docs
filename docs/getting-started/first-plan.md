@@ -19,7 +19,7 @@ If you use the pinned on-demand invocation instead, place the command after the
 package name:
 
 ```console
-npx --yes @hector21/octoform@0.3.1 plan --config octoform.yml --repo sample-repository
+npx --yes @hector21/octoform@0.3.2 plan --config octoform.yml --repo sample-repository
 ```
 
 ## Read the result

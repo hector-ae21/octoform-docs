@@ -24,8 +24,8 @@ export function validateReleaseIdentity({ publicationVersion, applicationVersion
   if (!releasePage.includes(`application_line: "${applicationLine}"`)) {
     throw new Error(`Release page does not declare Octoform release line ${applicationLine}`);
   }
-  if (!releasePage.includes(`application_version: "${applicationVersion}"`)) {
-    throw new Error(`Release page does not declare Octoform ${applicationVersion}`);
+  if (!releasePage.includes(`validated_application_version: "${applicationVersion}"`)) {
+    throw new Error(`Release page does not declare validated Octoform patch ${applicationVersion}`);
   }
 }
 

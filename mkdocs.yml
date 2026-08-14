@@ -171,6 +171,7 @@ nav:
       - Incidents and recovery: security/incidents-and-recovery.md
   - Releases:
       - Release overview: releases/index.md
+      - Changelog: releases/changelog.md
       - Versioning and URLs: releases/versioning.md
       - Update Octoform: releases/updating.md
       - Publication guarantees: releases/publication.md

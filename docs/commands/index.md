@@ -1,6 +1,6 @@
 ---
 title: Command-line reference
-description: Choose and operate every command exposed by Octoform 0.3.1.
+description: Choose and operate every command exposed by Octoform 0.3.
 ---
 
 # Command-line reference

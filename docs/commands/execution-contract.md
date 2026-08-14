@@ -1,6 +1,6 @@
 ---
 title: Authentication and exit codes
-description: Understand Octoform 0.3.1 credentials, failure categories, exit codes, and programmatic use.
+description: Understand Octoform 0.3 credentials, failure categories, exit codes, and programmatic use.
 ---
 
 # Authentication and exit codes

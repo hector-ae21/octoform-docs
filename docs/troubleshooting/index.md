@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-description: Diagnose configuration, authentication, capability, planning, and apply failures in Octoform 0.3.1.
+description: Diagnose configuration, authentication, capability, planning, and apply failures in Octoform 0.3.
 ---
 
 # Troubleshooting
@@ -17,7 +17,7 @@ affected change. Redact tokens and private repository names before sharing it.
 | Missing classic scope message | Classic PAT lacks `repo` or `admin:org` | Refresh only the named scope |
 | Blocked current value | GitHub did not expose enough state | Check feature availability and read permission |
 | Ruleset blocked on a private repository | Repository/token capability probe was inconclusive or forbidden | Confirm administration access and repository plan capability |
-| Environment reviewers blocked | Existing team reviewer cannot be represented by `0.3.1` | Preserve the remote setting or manage it outside this version |
+| Environment reviewers blocked | Existing team reviewer cannot be represented by `0.3` | Preserve the remote setting or manage it outside this version |
 | File creation fails | File appeared after planning or source path is wrong | Re-plan; verify `files[].from` relative to its declaring YAML |
 | Branch rename warning | Workflow names the old branch explicitly | Update the workflow trigger before applying rename |
 | Apply exits `1` after some successes | Independent endpoint group failed | Run a fresh plan and reconcile the remaining state |

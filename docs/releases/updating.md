@@ -12,7 +12,8 @@ before permitting mutation.
 ## Before updating
 
 1. Record the installed version with your package manager.
-2. Read the application changelog between the installed and target versions.
+2. Read the [documentation changelog](changelog.md) and application Release
+   notes between the installed and target patches.
 3. Open documentation whose `MAJOR.MINOR` matches the target package.
 4. Review configuration, CLI, permissions, limitations, and automation changes.
 5. Preserve the current lockfile and configuration revision as the recovery
@@ -23,8 +24,12 @@ before permitting mutation.
 Install an exact version in a reviewed branch or isolated workspace:
 
 ```console
-npm install --save-exact @hector21/octoform@0.3.1
+npm install --save-exact @hector21/octoform@0.3.2
 ```
+
+This command shows the latest patch verified by the current `0.3`
+documentation publication. Replace it only with another `0.3.x` patch after
+reviewing its changelog entry.
 
 Run project tests and load every root configuration used in production. If a
 shared preset serves several owners, validate every consuming root rather than

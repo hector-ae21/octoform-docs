@@ -1,6 +1,6 @@
 ---
 title: Environments
-description: Create GitHub environments and manage required user reviewers with Octoform 0.3.1.
+description: Create GitHub environments and manage required user reviewers with Octoform 0.3.
 ---
 
 # Environments
@@ -37,7 +37,7 @@ fails the complete environment change instead of applying fewer reviewers.
 
 ## Team-reviewer boundary
 
-Octoform `0.3.1` models declared reviewers as users only. If an existing
+Octoform `0.3` models declared reviewers as users only. If an existing
 required reviewer is a team, the current reviewer state is marked unreadable
 and the change is blocked. Treating a team as an empty user list could silently
 replace stronger protection, so Octoform refuses that interpretation.

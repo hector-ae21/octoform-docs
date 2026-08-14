@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npx --yes @hector21/octoform@0.3.1 audit --config octoform.yml
+      - run: npx --yes @hector21/octoform@0.3.2 audit --config octoform.yml
         env:
           GITHUB_TOKEN: ${{ secrets.OCTOFORM_AUDIT_TOKEN }}
 ```
@@ -56,7 +56,7 @@ repository names through a public workflow log.
 
 ## Protected apply
 
-Octoform `0.3.1` does not consume a separately signed immutable plan artifact.
+Octoform `0.3` does not consume a separately signed immutable plan artifact.
 Its apply command plans, displays, and then mutates in the same process. That
 means a protected job must approve the workflow revision and exact policy, not
 an earlier standalone plan file.
@@ -99,7 +99,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npx --yes @hector21/octoform@0.3.1 apply --yes --config octoform.yml --repo "$TARGET_REPOSITORY"
+      - run: npx --yes @hector21/octoform@0.3.2 apply --yes --config octoform.yml --repo "$TARGET_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.OCTOFORM_APPLY_TOKEN }}
           TARGET_REPOSITORY: ${{ inputs.repository }}
@@ -107,6 +107,12 @@ jobs:
 
 The example uses version tags for readability. A production supply-chain
 policy may additionally pin Actions to reviewed commit SHAs.
+
+!!! note "Patch shown in commands"
+
+    The documentation line is `0.3`. Executable examples pin `0.3.2`, the
+    latest patch verified by this publication. Review the
+    [changelog](../releases/changelog.md) before adopting a later patch.
 
 ## Failure and recovery
 

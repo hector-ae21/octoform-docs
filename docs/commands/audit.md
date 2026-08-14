@@ -1,6 +1,6 @@
 ---
 title: octoform audit
-description: Inventory repositories and report read-only compliance findings with Octoform 0.3.1.
+description: Inventory repositories and report read-only compliance findings with Octoform 0.3.
 ---
 
 # `octoform audit`
@@ -30,7 +30,7 @@ produce no findings.
 
 Findings are information, not command failure. `audit` exits `0` whether it
 finds zero or many findings. A pipeline that needs a compliance gate must
-interpret captured output itself; `0.3.1` has no machine-readable result mode.
+interpret captured output itself; `0.3` has no machine-readable result mode.
 
 ## Permissions and failure
 

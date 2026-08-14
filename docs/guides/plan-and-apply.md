@@ -1,6 +1,6 @@
 ---
 title: Operate plan and apply safely
-description: Review scope, blocked operations, confirmations, partial failure, and recovery for Octoform 0.3.1.
+description: Review scope, blocked operations, confirmations, partial failure, and recovery for Octoform 0.3.
 ---
 
 # Operate `plan` and `apply` safely
@@ -57,7 +57,7 @@ failure does not imply that every operation was rolled back.
 
 ## Recover from an unwanted value
 
-Octoform `0.3.1` has no generic rollback command. Declare the previous value
+Octoform `0.3` has no generic rollback command. Declare the previous value
 explicitly, plan it, and apply the compensating change. Removing a key only
 stops managing it; omission does not restore an earlier value.
 

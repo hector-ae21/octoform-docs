@@ -32,7 +32,7 @@ invoked through its CLI or imported as an ESM library.
 ## Deployment consequences
 
 There is no Octoform server, database, queue, or persisted plan service in
-`0.3.1`. Process exit loses the computed plan. A later invocation observes and
+`0.3`. Process exit loses the computed plan. A later invocation observes and
 plans again. Configuration history belongs in version control, while applied
 state and mutation audit evidence belong to GitHub.
 

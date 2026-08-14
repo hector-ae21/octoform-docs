@@ -1,12 +1,13 @@
 ---
 title: Reference
-description: Audited behavior, public programmatic exports, and GitHub API coverage for Octoform 0.3.1.
+description: Audited behavior, public programmatic exports, and GitHub API coverage for Octoform 0.3.
 ---
 
 # Reference
 
-Reference pages describe the exact `@hector21/octoform@0.3.1` package. Guides
-explain how to operate it; this section records the contract and its evidence.
+Reference pages describe the Octoform `0.3` contract. Guides explain how to
+operate it; this section records the contract, patch availability, and
+evidence.
 
 ## Product contract
 
@@ -66,15 +67,23 @@ The package root exports the same building blocks used by the CLI:
 | Types | Configuration, policy, repository state, change, resource, and owner-kind types |
 
 Prefer the CLI unless an integration already owns authentication, complete
-repository observation, output, and error handling. Generated TypeDoc coverage
-for these supported exports will be added alongside the application package's
-release artifacts.
+repository observation, output, and error handling. The latest verified `0.3`
+patch publishes the deterministic [TypeDoc JSON reference][typedoc] and
+checksummed configuration, CLI, capability, permission, and API manifests.
 
 ## Compatibility notes
 
 - Runtime: Node.js `20` or newer.
 - Package format: ESM.
-- Machine-readable CLI output: not available in `0.3.1`.
-- REST API version header: not explicitly set by `0.3.1`.
-- GraphQL transport: not used by `0.3.1`.
-- Documentation version: `0.3`; exact verified application patch: `0.3.1`.
+- Machine-readable CLI output: not available in `0.3`.
+- REST API version header: not explicitly set by `0.3`.
+- GraphQL transport: not used by `0.3`.
+- Documentation line: `0.3`; latest verified application patch: `0.3.2`.
+
+`0.3.2` is a maintenance-only patch and preserves the configuration, command,
+capability, permission, public-export, and plan/apply contracts audited for
+`0.3.1`. The [0.3.1 behavior baseline](v0.3.1-baseline.md) therefore remains
+the historical implementation evidence for this release line. Consult the
+[changelog](../releases/changelog.md) for patch-level availability.
+
+[typedoc]: https://github.com/hector-ae21/octoform/releases/download/v0.3.2/api.json

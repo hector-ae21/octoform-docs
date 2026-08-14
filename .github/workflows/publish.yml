@@ -27,7 +27,7 @@ jobs:
       application_line: ${{ steps.release.outputs.application_line }}
       publication_tag: ${{ steps.release.outputs.publication_tag }}
       publication_version: ${{ steps.release.outputs.publication_version }}
-      publish_product_version: ${{ steps.release.outputs.publish_product_version }}
+      publish_documentation_line: ${{ steps.release.outputs.publish_documentation_line }}
     steps:
       - name: Check out complete history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -94,68 +94,72 @@ jobs:
           git push origin "refs/tags/$PUBLICATION_TAG"
 
       - name: Fetch published documentation history
-        if: steps.release.outputs.publish_product_version == 'true'
+        if: steps.release.outputs.publish_documentation_line == 'true'
         run: git fetch origin gh-pages:gh-pages
 
-      - name: Migrate a legacy mutable release line
-        if: steps.release.outputs.publish_product_version == 'true'
-        env:
-          APPLICATION_LINE: ${{ steps.release.outputs.application_line }}
-        run: |
-          git show gh-pages:versions.json > "$RUNNER_TEMP/versions.json"
-          if node --input-type=module --eval '
-            import { readFileSync } from "node:fs";
-            const versions = JSON.parse(readFileSync(process.argv[1], "utf8"));
-            process.exit(versions.some(({ version }) => version === process.argv[2]) ? 0 : 1);
-          ' "$RUNNER_TEMP/versions.json" "$APPLICATION_LINE"; then
-            mike delete --branch gh-pages "$APPLICATION_LINE"
-          fi
-
-      - name: Remove the legacy editorial 0.3.0 product path
-        if: steps.release.outputs.publish_product_version == 'true'
-        run: |
-          git show gh-pages:versions.json > "$RUNNER_TEMP/versions.json"
-          if node --input-type=module --eval '
-            import { readFileSync } from "node:fs";
-            const versions = JSON.parse(readFileSync(process.argv[1], "utf8"));
-            process.exit(versions.some(({ version }) => version === "0.3.0") ? 0 : 1);
-          ' "$RUNNER_TEMP/versions.json"; then
-            mike delete --branch gh-pages "0.3.0"
-          fi
-
-      - name: Publish documented Octoform version and redirect aliases
-        if: steps.release.outputs.publish_product_version == 'true'
+      - name: Convert exact patch paths to release-line redirects
+        if: steps.release.outputs.publish_documentation_line == 'true'
         env:
           APPLICATION_LINE: ${{ steps.release.outputs.application_line }}
           APPLICATION_VERSION: ${{ steps.release.outputs.application_version }}
         run: |
+          git show gh-pages:versions.json > "$RUNNER_TEMP/versions.json"
+          node --input-type=module --eval '
+            import { readFileSync, writeFileSync } from "node:fs";
+            import { collectPatchDocumentationPaths } from "./scripts/release-version.mjs";
+            const versions = JSON.parse(readFileSync(process.argv[1], "utf8"));
+            const paths = collectPatchDocumentationPaths(versions, process.argv[2]);
+            const versionLines = paths.versions.join("\n");
+            writeFileSync(process.argv[3], versionLines.length === 0 ? "" : `${versionLines}\n`);
+            for (const redirect of paths.redirects) console.log(redirect);
+          ' "$RUNNER_TEMP/versions.json" "$APPLICATION_LINE" \
+            "$RUNNER_TEMP/legacy-patch-versions.txt" \
+            > "$RUNNER_TEMP/legacy-patch-paths.txt"
+          if ! grep --fixed-strings --line-regexp --quiet \
+            "$APPLICATION_VERSION" "$RUNNER_TEMP/legacy-patch-paths.txt"; then
+            echo "$APPLICATION_VERSION" >> "$RUNNER_TEMP/legacy-patch-paths.txt"
+          fi
+          sort --unique "$RUNNER_TEMP/legacy-patch-paths.txt" \
+            --output "$RUNNER_TEMP/legacy-patch-paths.txt"
+          while IFS= read -r version; do
+            if [ -n "$version" ]; then
+              mike delete --branch gh-pages "$version"
+            fi
+          done < "$RUNNER_TEMP/legacy-patch-versions.txt"
+
+      - name: Publish documented Octoform line and redirect aliases
+        if: steps.release.outputs.publish_documentation_line == 'true'
+        env:
+          APPLICATION_LINE: ${{ steps.release.outputs.application_line }}
+        run: |
+          mapfile -t PATCH_REDIRECTS < "$RUNNER_TEMP/legacy-patch-paths.txt"
           mike deploy --branch gh-pages --alias-type redirect --update-aliases \
-            "$APPLICATION_VERSION" "$APPLICATION_LINE" latest stable
+            "$APPLICATION_LINE" "${PATCH_REDIRECTS[@]}" latest stable
           mike set-default --branch gh-pages latest
           git push origin gh-pages:gh-pages
 
       - name: Export the pushed Pages tree
-        if: steps.release.outputs.publish_product_version == 'true'
+        if: steps.release.outputs.publish_documentation_line == 'true'
         run: |
           git fetch origin gh-pages
           mkdir --parents "$RUNNER_TEMP/octoform-pages"
           git archive origin/gh-pages | tar --extract --directory "$RUNNER_TEMP/octoform-pages"
 
       - name: Validate the pushed Pages tree
-        if: steps.release.outputs.publish_product_version == 'true'
+        if: steps.release.outputs.publish_documentation_line == 'true'
         env:
           APPLICATION_LINE: ${{ steps.release.outputs.application_line }}
-          APPLICATION_VERSION: ${{ steps.release.outputs.application_version }}
         run: |
+          mapfile -t PATCH_REDIRECTS < "$RUNNER_TEMP/legacy-patch-paths.txt"
           node scripts/validate-deployment.mjs site "$RUNNER_TEMP/octoform-pages" \
-            "$APPLICATION_VERSION" "$APPLICATION_LINE" latest stable
+            "$APPLICATION_LINE" "${PATCH_REDIRECTS[@]}" latest stable
 
       - name: Configure GitHub Pages
-        if: steps.release.outputs.publish_product_version == 'true'
+        if: steps.release.outputs.publish_documentation_line == 'true'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
 
       - name: Upload GitHub Pages artifact
-        if: steps.release.outputs.publish_product_version == 'true'
+        if: steps.release.outputs.publish_documentation_line == 'true'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
           path: ${{ runner.temp }}/octoform-pages
@@ -163,7 +167,7 @@ jobs:
   deploy:
     name: Deploy GitHub Pages
     needs: build
-    if: needs.build.outputs.publish_product_version == 'true'
+    if: needs.build.outputs.publish_documentation_line == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -204,31 +208,32 @@ jobs:
           node-version: "24"
 
       - name: Verify public version and aliases
-        if: needs.build.outputs.publish_product_version == 'true'
+        if: needs.build.outputs.publish_documentation_line == 'true'
         env:
           APPLICATION_LINE: ${{ needs.build.outputs.application_line }}
           APPLICATION_VERSION: ${{ needs.build.outputs.application_version }}
           PAGE_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
-          node scripts/verify-pages.mjs "$PAGE_URL" "$APPLICATION_VERSION" \
-            "$APPLICATION_LINE" latest stable
+          node scripts/verify-pages.mjs "$PAGE_URL" "$APPLICATION_LINE" \
+            "$APPLICATION_VERSION" latest stable
 
       - name: Create GitHub Release
         env:
           APPLICATION_VERSION: ${{ needs.build.outputs.application_version }}
+          APPLICATION_LINE: ${{ needs.build.outputs.application_line }}
           PUBLICATION_TAG: ${{ needs.build.outputs.publication_tag }}
           PUBLICATION_VERSION: ${{ needs.build.outputs.publication_version }}
-          PUBLISH_PRODUCT_VERSION: ${{ needs.build.outputs.publish_product_version }}
+          PUBLISH_DOCUMENTATION_LINE: ${{ needs.build.outputs.publish_documentation_line }}
           GH_TOKEN: ${{ github.token }}
         run: |
           if gh release view "$PUBLICATION_TAG" > /dev/null 2>&1; then
             echo "Release $PUBLICATION_TAG already exists."
           else
             LATEST_FLAG="--latest=false"
-            if [ "$PUBLISH_PRODUCT_VERSION" = "true" ]; then
+            if [ "$PUBLISH_DOCUMENTATION_LINE" = "true" ]; then
               LATEST_FLAG="--latest"
             fi
             gh release create "$PUBLICATION_TAG" --verify-tag --generate-notes \
               "$LATEST_FLAG" \
-              --title "Documentation publication $PUBLICATION_VERSION for Octoform $APPLICATION_VERSION"
+              --title "Documentation publication $PUBLICATION_VERSION for Octoform $APPLICATION_LINE (validated with $APPLICATION_VERSION)"
           fi

@@ -18,7 +18,7 @@ body:
     id: version
     attributes:
       label: Octoform version
-      placeholder: 0.3.1
+      placeholder: 0.3
     validations:
       required: true
   - type: textarea
@@ -34,4 +34,3 @@ body:
       label: What would help?
     validations:
       required: true
-

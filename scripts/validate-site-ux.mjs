@@ -352,7 +352,7 @@ try {
     ['/examples/', 6],
     ['/reference/', 3],
     ['/security/', 4],
-    ['/releases/', 3],
+    ['/releases/', 4],
   ];
   for (const [path, expectedCards] of linkedCardPages) {
     await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });

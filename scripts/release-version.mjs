@@ -1,4 +1,5 @@
 const COMPLETE_VERSION = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+const RELEASE_LINE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 
 /**
  * Parses a complete stable semantic version.
@@ -19,6 +20,51 @@ export function parseCompleteVersion(value, label = 'Version') {
     patch: Number(patch),
     version: `${major}.${minor}.${patch}`,
   };
+}
+
+/**
+ * Parses a stable semantic-version release line.
+ *
+ * @param {string} value Version line without a `v` prefix.
+ * @param {string} [label] Value name used in validation errors.
+ * @returns {{major: number, minor: number, version: string}}
+ */
+export function parseReleaseLine(value, label = 'Release line') {
+  const match = RELEASE_LINE.exec(value ?? '');
+  if (!match) throw new Error(`${label} must be a complete MAJOR.MINOR release line`);
+  const [, major, minor] = match;
+  return { major: Number(major), minor: Number(minor), version: `${major}.${minor}` };
+}
+
+/**
+ * Finds exact patch paths that must remain redirects for a documentation line.
+ *
+ * @param {Array<{version?: unknown, aliases?: unknown}>} entries Mike version records.
+ * @param {string} releaseLine Documentation release line.
+ * @returns {{versions: string[], redirects: string[]}}
+ */
+export function collectPatchDocumentationPaths(entries, releaseLine) {
+  if (!Array.isArray(entries)) throw new Error('Mike versions must be an array');
+  const { version: line } = parseReleaseLine(releaseLine);
+  const escapedLine = line.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+  const exactPatch = new RegExp(`^${escapedLine}\\.\\d+$`, 'u');
+  const versions = new Set();
+  const redirects = new Set();
+
+  for (const entry of entries) {
+    if (!entry || typeof entry !== 'object') continue;
+    if (typeof entry.version === 'string' && exactPatch.test(entry.version)) {
+      versions.add(entry.version);
+      redirects.add(entry.version);
+    }
+    if (!Array.isArray(entry.aliases)) continue;
+    for (const alias of entry.aliases) {
+      if (typeof alias === 'string' && exactPatch.test(alias)) redirects.add(alias);
+    }
+  }
+
+  const byPatch = (left, right) => Number(left.slice(line.length + 1)) - Number(right.slice(line.length + 1));
+  return { versions: [...versions].sort(byPatch), redirects: [...redirects].sort(byPatch) };
 }
 
 /**
@@ -50,7 +96,7 @@ export function parseTagReferences(output) {
  * Resolves the immutable publication assigned to a documentation source commit.
  *
  * @param {{applicationVersion: string, allTags: string[], commitTags: string[]}} input
- * @returns {{applicationVersion: string, applicationLine: string, publicationVersion: string, publicationTag: string, reused: boolean, publishProductVersion: boolean}}
+ * @returns {{applicationVersion: string, applicationLine: string, publicationVersion: string, publicationTag: string, reused: boolean, publishDocumentationLine: boolean}}
  */
 export function resolveDocumentationRelease({ applicationVersion, allTags, commitTags }) {
   const application = parseCompleteVersion(applicationVersion, 'Octoform version');
@@ -87,7 +133,7 @@ export function resolveDocumentationRelease({ applicationVersion, allTags, commi
       publicationVersion: current.version,
       publicationTag: current.tag,
       reused: true,
-      publishProductVersion: current.patch === Math.max(...linePatches),
+      publishDocumentationLine: current.patch === Math.max(...linePatches),
     };
   }
   const patch = linePatches.length === 0 ? 0 : Math.max(...linePatches) + 1;
@@ -101,6 +147,6 @@ export function resolveDocumentationRelease({ applicationVersion, allTags, commi
     publicationVersion,
     publicationTag: `v${publicationVersion}`,
     reused: false,
-    publishProductVersion: true,
+    publishDocumentationLine: true,
   };
 }

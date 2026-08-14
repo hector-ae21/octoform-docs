@@ -1,6 +1,6 @@
 ---
 title: Runtime components
-description: Trace responsibilities and dependencies inside the Octoform 0.3.1 Node.js process.
+description: Trace responsibilities and dependencies inside the Octoform 0.3 Node.js process.
 ---
 
 # Runtime components

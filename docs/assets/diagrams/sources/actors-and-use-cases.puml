@@ -4,7 +4,7 @@ left to right direction
 
 actor "Repository\noperator" as Operator
 
-rectangle "Octoform 0.3.1 · interactive governance" {
+rectangle "Octoform 0.3 · interactive governance" {
   usecase "Audit repository\nmetadata" as Audit
   usecase "Preview desired-state\nchanges" as Plan
   usecase "Confirm and apply\na displayed plan" as Apply

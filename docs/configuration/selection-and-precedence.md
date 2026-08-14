@@ -1,6 +1,6 @@
 ---
 title: Selection and precedence
-description: Resolve defaults, repository types, named overrides, and management boundaries in Octoform 0.3.1.
+description: Resolve defaults, repository types, named overrides, and management boundaries in Octoform 0.3.
 ---
 
 # Selection and precedence

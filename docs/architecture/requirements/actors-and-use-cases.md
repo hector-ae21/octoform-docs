@@ -1,6 +1,6 @@
 ---
 title: Actors and use cases
-description: Identify Octoform 0.3.1 actors and the individual goals available to each one.
+description: Identify Octoform 0.3 actors and the individual goals available to each one.
 ---
 
 # Actors and use cases
