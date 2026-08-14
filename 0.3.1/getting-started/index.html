@@ -290,7 +290,7 @@
   
     
   
-  Guides
+  Guides & examples
 
         </a>
       </li>
@@ -347,17 +347,20 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../security/" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item">
+        <a href="../security/" class="md-tabs__link">
+          
   
   
     
   
   Security
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -764,7 +767,7 @@
   <span class="md-ellipsis">
     
   
-    Guides
+    Guides & examples
   
 
     
@@ -786,7 +789,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Guides
+    Guides & examples
   
 
           </label>
@@ -2638,9 +2641,40 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../security/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../security/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -2654,7 +2688,143 @@
   
   
 
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/trust-and-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trust and data boundaries
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/credentials-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credentials and permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/secure-automation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secure automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/incidents-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incidents and recovery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -3014,41 +3184,42 @@ stage mutates only the repository and setting you explicitly review.</p>
 </div>
 <h2 id="journey">Journey<a class="headerlink" href="#journey" title="Permanent link">&para;</a></h2>
 <div class="octoform-grid octoform-grid--journey">
-<div class="octoform-card octoform-step">
+<div class="octoform-card octoform-card--linked octoform-step">
 <p><span class="octoform-step-number">01 · Runtime</span></p>
 <h3 id="install-octoform">Install Octoform<a class="headerlink" href="#install-octoform" title="Permanent link">&para;</a></h3>
 <p>Pin the documented package, choose how to invoke it, and verify the executable.</p>
 <p><a href="installation/">Prepare the CLI</a></p>
 </div>
-<div class="octoform-card octoform-step">
+<div class="octoform-card octoform-card--linked octoform-step">
 <p><span class="octoform-step-number">02 · Identity</span></p>
 <h3 id="authenticate-safely">Authenticate safely<a class="headerlink" href="#authenticate-safely" title="Permanent link">&para;</a></h3>
 <p>Select a credential for interactive or automated use and expose it only to the
 current process.</p>
 <p><a href="authentication/">Choose authentication</a></p>
 </div>
-<div class="octoform-card octoform-step">
+<div class="octoform-card octoform-card--linked octoform-step">
 <p><span class="octoform-step-number">03 · Intent</span></p>
 <h3 id="write-one-policy">Write one policy<a class="headerlink" href="#write-one-policy" title="Permanent link">&para;</a></h3>
 <p>Declare a single managed value and leave every omitted repository setting
 untouched.</p>
 <p><a href="first-policy/">Create the first policy</a></p>
 </div>
-<div class="octoform-card octoform-step">
+<div class="octoform-card octoform-card--linked octoform-step">
 <p><span class="octoform-step-number">04 · Evidence</span></p>
 <h3 id="produce-a-plan">Produce a plan<a class="headerlink" href="#produce-a-plan" title="Permanent link">&para;</a></h3>
 <p>Read GitHub state, narrow the repository selection, and interpret changes,
 warnings, and capability blocks.</p>
 <p><a href="first-plan/">Review the first plan</a></p>
 </div>
-<div class="octoform-card octoform-step">
+<div class="octoform-card octoform-card--linked octoform-step">
 <p><span class="octoform-step-number">05 · Change</span></p>
 <h3 id="apply-and-verify">Apply and verify<a class="headerlink" href="#apply-and-verify" title="Permanent link">&para;</a></h3>
 <p>Approve the exact plan, confirm the result, and plan again to prove the desired
 state is converged.</p>
 <p><a href="safe-apply/">Apply deliberately</a></p>
 </div>
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked octoform-step">
+<p><span class="octoform-step-number">06 · Model</span></p>
 <h3 id="understand-the-model">Understand the model<a class="headerlink" href="#understand-the-model" title="Permanent link">&para;</a></h3>
 <p>Learn why omitted values are unmanaged, how precedence is resolved, and why an
 uncertain operation is blocked instead of guessed.</p>

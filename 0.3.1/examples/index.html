@@ -290,7 +290,7 @@
   
     
   
-  Guides
+  Guides & examples
 
         </a>
       </li>
@@ -347,17 +347,20 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../security/" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item">
+        <a href="../security/" class="md-tabs__link">
+          
   
   
     
   
   Security
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -764,7 +767,7 @@
   <span class="md-ellipsis">
     
   
-    Guides
+    Guides & examples
   
 
     
@@ -786,7 +789,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Guides
+    Guides & examples
   
 
           </label>
@@ -2643,9 +2646,40 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../security/" class="md-nav__link">
+    
+    
+      
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../security/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -2659,7 +2693,143 @@
   
   
 
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/trust-and-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trust and data boundaries
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/credentials-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credentials and permissions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/secure-automation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secure automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/incidents-and-recovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incidents and recovery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2991,37 +3161,37 @@ Owners and repositories are intentionally fictitious.</p>
 run <code>octoform plan</code> before considering <code>apply</code>.</p>
 </div>
 <div class="octoform-grid">
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked">
 <h2 id="minimal-policy">Minimal policy<a class="headerlink" href="#minimal-policy" title="Permanent link">&para;</a></h2>
 <p>Manage one merge setting across every selected repository. This is the
 smallest configuration that produces a mutable plan.</p>
 <p><a href="minimal/">Open the minimal policy</a></p>
 </div>
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked">
 <h2 id="audit-only">Audit only<a class="headerlink" href="#audit-only" title="Permanent link">&para;</a></h2>
 <p>Report missing public metadata without declaring desired repository settings
 or making mutation possible.</p>
 <p><a href="audit-only/">Open the audit-only policy</a></p>
 </div>
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked">
 <h2 id="personal-account">Personal account<a class="headerlink" href="#personal-account" title="Permanent link">&para;</a></h2>
 <p>Classify repositories from local evidence and use repository rulesets without
 depending on organization custom properties.</p>
 <p><a href="personal-account/">Open the personal-account policy</a></p>
 </div>
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked">
 <h2 id="branch-patterns">Branch patterns<a class="headerlink" href="#branch-patterns" title="Permanent link">&para;</a></h2>
 <p>Compare the default-branch token, exact branches, glob patterns, and a fixed
 set of maintained branches.</p>
 <p><a href="branch-patterns/">Open the branch-pattern examples</a></p>
 </div>
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked">
 <h2 id="scheduled-audit">Scheduled audit<a class="headerlink" href="#scheduled-audit" title="Permanent link">&para;</a></h2>
 <p>Use a policy that stays observational even if someone invokes <code>apply</code> against
 the same file.</p>
 <p><a href="scheduled-audit/">Open the scheduled-audit policy</a></p>
 </div>
-<div class="octoform-card">
+<div class="octoform-card octoform-card--linked">
 <h2 id="shared-presets">Shared presets<a class="headerlink" href="#shared-presets" title="Permanent link">&para;</a></h2>
 <p>Compose owner-neutral project and security policies from organization or
 personal-account root configurations.</p>

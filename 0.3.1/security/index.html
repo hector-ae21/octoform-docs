@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Token lifecycle, permission boundaries, planning guarantees, redaction, automation controls, and incident response.">
+        <meta name="description" content="Understand Octoform's trust boundaries, credential model, automation controls, and recovery procedures.">
       
       
         <meta name="author" content="Hector Arrechea">
@@ -18,7 +18,7 @@
         <link rel="prev" href="../architecture/delivery/release-pipelines/">
       
       
-        <link rel="next" href="../releases/">
+        <link rel="next" href="trust-and-data/">
       
       
         
@@ -288,7 +288,7 @@
   
     
   
-  Guides
+  Guides & examples
 
         </a>
       </li>
@@ -347,17 +347,20 @@
     
   
   
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
-        
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
   
   
     
   
   Security
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -759,7 +762,7 @@
   <span class="md-ellipsis">
     
   
-    Guides
+    Guides & examples
   
 
     
@@ -781,7 +784,7 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    Guides
+    Guides & examples
   
 
           </label>
@@ -2635,16 +2638,43 @@
   
   
   
-    <li class="md-nav__item md-nav__item--active">
+    
+    
       
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
       
       
         
       
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
           
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
   
   
   <span class="md-ellipsis">
@@ -2658,17 +2688,43 @@
   
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_6" id="__nav_6_label">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="trust-and-data/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Security
+    Trust and data boundaries
   
 
     
@@ -2677,152 +2733,97 @@
   
 
       </a>
-      
-        
+    </li>
+  
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+              
+            
+              
+                
   
   
   
+  
+    <li class="md-nav__item">
+      <a href="credentials-and-permissions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
     
   
+    Credentials and permissions
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#trust-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Trust model
-      
-    </span>
-  </a>
+
+    
+  </span>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#choose-the-credential" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Choose the credential
-      
-    </span>
-  </a>
   
-    <nav class="md-nav" aria-label="Choose the credential">
-      <ul class="md-nav__list">
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="secure-automation/" class="md-nav__link">
         
-          <li class="md-nav__item">
-  <a href="#interactive-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interactive operation
-      
-    </span>
-  </a>
   
-</li>
+  
+  <span class="md-ellipsis">
+    
+  
+    Secure automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="incidents-and-recovery/" class="md-nav__link">
         
-          <li class="md-nav__item">
-  <a href="#automation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automation
-      
-    </span>
-  </a>
   
-</li>
-        
-      </ul>
-    </nav>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#permission-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permission model
-      
-    </span>
-  </a>
+  <span class="md-ellipsis">
+    
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#token-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Token lifecycle
-      
-    </span>
-  </a>
+    Incidents and recovery
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-may-appear-in-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What may appear in output
-      
-    </span>
-  </a>
+
+    
+  </span>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#apply-and-partial-failure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Apply and partial failure
-      
-    </span>
-  </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#automation-controls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automation controls
-      
-    </span>
-  </a>
+
+      </a>
+    </li>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#threats-and-mitigations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Threats and mitigations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#report-a-vulnerability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Report a vulnerability
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -3049,10 +3050,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#trust-model" class="md-nav__link">
+  <a href="#trust-and-data-boundaries" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Trust model
+        Trust and data boundaries
       
     </span>
   </a>
@@ -3060,49 +3061,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#choose-the-credential" class="md-nav__link">
+  <a href="#credentials-and-permissions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Choose the credential
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Choose the credential">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#interactive-operation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Interactive operation
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#automation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automation
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#permission-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Permission model
+        Credentials and permissions
       
     </span>
   </a>
@@ -3110,10 +3072,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#token-lifecycle" class="md-nav__link">
+  <a href="#secure-automation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Token lifecycle
+        Secure automation
       
     </span>
   </a>
@@ -3121,10 +3083,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-may-appear-in-output" class="md-nav__link">
+  <a href="#incidents-and-recovery" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What may appear in output
+        Incidents and recovery
       
     </span>
   </a>
@@ -3132,43 +3094,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#apply-and-partial-failure" class="md-nav__link">
+  <a href="#core-guarantees" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Apply and partial failure
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#automation-controls" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Automation controls
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#threats-and-mitigations" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Threats and mitigations
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#report-a-vulnerability" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Report a vulnerability
+        Core guarantees
       
     </span>
   </a>
@@ -3196,13 +3125,39 @@
 
 
 <h1 id="security-and-trust">Security and trust<a class="headerlink" href="#security-and-trust" title="Permanent link">&para;</a></h1>
-<p>Start with the <a href="../architecture/trust/trust-and-data-flow/">trust and data-flow diagram</a>
-for the credential, process, network, GitHub, and logging boundaries described
-throughout this guide.</p>
 <p>Octoform has no authority of its own. It can observe and mutate only what the
-supplied GitHub token, owner role, repository selection, feature availability,
-and API endpoint permit.</p>
-<h2 id="trust-model">Trust model<a class="headerlink" href="#trust-model" title="Permanent link">&para;</a></h2>
+supplied GitHub credential, owner role, repository selection, feature
+availability, and API endpoint permit.</p>
+<p>Use this section to choose the smallest useful credential, keep planning and
+mutation in separate trust boundaries, and recover safely when an operation
+does not complete.</p>
+<div class="octoform-grid octoform-grid--security">
+<div class="octoform-card octoform-card--linked">
+<h2 id="trust-and-data-boundaries">Trust and data boundaries<a class="headerlink" href="#trust-and-data-boundaries" title="Permanent link">&para;</a></h2>
+<p>Review which inputs Octoform reads, which GitHub state it observes, and what
+operational information may appear in plans and logs.</p>
+<p><a href="trust-and-data/">Review the trust model</a></p>
+</div>
+<div class="octoform-card octoform-card--linked">
+<h2 id="credentials-and-permissions">Credentials and permissions<a class="headerlink" href="#credentials-and-permissions" title="Permanent link">&para;</a></h2>
+<p>Choose between personal access tokens and GitHub App installation tokens, then
+grant only the permission families required by the policy.</p>
+<p><a href="credentials-and-permissions/">Select a credential</a></p>
+</div>
+<div class="octoform-card octoform-card--linked">
+<h2 id="secure-automation">Secure automation<a class="headerlink" href="#secure-automation" title="Permanent link">&para;</a></h2>
+<p>Separate pull-request planning from protected apply jobs, constrain
+concurrency, and prevent untrusted input from reaching write credentials.</p>
+<p><a href="secure-automation/">Design a secure workflow</a></p>
+</div>
+<div class="octoform-card octoform-card--linked">
+<h2 id="incidents-and-recovery">Incidents and recovery<a class="headerlink" href="#incidents-and-recovery" title="Permanent link">&para;</a></h2>
+<p>Contain an exposed credential, assess partial mutation, produce a fresh plan,
+and report suspected vulnerabilities through a private channel.</p>
+<p><a href="incidents-and-recovery/">Follow the recovery procedure</a></p>
+</div>
+</div>
+<h2 id="core-guarantees">Core guarantees<a class="headerlink" href="#core-guarantees" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -3237,7 +3192,7 @@ and API endpoint permit.</p>
 </tr>
 <tr>
 <td>Unsupported capability</td>
-<td>Reported with owner/repository/token/API evidence when available</td>
+<td>Reported from owner, repository, token, and API evidence when available</td>
 </tr>
 <tr>
 <td>Files</td>
@@ -3245,125 +3200,13 @@ and API endpoint permit.</p>
 </tr>
 </tbody>
 </table>
-<h2 id="choose-the-credential">Choose the credential<a class="headerlink" href="#choose-the-credential" title="Permanent link">&para;</a></h2>
-<h3 id="interactive-operation">Interactive operation<a class="headerlink" href="#interactive-operation" title="Permanent link">&para;</a></h3>
-<p>A fine-grained personal access token is preferable to a classic PAT. Select
-only the repositories being evaluated and begin with read permissions. Add a
-write permission only when the reviewed policy contains that capability.</p>
-<h3 id="automation">Automation<a class="headerlink" href="#automation" title="Permanent link">&para;</a></h3>
-<p>Prefer a GitHub App installation token:</p>
-<ul>
-<li>installation-scoped repository access;</li>
-<li>short lifetime;</li>
-<li>centrally reviewable permissions;</li>
-<li>no long-lived personal credential;</li>
-<li>revocation independent from an employee account.</li>
-</ul>
-<p>Use an environment secret only as a transitional mechanism. Never accept a
-credential from a pull-request payload or configuration file.</p>
-<h2 id="permission-model">Permission model<a class="headerlink" href="#permission-model" title="Permanent link">&para;</a></h2>
-<p>The CLI preflight for classic tokens requires <code>repo</code>. Organization custom
-property writes additionally require <code>admin:org</code>. Those scopes are coarse and
-do not describe minimum fine-grained permissions.</p>
-<p>GitHub evaluates distinct permission families for:</p>
-<ul>
-<li>repository administration and settings;</li>
-<li>contents and branch creation;</li>
-<li>rules and rulesets;</li>
-<li>environments and deployment protection;</li>
-<li>security events and code-scanning setup;</li>
-<li>organization custom properties.</li>
-</ul>
-<p>Grant only families declared by the active policy. A read-only audit should
-not receive write permissions merely because a future policy might need them.</p>
-<h2 id="token-lifecycle">Token lifecycle<a class="headerlink" href="#token-lifecycle" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Issue the narrowest token for the owner and selected repositories.</li>
-<li>Inject it through the process environment immediately before execution.</li>
-<li>Disable shell tracing and ensure CI masking is active.</li>
-<li>Run <code>audit</code> or <code>plan</code> before granting write access.</li>
-<li>Remove the environment value after an interactive run.</li>
-<li>Let short-lived installation tokens expire; rotate long-lived tokens on a
-   documented schedule.</li>
-<li>Revoke immediately if a value reaches a log, artifact, shell history, issue,
-   or committed file.</li>
-</ol>
-<h2 id="what-may-appear-in-output">What may appear in output<a class="headerlink" href="#what-may-appear-in-output" title="Permanent link">&para;</a></h2>
-<p>Plans necessarily include repository names, settings, branches, environments,
-rulesets, and selected current/desired values. Treat output from a private
-owner as private operational metadata. Do not upload it to a public artifact
-or paste it unchanged into an issue.</p>
-<p>Octoform should never need to display the token itself. If a GitHub diagnostic
-contains sensitive request information, redact it before sharing.</p>
-<h2 id="apply-and-partial-failure">Apply and partial failure<a class="headerlink" href="#apply-and-partial-failure" title="Permanent link">&para;</a></h2>
-<p><code>apply</code> does not provide a transaction spanning GitHub endpoints. Independent
-groups may succeed even when another group fails. Recovery therefore begins
-with a fresh plan, not an assumption that the account returned to its original
-state.</p>
-<p>There is no generic rollback command. Reversal is another explicit desired
-value, plan, review, and apply. Omission only stops management.</p>
-<h2 id="automation-controls">Automation controls<a class="headerlink" href="#automation-controls" title="Permanent link">&para;</a></h2>
-<p>An apply workflow should have:</p>
-<ul>
-<li>no pull-request access to write credentials;</li>
-<li>reviewed and pinned dependencies;</li>
-<li>manual dispatch or another explicit authorization event;</li>
-<li>a protected environment with required reviewers;</li>
-<li>exact repository/type selection;</li>
-<li>concurrency preventing overlapping apply jobs;</li>
-<li>minimal log and artifact retention;</li>
-<li>a new read-only plan after any failure.</li>
-</ul>
-<p>See <a href="../automation/">CI/CD automation</a> for supported <code>0.3.1</code> examples and its
-important immutable-plan limitation.</p>
-<h2 id="threats-and-mitigations">Threats and mitigations<a class="headerlink" href="#threats-and-mitigations" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Threat</th>
-<th>Primary mitigation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Malicious policy change</td>
-<td>Protected branch, CODEOWNERS, reviewed diff</td>
-</tr>
-<tr>
-<td>Pull request exfiltrates a token</td>
-<td>No apply secrets or write permissions in PR workflows</td>
-</tr>
-<tr>
-<td>Token can see too many repositories</td>
-<td>Fine-grained selection or GitHub App installation scope</td>
-</tr>
-<tr>
-<td>Unreadable state causes overwrite</td>
-<td>Planning block; never infer an absent value</td>
-</tr>
-<tr>
-<td>Concurrent applies race</td>
-<td>Owner/repository concurrency group</td>
-</tr>
-<tr>
-<td>Plan becomes stale</td>
-<td>Apply immediately after review and re-plan after failure</td>
-</tr>
-<tr>
-<td>Public logs reveal private inventory</td>
-<td>Private workflow/artifacts and sanitized support reports</td>
-</tr>
-<tr>
-<td>Dependency compromise</td>
-<td>Exact Octoform patch, lockfiles, provenance and dependency review</td>
-</tr>
-</tbody>
-</table>
-<h2 id="report-a-vulnerability">Report a vulnerability<a class="headerlink" href="#report-a-vulnerability" title="Permanent link">&para;</a></h2>
-<p>Do not open a public issue for a suspected vulnerability, privilege escalation,
-token exposure, or private repository disclosure. Use the project's
-<a href="https://github.com/hector-ae21/octoform/security/advisories/new">private vulnerability reporting</a>
-channel. Revoke an exposed credential before preparing the report.</p>
+<div class="admonition warning">
+<p class="admonition-title">Keep security reports private</p>
+<p>Do not open a public issue for a suspected vulnerability, privilege
+escalation, token exposure, or private repository disclosure. Use the
+project's <a href="https://github.com/hector-ae21/octoform/security/advisories/new">private vulnerability reporting</a>
+channel.</p>
+</div>
 
 
 
