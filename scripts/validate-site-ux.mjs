@@ -99,11 +99,21 @@ try {
   if (await liftedSection.count()) {
     const liftedStyle = await liftedSection.evaluate((element) => {
       const style = getComputedStyle(element);
-      return { background: style.backgroundColor, shadow: style.boxShadow };
+      return {
+        background: style.backgroundColor,
+        position: style.position,
+        shadow: style.boxShadow,
+      };
     });
-    if (liftedStyle.shadow !== 'none' || liftedStyle.background !== 'rgba(0, 0, 0, 0)') {
+    if (liftedStyle.shadow !== 'none') {
       throw new Error(
         `Lifted primary section retains Material elevation: ${JSON.stringify(liftedStyle)}`,
+      );
+    }
+    if (liftedStyle.position === 'sticky' && opacityOf(liftedStyle.background) < 1) {
+      throw new Error(
+        `Pinned primary section is not opaque, so navigation shows through it: ` +
+          JSON.stringify(liftedStyle),
       );
     }
   }
@@ -587,6 +597,24 @@ try {
 console.log(
   'Validated selected navigation, uniform card grids, Security navigation, sidebar hierarchy, code actions, diagrams, and responsive layouts.',
 );
+
+/**
+ * Reads the alpha channel out of a computed background colour.
+ *
+ * Computed values reach here in several notations. A colour mix resolves to
+ * `color(srgb r g b)`, with `/ a` only when the result is translucent, while a
+ * plain declaration resolves to `rgb()` or `rgba()`. A notation carrying no
+ * alpha is opaque.
+ *
+ * @param {string} color
+ * @returns {number}
+ */
+function opacityOf(color) {
+  const slashed = /\/\s*([\d.]+)\s*\)\s*$/.exec(color);
+  if (slashed) return Number(slashed[1]);
+  const rgba = /^rgba\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*,\s*([\d.]+)\s*\)$/.exec(color);
+  return rgba ? Number(rgba[1]) : 1;
+}
 
 function serveStaticFile(request, response) {
   const requestPath = decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname);
