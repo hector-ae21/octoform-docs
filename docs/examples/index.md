@@ -18,6 +18,28 @@ repositories are intentionally fictitious.
 
 <div class="octoform-card octoform-card--linked" markdown>
 
+## Multi-owner
+
+Govern an organization and a personal account from one document, with the
+shared policy written once.
+
+[Open the multi-owner policy](multi-owner.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
+## Reviewed plan
+
+Separate approving a change from carrying it out, using a saved plan that
+refuses to drift between the two.
+
+[Open the reviewed-plan policy](reviewed-plan.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
 ## Minimal policy
 
 Manage one merge setting across every selected repository. This is the

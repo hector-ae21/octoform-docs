@@ -1,0 +1,48 @@
+@startuml uc-inspect-configuration
+!include _theme.iuml
+
+state inspectConfiguration as "inspectConfiguration()" {
+
+  state " " as RequestingResolved
+  state " " as Resolving
+  state " " as Presenting
+
+  [*] --> RequestingResolved
+  note on link
+  <b>Operator</b> asks what a repository will actually be
+  governed by, rather than inferring it from a plan
+  end note
+
+  RequestingResolved --> Resolving
+  note on link
+  <b>Octoform</b> resolves the selection offline, with the same
+  guarantee validateConfiguration() makes: no token, no network
+  end note
+
+  Resolving --> Presenting
+  note on link
+  <b>Octoform</b> prints the final resolved shape
+  • which values survived precedence
+  • values shaped like credentials are redacted
+  • --format json wraps it in the versioned envelope
+  end note
+
+  Presenting --> [*]
+  note on link
+  <b>Operator</b> compares the resolved shape against what
+  they expected to be managed
+  end note
+}
+
+inspectConfiguration --> CONFIGURATION_RESOLVED
+note on link
+exit 0
+end note
+
+inspectConfiguration -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+the layer each value came from is not
+reported in this release: the resolver
+does not track provenance per field
+end note
+@enduml

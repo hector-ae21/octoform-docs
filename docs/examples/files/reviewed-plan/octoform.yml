@@ -1,0 +1,41 @@
+# A configuration written to be planned by one party and applied by another.
+#
+# Nothing in the YAML enables that separation — the separation comes from how
+# the two commands are run:
+#
+#   # reviewer, read-only credentials
+#   octoform plan  --config octoform.yml --repo example-service \
+#                  --out plan.json --expires-in 30
+#
+#   # applier, write credentials, after the plan has been reviewed
+#   octoform apply --plan plan.json
+#
+# The second command re-checks the artifact schema version, the expiry, the
+# authenticated actor, each account's numeric identity, every configuration
+# source file, and the resolved configuration itself. If any of them moved it
+# refuses and names which one. That is why this example declares settings a
+# reviewer would genuinely want to look at before they are applied.
+#
+# `example-org` is a placeholder — replace it before running anything.
+
+version: 1
+
+owners:
+  example-org:
+    defaults:
+      security:
+        secret_scanning: true
+        secret_scanning_push_protection: true
+
+    repos:
+      example-service:
+        merge:
+          delete_branch_on_merge: true
+        default_branch:
+          name: main
+        rulesets:
+          - name: protected-default
+            target_branches: ['~DEFAULT_BRANCH']
+            required_approvals: 1
+            required_checks: ['build']
+            block_force_push: true

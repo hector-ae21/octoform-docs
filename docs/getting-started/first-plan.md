@@ -77,9 +77,14 @@ If the plan is unexpectedly broad, stop and narrow the selector or policy.
 
 ## Exit behavior
 
-A successful read-only plan exits `0`, including a plan with no changes.
-Configuration, authentication, discovery, or observation failures use a
-non-zero exit and include an actionable diagnostic. See the
+A plan that finds nothing to do exits `0`. A plan that finds executable
+changes exits `1` — the command succeeded, and the class reports that drift
+exists and was not applied. Blocked work exits `4`, and a run that failed
+exits `5`.
+
+That distinction matters the moment the command goes into a pipeline: `plan`
+is read-only, but a non-zero exit from it is not automatically a failure to
+investigate. See the
 [execution contract](../commands/execution-contract.md) before integrating the
 command into automation.
 

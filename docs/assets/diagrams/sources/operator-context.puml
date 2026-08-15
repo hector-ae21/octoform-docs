@@ -1,0 +1,38 @@
+@startuml operator-context
+!include _theme.iuml
+skinparam linetype ortho
+
+state "NO_CONFIGURATION" as NoConfig
+state "CONFIGURATION_RESOLVED" as Resolved
+state "CAPABILITIES_ESTABLISHED" as Capabilities
+state "FINDINGS_REPORTED" as Findings
+state "PLAN_PRESENTED" as PlanPresented
+state "PLAN_SAVED" as PlanSaved
+state "CHANGES_APPLIED" as Applied
+state "TYPES_PROPOSED" as Types
+state "PROPERTY_SCHEMA_SYNCHRONIZED" as Properties
+
+[*] --> NoConfig
+NoConfig --> NoConfig : validateConfiguration()
+NoConfig --> Resolved : validateConfiguration()
+NoConfig --> Resolved : migrateConfiguration()
+
+Resolved --> Resolved : inspectConfiguration()
+Resolved --> Capabilities : inspectCapabilities()
+Resolved --> Findings : auditRepositories()
+Resolved --> PlanPresented : planChanges()
+Resolved --> PlanSaved : savePlan()
+Resolved --> Types : classifyRepositories()
+Resolved --> Properties : syncProperties()
+
+PlanPresented --> Applied : applyPlan()
+PlanSaved --> Applied : applySavedPlan()
+
+Capabilities --> [*] : exit class 0-5
+Findings --> [*] : exit class 0-5
+PlanPresented --> [*] : exit class 0-5
+PlanSaved --> [*] : exit class 0-5
+Applied --> [*] : exit class 0-5
+Types --> [*] : exit class 0-5
+Properties --> [*] : exit class 0-5
+@enduml

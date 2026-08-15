@@ -348,8 +348,8 @@ try {
 
   const linkedCardPages = [
     ['/getting-started/', 6],
-    ['/guides/', 3],
-    ['/examples/', 6],
+    ['/guides/', 4],
+    ['/examples/', 8],
     ['/reference/', 3],
     ['/security/', 4],
     ['/releases/', 4],

@@ -2,23 +2,29 @@
 !include _theme.iuml
 left to right direction
 
-actor "Repository\noperator" as Operator
+actor "Policy author" as Author
+actor "Repository operator" as Operator
 
-rectangle "Octoform 0.3 · interactive governance" {
-  usecase "Audit repository\nmetadata" as Audit
-  usecase "Preview desired-state\nchanges" as Plan
-  usecase "Confirm and apply\na displayed plan" as Apply
-  usecase "Propose missing\nrepository types" as Classify
-  usecase "Persist classification\nproposals" as PersistTypes
-  usecase "Synchronize custom\nproperty schema" as Properties
+rectangle "Octoform 0.4 · offline configuration work" {
+  package "Authoring" {
+    usecase "validateConfiguration()" as Validate
+    usecase "migrateConfiguration()" as Migrate
+  }
+  package "Explanation" {
+    usecase "inspectConfiguration()" as InspectConfig
+  }
 }
 
-Operator --> Audit
-Operator --> Plan
-Operator --> Apply
-Operator --> Classify
-Operator --> PersistTypes
-Operator --> Properties
-Apply ..> Plan : <<include>>
-PersistTypes ..> Classify : <<extend>>
+Author --> Validate
+Author --> Migrate
+Author --> InspectConfig
+Operator --> InspectConfig
+
+Migrate .> Validate : <<include>>
+InspectConfig .> Validate : <<include>>
+
+note bottom of InspectConfig
+  No use case in this view contacts GitHub or reads a token,
+  which is what makes them the cheapest checks in a pull request.
+end note
 @enduml

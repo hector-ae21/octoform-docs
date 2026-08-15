@@ -34,9 +34,11 @@ note top of Secret
 end note
 
 note bottom of Process
-  0.3 reads tokens from the environment.
-  It has no token field in configuration and
-  no machine-readable plan artifact to persist.
+  Tokens are read from the environment, never
+  from configuration and never from a flag.
+  A saved plan is machine-readable and carries
+  no credential, but it does name private
+  repositories and their settings.
 end note
 
 note bottom of Output

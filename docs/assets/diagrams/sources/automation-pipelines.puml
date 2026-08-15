@@ -14,8 +14,9 @@ case (Scheduled observation)
   :Run octoform audit;
   :Publish findings to the run summary;
   note right
-    In 0.3, audit findings still exit 0.
-    Parse or review the report if drift must gate CI.
+    Audit findings exit 1, so drift gates the job
+    directly. A job that must not fail on findings
+    has to handle that class deliberately.
   end note
 case (Protected application)
   :Require a trusted branch or immutable ref;

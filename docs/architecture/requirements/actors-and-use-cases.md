@@ -1,68 +1,86 @@
 ---
 title: Actors and use cases
-description: Identify Octoform 0.4 actors and the individual goals available to each one.
+description: The roles that interact with Octoform 0.4 and the individual goals each one can reach.
 ---
 
 # Actors and use cases
 
-These requirements views separate each user goal into one use case.
-Relationships between cases make read-only prerequisites and explicit write
-extensions visible instead of hiding them inside broad labels.
+An actor is a role, not a person. One human can be a policy author in the
+morning and a change reviewer in the afternoon; separating the roles is what
+makes it possible to say which authority each goal actually needs.
 
-## Actors
+## Actor catalogue
 
-| Actor | Responsibility and trust |
-| --- | --- |
-| Repository operator | Authors or reviews policy, chooses scope, interprets plans, and owns interactive confirmation. |
-| CI/CD workflow | Executes a predefined command with repository, environment, and credential controls supplied by the automation platform. |
-| TypeScript application | Calls supported ESM exports and therefore owns authentication, invocation boundaries, output, and error handling around them. |
-| GitHub REST API | Supporting external actor and authority for owner identity, visible repositories, current state, permissions, capability evidence, and mutation results. It is shown in the context and structural views to keep primary goals readable here. |
+| Actor | What the role does | Authority it needs |
+| --- | --- | --- |
+| Policy author | Writes and composes the configuration, and proves it loads before anyone spends a credential on it. | None. Every goal in this role is offline. |
+| Repository operator | Chooses scope, interprets plans, and owns interactive confirmation. | A token whose reach is no broader than the operation. |
+| Change reviewer | Approves a specific plan and hands it over, so that the approval and the execution are separable. | Read access to produce the plan; whoever applies it needs write access. |
+| Automation workflow | Runs a predefined command with no ability to answer a prompt. | Whatever the platform grants it, bounded by branch and environment protections. |
+| Integrating application | Calls the exported TypeScript functions directly. | Owns authentication, invocation, and error handling itself. |
+| GitHub REST API | Supporting actor. The authority on account identity, visible repositories, current state, permissions, and the outcome of every mutation. | Not applicable; it is the system being governed. |
 
-## Interactive governance
+The GitHub REST API is a supporting actor rather than a primary one: it never
+initiates anything. It appears in the [system context](system-context.md) and
+in the structural views, and is left out of the goal diagrams below so the
+goals stay readable.
 
-<div class="octoform-diagram" role="region" aria-label="Scrollable UML actor and use-case diagram" tabindex="0" markdown>
+## Offline configuration work
 
-![UML use-case diagram connecting a repository operator to individual interactive Octoform goals](../../assets/diagrams/actors-and-use-cases.svg)
+Nothing in this view contacts GitHub or reads a token, which is what makes
+these the cheapest checks to put in front of a pull request.
+
+<div class="octoform-diagram" role="region" aria-label="Scrollable UML use-case diagram of offline Octoform configuration goals" tabindex="0" markdown>
+
+![UML use-case diagram connecting a policy author and a repository operator to offline Octoform configuration goals](../../assets/diagrams/actors-and-use-cases.svg)
 
 </div>
 
 [Open the PlantUML source](../../assets/diagrams/sources/actors-and-use-cases.puml)
 
-## Automation and integration
+`migrateConfiguration()` and `inspectConfiguration()` both include
+`validateConfiguration()`, because neither can convert or explain a document
+it has not first resolved.
 
-<div class="octoform-diagram" role="region" aria-label="Scrollable UML automation and integration use-case diagram" tabindex="0" markdown>
+## GitHub-facing governance
 
-![UML use-case diagram connecting CI/CD workflows and TypeScript applications to automated and embedded Octoform goals](../../assets/diagrams/automation-use-cases.svg)
+<div class="octoform-diagram" role="region" aria-label="Scrollable UML use-case diagram of GitHub-facing Octoform governance goals" tabindex="0" markdown>
+
+![UML use-case diagram connecting a repository operator and a change reviewer to observation, reviewed change, and repository typing goals](../../assets/diagrams/governance-use-cases.svg)
+
+</div>
+
+[Open the PlantUML source](../../assets/diagrams/sources/governance-use-cases.puml)
+
+Two relationships carry the design of the release:
+
+- `applyPlan()` **includes** `planChanges()`. Applying is never a separate
+  mutation path; it plans again and shows the result first.
+- `savePlan()` **extends** `planChanges()`. Saving is optional behaviour on
+  top of planning, and `applySavedPlan()` includes it because a saved plan is
+  its only possible input.
+
+## Non-interactive use
+
+<div class="octoform-diagram" role="region" aria-label="Scrollable UML use-case diagram of non-interactive Octoform use" tabindex="0" markdown>
+
+![UML use-case diagram connecting an automation workflow and an integrating application to the goals each can reach](../../assets/diagrams/automation-use-cases.svg)
 
 </div>
 
 [Open the PlantUML source](../../assets/diagrams/sources/automation-use-cases.puml)
 
-## Interactive use cases
+An automation workflow is not given its own set of goals, because it does not
+have any. It reaches the same use cases as an operator, minus the ability to
+answer a prompt. `--yes` replaces the confirmation step, which means the review
+that confirmation represented has to exist somewhere else: a reviewed workflow
+revision, a protected environment, and narrow repository access. See
+[automation patterns](../delivery/automation-patterns.md).
 
-- **Audit repository metadata:** list inventory and read-only findings.
-- **Preview desired-state changes:** compare resolved policy with observed state.
-- **Confirm and apply a displayed plan:** include planning, then explicitly
-  authorize executable changes from that invocation.
-- **Propose missing repository types:** evaluate ordered classification rules.
-- **Persist classification proposals:** extend proposal generation with an
-  organization custom-property write.
-- **Synchronize custom-property schema:** converge allowed type values and
-  explicitly declared repository assignments.
+## Where each goal is specified
 
-## Automation use cases
-
-- **Run scheduled observation:** include read-only audit in a recurring job.
-- **Validate policy in a pull request:** include read-only planning against
-  reviewed candidate configuration.
-- **Run protected non-interactive apply:** include the apply workflow but move
-  confirmation into branch and environment protections outside Octoform.
-
-## Application use case
-
-**Embed configuration and planning services** reuses exported TypeScript
-building blocks. It does not turn a partial observation into a safe plan; the
-consumer must still supply the complete inputs expected by the chosen export.
-
-Use the [command reference](../../commands/index.md) for the exact CLI surface
-and [automation patterns](../delivery/automation-patterns.md) for trust controls.
+Every use case above has a specification that details its conversation and the
+states it can end on. Start from the
+[specification catalogue](use-cases/index.md), or from the
+[operator context](operator-context.md) if you would rather navigate by what
+you are holding.

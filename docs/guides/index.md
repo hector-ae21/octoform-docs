@@ -24,6 +24,17 @@ changes, and recover from partial failure.
 
 <div class="octoform-card octoform-card--linked" markdown>
 
+## Operate across several accounts
+
+Introduce a second account, narrow a run before widening it, and read a report
+that spans more than one owner.
+
+[Open the multi-account guide](multi-account.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
 ## Automate safely
 
 Separate pull-request planning, scheduled observation, and protected mutation
