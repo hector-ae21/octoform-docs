@@ -25,7 +25,8 @@ Engine --> CLI : findings, plan, outcomes and exit status
 Engine --> API : typed values, changes and errors
 
 note bottom of Octoform
-  One resolved configuration targets one owner in 0.3.
+  One resolved configuration can target several accounts,
+  which run one at a time in declaration order.
   The released integration uses GitHub REST, not GraphQL.
 end note
 @enduml

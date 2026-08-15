@@ -1,0 +1,46 @@
+@startuml uc-audit-repositories
+!include _theme.iuml
+
+state auditRepositories as "auditRepositories()" {
+
+  state " " as RequestingAudit
+  state " " as Observing
+  state " " as Reporting
+
+  [*] --> RequestingAudit
+  note on link
+  <b>Operator</b> asks which selected repositories fail the
+  declared audit rules
+  end note
+
+  RequestingAudit --> Observing
+  note on link
+  <b>Octoform</b> discovers the selected repositories and reads
+  their metadata, without declaring any desired value
+  end note
+
+  Observing --> Reporting
+  note on link
+  <b>Octoform</b> reports each finding against the repository
+  that produced it, and nothing is ever attempted
+  • repository names arrive from GitHub, so control
+    characters are escaped before display
+  end note
+
+  Reporting --> [*]
+  note on link
+  <b>Operator</b> reads the findings as evidence, not as a
+  plan: no desired state was declared for them
+  end note
+}
+
+auditRepositories --> FINDINGS_REPORTED
+note on link
+findings were reported; exit 1
+end note
+
+auditRepositories -[#A78BFA]-> FINDINGS_REPORTED
+note on link
+nothing was found; exit 0
+end note
+@enduml

@@ -1,0 +1,51 @@
+@startuml uc-validate-configuration
+!include _theme.iuml
+
+state validateConfiguration as "validateConfiguration()" {
+
+  state " " as RequestingCheck
+  state " " as Composing
+  state " " as Reporting
+
+  [*] --> RequestingCheck
+  note on link
+  <b>Policy author</b> asks whether a configuration file is valid
+  end note
+
+  RequestingCheck --> Composing
+  note on link
+  <b>Octoform</b> loads the document exactly as a GitHub-facing
+  command would, and needs no token to do it
+  • follows imports relative to the declaring file
+  • folds in named policies
+  • applies precedence between layers
+  end note
+
+  Composing --> Reporting
+  note on link
+  <b>Octoform</b> checks every rule that does not need GitHub
+  • unknown key, naming the closest declared one
+  • value of the wrong kind
+  • import or policy cycle, with the chain
+  • reference to a policy that was never declared
+  • value shaped like an issued credential
+  • owner that is not a GitHub account login
+  end note
+
+  Reporting --> [*]
+  note on link
+  <b>Policy author</b> reads the resolved owners, or the first
+  error with its file and YAML path
+  end note
+}
+
+validateConfiguration --> CONFIGURATION_RESOLVED
+note on link
+the document is valid; exit 0
+end note
+
+validateConfiguration -[#A78BFA]-> NO_CONFIGURATION
+note on link
+the document does not load; exit 2
+end note
+@enduml

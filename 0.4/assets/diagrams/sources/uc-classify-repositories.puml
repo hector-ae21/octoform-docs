@@ -1,0 +1,46 @@
+@startuml uc-classify-repositories
+!include _theme.iuml
+
+state classifyRepositories as "classifyRepositories()" {
+
+  state " " as RequestingProposal
+  state " " as Evaluating
+  state " " as Proposing
+
+  [*] --> RequestingProposal
+  note on link
+  <b>Operator</b> asks which type each unclassified repository
+  should carry
+  end note
+
+  RequestingProposal --> Evaluating
+  note on link
+  <b>Octoform</b> evaluates the declared classification rules
+  in order, and stops at the first that matches
+  end note
+
+  Evaluating --> Proposing
+  note on link
+  <b>Octoform</b> presents the proposal and writes nothing,
+  because proposing is the default
+  end note
+
+  Proposing --> [*]
+  note on link
+  <b>Operator</b> either accepts the proposal as a report, or
+  asks for --apply to persist it
+  end note
+}
+
+classifyRepositories --> TYPES_PROPOSED
+note on link
+proposals reported; nothing was written
+end note
+
+classifyRepositories -[#A78BFA]-> TYPES_PROPOSED
+note on link
+--apply writes the values as an organisation
+custom property, which a personal account
+does not have
+end note
+@enduml
