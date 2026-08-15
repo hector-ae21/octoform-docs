@@ -115,9 +115,17 @@
   padding: 0.7rem;
 }
 
+.md-sidebar--primary .md-sidebar__inner {
+  padding: 0 0 0 0.7rem;
+}
+
+/* Material pins the section heading while the rest of the navigation scrolls.
+   It needs an opaque background of its own, otherwise the links pass visibly
+   underneath it. The mix reproduces the translucent panel over the page, so
+   the heading is opaque without reading as a different surface. */
 .md-sidebar--primary .md-nav__title,
 .md-sidebar--secondary .md-nav__title {
-  background: transparent;
+  background: color-mix(in srgb, var(--octo-panel) 72%, var(--md-default-bg-color));
   box-shadow: none !important;
   font-size: 0.68rem;
   font-weight: 800;
@@ -133,7 +141,7 @@
 
 .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active >
   .md-nav__link.md-nav__container {
-  background: transparent;
+  background: color-mix(in srgb, var(--octo-panel) 72%, var(--md-default-bg-color));
   box-shadow: none !important;
 }
 
