@@ -15,6 +15,7 @@ runNpm('lint:spelling');
 runNpm('test:release');
 runNpm('validate:diagrams');
 runNpm('validate:examples');
+runNpm('validate:pins');
 runNpm('validate:secrets');
 run(mkdocs, ['build', '--strict']);
 runNpm('validate:ux');

@@ -21,7 +21,8 @@
     "validate:a11y": "node scripts/validate-a11y.mjs",
     "validate:ux": "node scripts/validate-site-ux.mjs",
     "test:release": "node --test test/*.test.mjs",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "validate:pins": "node scripts/validate-pins.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

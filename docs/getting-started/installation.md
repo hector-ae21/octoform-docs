@@ -6,7 +6,7 @@ description: Install a verified Octoform 0.4 patch and confirm the executable be
 # Install Octoform
 
 Choose the `MAJOR.MINOR` documentation line that matches the package, then pin
-an exact patch. This page currently verifies `0.4.0`; the
+an exact patch. This page currently verifies `0.4.1`; the
 [changelog](../releases/changelog.md) identifies when patch-specific guidance
 begins to apply.
 
@@ -27,7 +27,7 @@ in local development and automation.
     Use this for evaluation, CI jobs, and occasional administration:
 
     ```console
-    npx --yes @hector21/octoform@0.4.0 --help
+    npx --yes @hector21/octoform@0.4.1 --help
     ```
 
 === "Install in a project"
@@ -35,7 +35,7 @@ in local development and automation.
     Use this when a repository owns its governance automation and lockfile:
 
     ```console
-    npm install --save-dev --save-exact @hector21/octoform@0.4.0
+    npm install --save-dev --save-exact @hector21/octoform@0.4.1
     npx octoform --help
     ```
 
@@ -45,7 +45,7 @@ in local development and automation.
     updates are deliberate:
 
     ```console
-    npm install --global @hector21/octoform@0.4.0
+    npm install --global @hector21/octoform@0.4.1
     octoform --help
     ```
 

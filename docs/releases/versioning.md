@@ -24,7 +24,7 @@ For the current site:
 
 ```text
 Octoform package line:  0.4.x
-Validated package:      0.4.0
+Validated package:      0.4.1
 Version selector:       0.4
 Canonical path:         /octoform-docs/0.4/
 ```
@@ -53,7 +53,7 @@ the product release line independently of npm.
 
 ```text
 Documented line:        0.4
-Validated package:      0.4.0
+Validated package:      0.4.1
 Publication tags:       v0.4.0, v0.4.1, ... v0.4.25
 Visible site version:   0.4
 ```
