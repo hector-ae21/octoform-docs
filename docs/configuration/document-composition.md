@@ -1,6 +1,6 @@
 ---
 title: Document composition
-description: Declare accounts, state the contract version, reuse named policies, compose imports, and exclude repositories in Octoform 0.4.
+description: Declare accounts, state the contract version, reuse named policies, compose imports, and exclude repositories in Octoform 0.5.
 ---
 
 # Document composition

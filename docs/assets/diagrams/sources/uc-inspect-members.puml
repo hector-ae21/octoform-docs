@@ -1,0 +1,50 @@
+@startuml uc-inspect-members
+!include _theme.iuml
+
+state inspectMembers as "inspectMembers()" {
+
+  state " " as RequestingInventory
+  state " " as Listing
+  state " " as Comparing
+
+  [*] --> RequestingInventory
+  note on link
+  <b>Operator</b> asks who is in the organisation, and
+  which of the people the configuration names are not
+  end note
+
+  RequestingInventory --> Listing
+  note on link
+  <b>Octoform</b> reads the owners, the members, the outside
+  collaborators, and the invitations that are waiting or
+  that failed
+  • a pending invitation carries its age in whole days
+  • a failed one carries GitHub's own reason
+  end note
+
+  Listing --> Comparing
+  note on link
+  <b>Octoform</b> collects every login the configuration
+  names — team membership, role holders, repository
+  collaborators — and subtracts everyone the
+  organisation already knows
+  • an outside collaborator counts as known
+  • somebody already invited counts as asked
+  end note
+
+  Comparing --> [*]
+  note on link
+  <b>Operator</b> receives the four listings, the two-factor
+  answer or the reason it is not visible, and the people
+  the configuration names who are in no part of the
+  organisation
+  end note
+}
+
+inspectMembers --> CONFIGURATION_RESOLVED
+note on link
+read-only; nothing is invited, removed or
+changed. A personal account has no members,
+so the use case does not apply to one
+end note
+@enduml

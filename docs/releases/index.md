@@ -1,13 +1,13 @@
 ---
 title: Releases
 description: Choose the correct Octoform documentation, understand compatibility, and trace immutable releases.
-application_line: "0.4"
-validated_application_version: "0.4.1"
+application_line: "0.5"
+validated_application_version: "0.5.0"
 ---
 
 # Releases
 
-This site documents the Octoform `0.4` release line. The version selector uses
+This site documents the Octoform `0.5` release line. The version selector uses
 `MAJOR.MINOR`; exact package patches appear in the changelog and in
 availability notices where behavior begins after the first patch in a line.
 Separate immutable tags and GitHub Releases identify each approved editorial
@@ -65,14 +65,27 @@ deployment produced from the default branch.
 
 | Documentation | Compatible packages | Latest verified patch | Runtime |
 | --- | --- | --- | --- |
-| [`0.4`](versioning.md) | `0.4.x` subject to availability notices | [`0.4.1`](https://github.com/hector-ae21/octoform/releases/tag/v0.4.1) | Node.js 20 or newer |
+| [`0.5`](versioning.md) | `0.5.x` subject to availability notices | [`0.5.0`](https://github.com/hector-ae21/octoform/releases/tag/v0.5.0) | Node.js 20 or newer |
+| `0.4` (version selector) | `0.4.x`, no longer receiving documentation updates | [`0.4.1`](https://github.com/hector-ae21/octoform/releases/tag/v0.4.1) | Node.js 20 or newer |
 | `0.3` (version selector) | `0.3.x`, no longer receiving documentation updates | [`0.3.2`](https://github.com/hector-ae21/octoform/releases/tag/v0.3.2) | Node.js 20 or newer |
 
-The `0.3` documentation stays published at its own path and in the version
-selector; it is not removed when a newer line appears. Use the selector when
-operating that line. Within a line, a notice such as **Available since 0.4.1**
-means that the surrounding behavior does not apply to `0.4.0`. Changes that would make the line-wide instructions
-incompatible require a new minor documentation version instead.
+The `0.3` and `0.4` documentation stays published at its own path and in the
+version selector; it is not removed when a newer line appears. Use the selector
+when operating those lines. Within a line, a notice such as
+**Available since 0.5.1** means that the surrounding behavior does not apply to
+`0.5.0`. Changes that would make the line-wide instructions incompatible
+require a new minor documentation version instead.
+
+## Moving from `0.4` to `0.5`
+
+Every existing configuration file keeps working. Read
+[what changed in `0.5.0`](../reference/index.md#what-changed-in-050) before the
+first apply: two exported shapes moved, and three fixes change what a run does
+to a file you have not edited.
+
+If you have ever run `properties sync`, check each definition's description,
+default value and editor setting. Earlier releases reset all three on every
+run.
 
 ## Release records
 
@@ -82,7 +95,7 @@ incompatible require a new minor documentation version instead.
   records Octoform behavior changes and upgrade notes.
 - [npm package versions](https://www.npmjs.com/package/@hector21/octoform?activeTab=versions)
   identify immutable published application artefacts.
-- The [0.4.1 SHA-256 manifest][checksums] verifies the generated references
+- The [0.5.0 SHA-256 manifest][checksums] verifies the generated references
   attached to the latest application Release.
 
-[checksums]: https://github.com/hector-ae21/octoform/releases/download/v0.4.1/SHA256SUMS
+[checksums]: https://github.com/hector-ae21/octoform/releases/download/v0.5.0/SHA256SUMS

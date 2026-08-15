@@ -16,38 +16,41 @@ The complete operation-level data is in
 | REST | GitHub OpenAPI `2026-03-10` at `b26c240ded1c8b79cb0fb09dee4a21239061fa23`, SHA-256 `6f36bc90e67debdb256880d0c5daaaba0afa8ce7bde343db7cc7f608492a997f` |
 | GraphQL | Public schema mutation introspection captured `2026-08-13` (274 mutations) |
 
-Octoform `0.4` pins an explicit REST version and sends it on every request,
+Octoform `0.5` pins an explicit REST version and sends it on every request,
 rather than leaving GitHub to apply whichever version is current by default.
 The pinned description above is also what dispositions future API coverage.
 
-The implementation table below continues to identify `v0.3.1` as the release
-where those routes entered the product contract. `0.4.0` adds owner discovery
-against `GET /users/{username}`, which was already part of the surface, and
-otherwise reaches the same operations.
+`0.5.0` is the first release that reaches GraphQL at all, for the four
+repository settings REST does not expose. It is also the release in which the
+organization, team, membership, role, access, protection and collection routes
+entered the product contract; the implementation table below states which
+release each route was implemented in.
 
 ## Summary
 
 | Measure | Count |
 | --- | ---: |
-| All dispositioned operations | 1337 |
-| REST operations | 1063 |
+| All dispositioned operations | 1338 |
+| REST operations | 1064 |
 | GraphQL mutations | 274 |
+| Implemented in total | 94 |
 | Implemented by `v0.3.1` | 37 |
+| Implemented by `v0.5.0` | 57 |
 | Deprecated upstream | 47 |
 | declarative operations | 65 |
-| excluded operations | 4 |
-| observational operations | 541 |
+| excluded operations | 12 |
+| observational operations | 538 |
 | operational operations | 432 |
-| sensitive-declarative operations | 295 |
+| sensitive-declarative operations | 291 |
 
 ### Planned release targets
 
 | Target | Operations |
 | --- | ---: |
 | `0.3.1` | 37 |
-| `0.5.0` | 295 |
-| `0.6.0` | 1001 |
-| Excluded | 4 |
+| `0.5.0` | 311 |
+| `0.6.0` | 978 |
+| Excluded | 12 |
 
 ## REST families
 
@@ -56,7 +59,7 @@ otherwise reaches the same operations.
 | actions | 179 | 89 | 0 | 49 | 41 | 0 |
 | activity | 21 | 16 | 0 | 0 | 5 | 0 |
 | agents | 30 | 14 | 0 | 16 | 0 | 0 |
-| apps | 9 | 7 | 0 | 0 | 2 | 0 |
+| apps | 10 | 8 | 0 | 0 | 2 | 0 |
 | billing | 4 | 4 | 0 | 0 | 0 | 0 |
 | campaigns | 5 | 2 | 0 | 0 | 3 | 0 |
 | checks | 12 | 6 | 0 | 0 | 6 | 0 |
@@ -76,7 +79,7 @@ otherwise reaches the same operations.
 | licenses | 1 | 1 | 0 | 0 | 0 | 0 |
 | migrations | 22 | 11 | 0 | 0 | 11 | 0 |
 | oidc | 5 | 2 | 0 | 3 | 0 | 0 |
-| orgs | 109 | 54 | 0 | 53 | 1 | 1 |
+| orgs | 109 | 50 | 0 | 49 | 1 | 9 |
 | packages | 27 | 15 | 0 | 0 | 12 | 0 |
 | private-registries | 6 | 3 | 0 | 3 | 0 | 0 |
 | projects | 26 | 14 | 0 | 0 | 12 | 0 |
@@ -101,51 +104,133 @@ otherwise reaches the same operations.
 | sponsors | 9 | 0 | 0 | 0 | 9 | 0 |
 | user-and-platform | 26 | 0 | 0 | 1 | 25 | 0 |
 
-## Operations implemented by v0.3.1
+## Implemented operations
 
-| Method | Path | Operation | Disposition |
+| Release | Method | Path | Operation | Disposition |
+| --- | --- | --- | --- | --- |
+| `v0.5.0` | GET | `/apps/{app_slug}` | `apps/get-by-slug` | observational |
+| `v0.3.1` | GET | `/orgs/{org}` | `orgs/get` | observational |
+| `v0.5.0` | PATCH | `/orgs/{org}` | `orgs/update` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/failed_invitations` | `orgs/list-failed-invitations` | observational |
+| `v0.5.0` | GET | `/orgs/{org}/invitations` | `orgs/list-pending-invitations` | observational |
+| `v0.5.0` | POST | `/orgs/{org}/invitations` | `orgs/create-invitation` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/members` | `orgs/list-members` | observational |
+| `v0.5.0` | DELETE | `/orgs/{org}/memberships/{username}` | `orgs/remove-membership-for-user` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/organization-roles` | `orgs/list-org-roles` | observational |
+| `v0.5.0` | GET | `/orgs/{org}/organization-roles/{role_id}/teams` | `orgs/list-org-role-teams` | observational |
+| `v0.5.0` | GET | `/orgs/{org}/organization-roles/{role_id}/users` | `orgs/list-org-role-users` | observational |
+| `v0.5.0` | DELETE | `/orgs/{org}/organization-roles/teams/{team_slug}/{role_id}` | `orgs/revoke-org-role-team` | sensitive-declarative |
+| `v0.5.0` | PUT | `/orgs/{org}/organization-roles/teams/{team_slug}/{role_id}` | `orgs/assign-team-to-org-role` | sensitive-declarative |
+| `v0.5.0` | DELETE | `/orgs/{org}/organization-roles/users/{username}/{role_id}` | `orgs/revoke-org-role-user` | sensitive-declarative |
+| `v0.5.0` | PUT | `/orgs/{org}/organization-roles/users/{username}/{role_id}` | `orgs/assign-user-to-org-role` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/outside_collaborators` | `orgs/list-outside-collaborators` | observational |
+| `v0.5.0` | PUT | `/orgs/{org}/outside_collaborators/{username}` | `orgs/convert-member-to-outside-collaborator` | operational |
+| `v0.5.0` | GET | `/orgs/{org}/properties/schema` | `orgs/custom-properties-for-repos-get-organization-definitions` | observational |
+| `v0.5.0` | DELETE | `/orgs/{org}/properties/schema/{custom_property_name}` | `orgs/custom-properties-for-repos-delete-organization-definition` | sensitive-declarative |
+| `v0.3.1` | PUT | `/orgs/{org}/properties/schema/{custom_property_name}` | `orgs/custom-properties-for-repos-create-or-update-organization-definition` | sensitive-declarative |
+| `v0.3.1` | GET | `/orgs/{org}/properties/values` | `orgs/custom-properties-for-repos-get-organization-values` | observational |
+| `v0.3.1` | PATCH | `/orgs/{org}/properties/values` | `orgs/custom-properties-for-repos-create-or-update-organization-values` | sensitive-declarative |
+| `v0.3.1` | GET | `/orgs/{org}/repos` | `repos/list-for-org` | observational |
+| `v0.3.1` | GET | `/orgs/{org}/rulesets` | `repos/get-org-rulesets` | observational |
+| `v0.5.0` | POST | `/orgs/{org}/rulesets` | `repos/create-org-ruleset` | declarative |
+| `v0.5.0` | GET | `/orgs/{org}/rulesets/{ruleset_id}` | `repos/get-org-ruleset` | observational |
+| `v0.5.0` | PUT | `/orgs/{org}/rulesets/{ruleset_id}` | `repos/update-org-ruleset` | declarative |
+| `v0.5.0` | GET | `/orgs/{org}/teams` | `teams/list` | observational |
+| `v0.5.0` | POST | `/orgs/{org}/teams` | `teams/create` | sensitive-declarative |
+| `v0.5.0` | DELETE | `/orgs/{org}/teams/{team_slug}` | `teams/delete-in-org` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/teams/{team_slug}` | `teams/get-by-name` | observational |
+| `v0.5.0` | PATCH | `/orgs/{org}/teams/{team_slug}` | `teams/update-in-org` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/teams/{team_slug}/invitations` | `teams/list-pending-invitations-in-org` | observational |
+| `v0.5.0` | GET | `/orgs/{org}/teams/{team_slug}/members` | `teams/list-members-in-org` | observational |
+| `v0.5.0` | DELETE | `/orgs/{org}/teams/{team_slug}/memberships/{username}` | `teams/remove-membership-for-user-in-org` | sensitive-declarative |
+| `v0.5.0` | GET | `/orgs/{org}/teams/{team_slug}/memberships/{username}` | `teams/get-membership-for-user-in-org` | observational |
+| `v0.5.0` | PUT | `/orgs/{org}/teams/{team_slug}/memberships/{username}` | `teams/add-or-update-membership-for-user-in-org` | sensitive-declarative |
+| `v0.5.0` | DELETE | `/orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}` | `teams/remove-repo-in-org` | sensitive-declarative |
+| `v0.5.0` | PUT | `/orgs/{org}/teams/{team_slug}/repos/{owner}/{repo}` | `teams/add-or-update-repo-permissions-in-org` | sensitive-declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}` | `repos/get` | observational |
+| `v0.3.1` | PATCH | `/repos/{owner}/{repo}` | `repos/update` | declarative |
+| `v0.3.1` | DELETE | `/repos/{owner}/{repo}/automated-security-fixes` | `repos/disable-automated-security-fixes` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/automated-security-fixes` | `repos/check-automated-security-fixes` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/automated-security-fixes` | `repos/enable-automated-security-fixes` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/branches/{branch}` | `repos/get-branch` | observational |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/branches/{branch}/protection` | `repos/get-branch-protection` | observational |
+| `v0.5.0` | PUT | `/repos/{owner}/{repo}/branches/{branch}/protection` | `repos/update-branch-protection` | declarative |
+| `v0.5.0` | DELETE | `/repos/{owner}/{repo}/branches/{branch}/protection/required_signatures` | `repos/delete-commit-signature-protection` | declarative |
+| `v0.5.0` | POST | `/repos/{owner}/{repo}/branches/{branch}/protection/required_signatures` | `repos/create-commit-signature-protection` | declarative |
+| `v0.3.1` | POST | `/repos/{owner}/{repo}/branches/{branch}/rename` | `repos/rename-branch` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/code-scanning/default-setup` | `code-scanning/get-default-setup` | observational |
+| `v0.3.1` | PATCH | `/repos/{owner}/{repo}/code-scanning/default-setup` | `code-scanning/update-default-setup` | sensitive-declarative |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/collaborators` | `repos/list-collaborators` | observational |
+| `v0.5.0` | DELETE | `/repos/{owner}/{repo}/collaborators/{username}` | `repos/remove-collaborator` | sensitive-declarative |
+| `v0.5.0` | PUT | `/repos/{owner}/{repo}/collaborators/{username}` | `repos/add-collaborator` | sensitive-declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/contents/{path}` | `repos/get-content` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/contents/{path}` | `repos/create-or-update-file-contents` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/environments` | `repos/get-all-environments` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/environments/{environment_name}` | `repos/create-or-update-environment` | sensitive-declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/git/ref/{ref}` | `git/get-ref` | observational |
+| `v0.3.1` | POST | `/repos/{owner}/{repo}/git/refs` | `git/create-ref` | operational |
+| `v0.5.0` | DELETE | `/repos/{owner}/{repo}/immutable-releases` | `repos/disable-immutable-releases` | declarative |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/immutable-releases` | `repos/check-immutable-releases` | observational |
+| `v0.5.0` | PUT | `/repos/{owner}/{repo}/immutable-releases` | `repos/enable-immutable-releases` | declarative |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/invitations` | `repos/list-invitations` | observational |
+| `v0.5.0` | DELETE | `/repos/{owner}/{repo}/invitations/{invitation_id}` | `repos/delete-invitation` | sensitive-declarative |
+| `v0.5.0` | PATCH | `/repos/{owner}/{repo}/invitations/{invitation_id}` | `repos/update-invitation` | sensitive-declarative |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/labels` | `issues/list-labels-for-repo` | observational |
+| `v0.5.0` | POST | `/repos/{owner}/{repo}/labels` | `issues/create-label` | operational |
+| `v0.5.0` | DELETE | `/repos/{owner}/{repo}/labels/{name}` | `issues/delete-label` | operational |
+| `v0.5.0` | PATCH | `/repos/{owner}/{repo}/labels/{name}` | `issues/update-label` | operational |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/milestones` | `issues/list-milestones` | observational |
+| `v0.5.0` | POST | `/repos/{owner}/{repo}/milestones` | `issues/create-milestone` | operational |
+| `v0.5.0` | DELETE | `/repos/{owner}/{repo}/milestones/{milestone_number}` | `issues/delete-milestone` | operational |
+| `v0.5.0` | PATCH | `/repos/{owner}/{repo}/milestones/{milestone_number}` | `issues/update-milestone` | operational |
+| `v0.3.1` | DELETE | `/repos/{owner}/{repo}/private-vulnerability-reporting` | `repos/disable-private-vulnerability-reporting` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/private-vulnerability-reporting` | `repos/check-private-vulnerability-reporting` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/private-vulnerability-reporting` | `repos/enable-private-vulnerability-reporting` | declarative |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/properties/values` | `repos/custom-properties-for-repos-get-repository-values` | observational |
+| `v0.5.0` | PATCH | `/repos/{owner}/{repo}/properties/values` | `repos/custom-properties-for-repos-create-or-update-repository-values` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/rulesets` | `repos/get-repo-rulesets` | observational |
+| `v0.3.1` | POST | `/repos/{owner}/{repo}/rulesets` | `repos/create-repo-ruleset` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/rulesets/{ruleset_id}` | `repos/get-repo-ruleset` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/rulesets/{ruleset_id}` | `repos/update-repo-ruleset` | declarative |
+| `v0.5.0` | GET | `/repos/{owner}/{repo}/teams` | `repos/list-teams` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/topics` | `repos/replace-all-topics` | declarative |
+| `v0.3.1` | DELETE | `/repos/{owner}/{repo}/vulnerability-alerts` | `repos/disable-vulnerability-alerts` | declarative |
+| `v0.3.1` | GET | `/repos/{owner}/{repo}/vulnerability-alerts` | `repos/check-vulnerability-alerts` | observational |
+| `v0.3.1` | PUT | `/repos/{owner}/{repo}/vulnerability-alerts` | `repos/enable-vulnerability-alerts` | declarative |
+| `v0.3.1` | GET | `/user` | `users/get-authenticated` | observational |
+| `v0.3.1` | GET | `/user/repos` | `repos/list-for-authenticated-user` | observational |
+| `v0.3.1` | GET | `/users/{username}` | `users/get-by-username` | observational |
+| `v0.3.1` | GET | `/users/{username}/repos` | `repos/list-for-user` | observational |
+| `v0.5.0` | mutation | — | `updateRepository` | declarative |
+
+Implemented means that the named release invokes the operation in at least one
+bounded context. It does not make every possible use of that operation safe for
+normal desired-state reconciliation.
+
+## Operations Octoform will never perform
+
+| Method | Path | Operation | Why it is never performed |
 | --- | --- | --- | --- |
-| GET | `/orgs/{org}` | `orgs/get` | observational |
-| PUT | `/orgs/{org}/properties/schema/{custom_property_name}` | `orgs/custom-properties-for-repos-create-or-update-organization-definition` | sensitive-declarative |
-| GET | `/orgs/{org}/properties/values` | `orgs/custom-properties-for-repos-get-organization-values` | observational |
-| PATCH | `/orgs/{org}/properties/values` | `orgs/custom-properties-for-repos-create-or-update-organization-values` | sensitive-declarative |
-| GET | `/orgs/{org}/repos` | `repos/list-for-org` | observational |
-| GET | `/orgs/{org}/rulesets` | `repos/get-org-rulesets` | observational |
-| GET | `/repos/{owner}/{repo}` | `repos/get` | observational |
-| PATCH | `/repos/{owner}/{repo}` | `repos/update` | declarative |
-| DELETE | `/repos/{owner}/{repo}/automated-security-fixes` | `repos/disable-automated-security-fixes` | declarative |
-| GET | `/repos/{owner}/{repo}/automated-security-fixes` | `repos/check-automated-security-fixes` | observational |
-| PUT | `/repos/{owner}/{repo}/automated-security-fixes` | `repos/enable-automated-security-fixes` | declarative |
-| GET | `/repos/{owner}/{repo}/branches/{branch}` | `repos/get-branch` | observational |
-| GET | `/repos/{owner}/{repo}/branches/{branch}/protection` | `repos/get-branch-protection` | observational |
-| POST | `/repos/{owner}/{repo}/branches/{branch}/rename` | `repos/rename-branch` | declarative |
-| GET | `/repos/{owner}/{repo}/code-scanning/default-setup` | `code-scanning/get-default-setup` | observational |
-| PATCH | `/repos/{owner}/{repo}/code-scanning/default-setup` | `code-scanning/update-default-setup` | sensitive-declarative |
-| GET | `/repos/{owner}/{repo}/contents/{path}` | `repos/get-content` | observational |
-| PUT | `/repos/{owner}/{repo}/contents/{path}` | `repos/create-or-update-file-contents` | declarative |
-| GET | `/repos/{owner}/{repo}/environments` | `repos/get-all-environments` | observational |
-| PUT | `/repos/{owner}/{repo}/environments/{environment_name}` | `repos/create-or-update-environment` | sensitive-declarative |
-| GET | `/repos/{owner}/{repo}/git/ref/{ref}` | `git/get-ref` | observational |
-| POST | `/repos/{owner}/{repo}/git/refs` | `git/create-ref` | operational |
-| DELETE | `/repos/{owner}/{repo}/private-vulnerability-reporting` | `repos/disable-private-vulnerability-reporting` | declarative |
-| GET | `/repos/{owner}/{repo}/private-vulnerability-reporting` | `repos/check-private-vulnerability-reporting` | observational |
-| PUT | `/repos/{owner}/{repo}/private-vulnerability-reporting` | `repos/enable-private-vulnerability-reporting` | declarative |
-| GET | `/repos/{owner}/{repo}/rulesets` | `repos/get-repo-rulesets` | observational |
-| POST | `/repos/{owner}/{repo}/rulesets` | `repos/create-repo-ruleset` | declarative |
-| GET | `/repos/{owner}/{repo}/rulesets/{ruleset_id}` | `repos/get-repo-ruleset` | observational |
-| PUT | `/repos/{owner}/{repo}/rulesets/{ruleset_id}` | `repos/update-repo-ruleset` | declarative |
-| PUT | `/repos/{owner}/{repo}/topics` | `repos/replace-all-topics` | declarative |
-| DELETE | `/repos/{owner}/{repo}/vulnerability-alerts` | `repos/disable-vulnerability-alerts` | declarative |
-| GET | `/repos/{owner}/{repo}/vulnerability-alerts` | `repos/check-vulnerability-alerts` | observational |
-| PUT | `/repos/{owner}/{repo}/vulnerability-alerts` | `repos/enable-vulnerability-alerts` | declarative |
-| GET | `/user` | `users/get-authenticated` | observational |
-| GET | `/user/repos` | `repos/list-for-authenticated-user` | observational |
-| GET | `/users/{username}` | `users/get-by-username` | observational |
-| GET | `/users/{username}/repos` | `repos/list-for-user` | observational |
+| DELETE | `/orgs/{org}` | `orgs/delete` | Organization deletion is never inferred from desired-state omission. |
+| GET | `/orgs/{org}/personal-access-token-requests` | `orgs/list-pat-grant-requests` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| POST | `/orgs/{org}/personal-access-token-requests` | `orgs/review-pat-grant-requests-in-bulk` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| POST | `/orgs/{org}/personal-access-token-requests/{pat_request_id}` | `orgs/review-pat-grant-request` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| GET | `/orgs/{org}/personal-access-token-requests/{pat_request_id}/repositories` | `orgs/list-pat-grant-request-repositories` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| GET | `/orgs/{org}/personal-access-tokens` | `orgs/list-pat-grants` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| POST | `/orgs/{org}/personal-access-tokens` | `orgs/update-pat-accesses` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| POST | `/orgs/{org}/personal-access-tokens/{pat_id}` | `orgs/update-pat-access` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| GET | `/orgs/{org}/personal-access-tokens/{pat_id}/repositories` | `orgs/list-pat-grant-repositories` | Every one of these states that only GitHub Apps can use it, and octoform authenticates with a personal access token. |
+| DELETE | `/repos/{owner}/{repo}` | `repos/delete` | Repository deletion is never inferred from desired-state omission. |
+| POST | `/repos/{owner}/{repo}/transfer` | `repos/transfer` | Ownership transfer is outside normal reconciliation. |
+| mutation | — | `transferEnterpriseOrganization` | Deletion or ownership transfer is outside normal desired-state reconciliation. |
 
-Implemented means that `v0.3.1` invokes the operation in at least one bounded
-context. It does not make every possible use of that operation safe for normal
-desired-state reconciliation.
+Two different reasons appear in that table. Deleting or transferring a
+repository or an organization is irreversible in a way no plan can describe, so
+absence must never imply it. The personal access token routes are a capability
+statement instead: every one of them states that only GitHub Apps can use it,
+and Octoform authenticates with a personal access token, so they would refuse
+it whatever permissions it carried. See
+[credentials and permissions](../security/credentials-and-permissions.md).
 
 ## Regeneration and review
 
@@ -172,7 +257,7 @@ are deliberately explicit so API growth cannot silently enter the register.
 - **Declarative** operations can represent ordinary durable desired state.
 - **Sensitive declarative** operations manage secrets, access, security, identity, or broad policy.
 - **Operational** operations are transient workflows or historical events and never run as an implicit `apply` side effect.
-- **Excluded** operations are outside normal reconciliation because absence must never imply deletion, transfer, or another irreversible action.
+- **Excluded** operations are outside normal reconciliation because absence must never imply deletion, transfer, or another irreversible action, or because the credential model cannot reach them at all.
 
 An operation's target is a planning release, not a promise that GitHub grants it
 to every owner or token. Runtime capability and permission evidence remains the

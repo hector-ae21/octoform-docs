@@ -1,6 +1,6 @@
 ---
 title: Requirements
-description: How Octoform 0.4 requirements are recorded as actors, use cases, an operator context, and one specification per use case.
+description: How Octoform 0.5 requirements are recorded as actors, use cases, an operator context, and one specification per use case.
 ---
 
 # Requirements

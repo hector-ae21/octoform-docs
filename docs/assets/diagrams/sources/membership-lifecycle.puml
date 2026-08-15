@@ -1,0 +1,53 @@
+@startuml membership-lifecycle
+!include _theme.iuml
+
+state "Not known to the organisation" as Unknown
+state "Invited, waiting" as Invited
+state "Invitation failed" as Failed
+state "Member" as Member
+state "Owner" as Owner
+state "Outside collaborator" as Outside
+
+[*] --> Unknown
+
+Unknown --> Invited : members invite
+note on link
+  <b>Command, not declaration.</b> One login,
+  confirmed, and the person is emailed.
+end note
+
+Invited --> Member : the person accepts
+Invited --> Failed : GitHub records a reason
+Invited --> Unknown : members remove
+note on link
+  The same endpoint withdraws an unanswered
+  invitation and removes an active member.
+end note
+
+Member --> Owner : role changed in GitHub
+Owner --> Member : role changed in GitHub
+
+Member --> Outside : members convert
+note on link
+  Keeps only the repositories their current
+  teams allow. Guarded exactly like a removal.
+end note
+
+Outside --> Unknown : members remove
+Member --> Unknown : members remove
+Owner --> Unknown : members remove
+
+note right of Owner
+  <b>Refused whatever else is true</b>
+  • the only remaining owner
+  • the account the run is authenticated as
+end note
+
+note bottom of Invited
+  <b>inspect members</b> reports the age in whole
+  days, which is what makes a stale invitation
+  visible at all. A pending invitation counts as
+  somebody already asked, so no run sends a
+  second one.
+end note
+@enduml

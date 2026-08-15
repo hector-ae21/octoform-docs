@@ -1,6 +1,6 @@
 ---
 title: Actors and use cases
-description: The roles that interact with Octoform 0.4 and the individual goals each one can reach.
+description: The roles that interact with Octoform 0.5 and the individual goals each one can reach.
 ---
 
 # Actors and use cases
@@ -59,6 +59,20 @@ Two relationships carry the design of the release:
 - `savePlan()` **extends** `planChanges()`. Saving is optional behaviour on
   top of planning, and `applySavedPlan()` includes it because a saved plan is
   its only possible input.
+
+The membership package sits apart from both, and its three goals reach no
+planning use case at all. That is the one place in the model where a write is
+not preceded by a plan. It is argued in each specification, and summarised in
+[`octoform members`](../../commands/members.md#why-these-are-commands-and-not-policy):
+an invitation is addressed to a person who is emailed about it, and an
+authoritative member list would remove somebody the first time a name was
+mistyped.
+
+Note what is *not* in that package. Everything the organization holds — its
+profile, its member policies, its custom properties, its rulesets, its teams
+and its roles — is reached through `planChanges()` like any repository setting,
+because a change that reaches every repository an account owns should never be
+the one thing nobody saw a diff for.
 
 ## Non-interactive use
 

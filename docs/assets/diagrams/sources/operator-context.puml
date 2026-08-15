@@ -11,6 +11,8 @@ state "PLAN_SAVED" as PlanSaved
 state "CHANGES_APPLIED" as Applied
 state "TYPES_PROPOSED" as Types
 state "PROPERTY_SCHEMA_SYNCHRONIZED" as Properties
+state "MEMBERSHIP_REPORTED" as MembershipReported
+state "MEMBERSHIP_CHANGED" as MembershipChanged
 
 [*] --> NoConfig
 NoConfig --> NoConfig : validateConfiguration()
@@ -24,6 +26,10 @@ Resolved --> PlanPresented : planChanges()
 Resolved --> PlanSaved : savePlan()
 Resolved --> Types : classifyRepositories()
 Resolved --> Properties : syncProperties()
+Resolved --> MembershipReported : inspectMembers()
+Resolved --> MembershipChanged : inviteMember()
+Resolved --> MembershipChanged : removeMember()
+Resolved --> MembershipChanged : convertMember()
 
 PlanPresented --> Applied : applyPlan()
 PlanSaved --> Applied : applySavedPlan()
@@ -35,4 +41,6 @@ PlanSaved --> [*] : exit class 0-5
 Applied --> [*] : exit class 0-5
 Types --> [*] : exit class 0-5
 Properties --> [*] : exit class 0-5
+MembershipReported --> [*] : exit class 0-5
+MembershipChanged --> [*] : exit class 0-5
 @enduml

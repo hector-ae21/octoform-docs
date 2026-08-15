@@ -32,12 +32,39 @@ An unreadable setting is not equivalent to a disabled or absent setting. When
 Octoform lacks enough evidence to compare current and desired state safely, the
 operation is blocked.
 
+The three `members` commands are the one exception to "observation precedes
+mutation", and they replace it with something narrower rather than nothing:
+each takes one login, reads the organization's current people, states what it
+is about to do and to whom, and asks. See
+[why these are commands and not policy](../commands/members.md#why-these-are-commands-and-not-policy).
+
+## Two transports, one meaning for failure
+
+Four repository settings are read and written through GitHub's GraphQL API
+rather than REST. A GraphQL response can carry data and errors together under
+HTTP `200`, which is a shape a REST client never has to consider — so the
+transport reports what arrived alongside what failed, instead of letting a
+partial observation read as a complete one.
+
+Every GraphQL failure is reduced to the same vocabulary a REST status carries,
+and an unrecognized error type is treated as unavailable rather than as a
+confirmed absence. One failed field narrows to the same unreadable state a REST
+read produces, so the planner blocks it for the same reason and cannot tell
+which transport observed it.
+
+Reads are retried only while every failure is transient and nothing arrived. A
+mutation is never retried, because a mutation that timed out may have happened.
+
 ## Output privacy
 
 Plans necessarily include repository names, settings, branches, environments,
-rulesets, and selected current and desired values. Treat output from a private
-owner as private operational metadata. Do not upload it to a public artifact
-or paste it unchanged into an issue.
+rulesets, and selected current and desired values. An organization plan also
+includes team slugs, member logins and role holders, and
+[`inspect members`](../commands/members.md) reports the organization's people
+by name, including pending invitations and the email addresses of invitations
+that were sent to one. Treat output from a private owner as private operational
+metadata. Do not upload it to a public artifact or paste it unchanged into an
+issue.
 
 Octoform never displays the token itself. Values that came from GitHub —
 repository names, descriptions, topics, property values, API error text — are

@@ -1,6 +1,6 @@
 ---
 title: Authentication and exit codes
-description: Understand Octoform 0.4 credentials, failure categories, frozen exit codes, JSON output, and programmatic use.
+description: Understand Octoform 0.5 credentials, failure categories, frozen exit codes, JSON output, and programmatic use.
 ---
 
 # Authentication and exit codes
@@ -29,9 +29,20 @@ login or a repository name belongs is reported against its parent.
 
 ## Token behavior
 
-Classic tokens report scopes through response headers. Octoform checks for
-`repo` and, for organization custom-property writes, `admin:org`. A missing
-reported scope fails early with a remediation message.
+Classic tokens report scopes through response headers. Octoform checks the
+scopes the command it was given actually needs, and a missing reported scope
+fails early with a remediation message rather than partway through a run:
+
+| Command | Classic scopes |
+| --- | --- |
+| `audit`, `plan`, `apply`, `classify`, `inspect capabilities` | `repo` |
+| `properties sync` | `repo`, `admin:org` |
+| `inspect members` | `read:org` |
+| `members invite`, `members remove`, `members convert` | `admin:org` |
+
+A configuration with an [`organization` block](../configuration/organization.md)
+needs `admin:org` for the parts of it that write, whichever command carries
+them.
 
 Fine-grained tokens do not report classic scope headers. Their absence is
 treated as unknown rather than missing; GitHub endpoint responses remain the
@@ -66,7 +77,7 @@ reason, not a code, so match on the exit class rather than on that text.
 
 ## JSON output
 
-`plan`, `inspect config`, and `inspect capabilities` accept
+`plan`, `inspect config`, `inspect capabilities`, and `inspect members` accept
 `--format json`. Output is wrapped in an envelope with its own schema version,
 independent of the package version:
 
@@ -78,8 +89,8 @@ Adding a field is a compatible change. Removing or repurposing one increments
 `schemaVersion`. The envelope never contains a token, an authorization header,
 or private file content.
 
-`audit`, `apply`, `classify`, and `properties sync` remain text-only in this
-release.
+`audit`, `apply`, `classify`, `properties sync`, and the three `members`
+commands remain text-only in this release.
 
 ## Reading terminal output safely
 

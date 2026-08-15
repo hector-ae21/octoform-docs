@@ -3,12 +3,23 @@
 
 class Config {
   owner: string
+  owners: Map
   imports: string[]
+  organization: OrganizationPolicy
   defaults: PolicySet
   types: Map
   repos: Map
   classify: ClassifyConfig
   audit: AuditConfig
+}
+
+class OrganizationPolicy {
+  profile: OrganizationProfile
+  members: OrganizationMemberPolicy
+  properties: Map
+  rulesets: OrganizationRulesetPolicy[]
+  teams: Map
+  roles: Map
 }
 
 class PolicySet {
@@ -19,6 +30,34 @@ class PolicySet {
   repo: RepoPolicy
   default_branch: DefaultBranchPolicy
   ensure_branches: string[]
+  access: AccessPolicy
+  properties: Map
+}
+
+class AccessPolicy {
+  users: Map
+  teams: Map
+}
+
+class BranchProtectionPolicy {
+  branch: string
+  enforce_admins: boolean
+  required_approvals: number
+  restrict_pushes: BranchRestrictions
+}
+
+class LabelPolicy {
+  name: string
+  color: string
+  rename_from: string[]
+  mode: present | absent
+}
+
+class MilestonePolicy {
+  title: string
+  due: date
+  state: open | closed
+  mode: present | absent
 }
 
 class RulesetPolicy {
@@ -66,8 +105,12 @@ class CapabilityEvidence {
 }
 
 class Change {
-  repo: string
+  owner: string
+  repo: string [0..1]
   key: string
+  operation: create | update | attach | detach | delete
+  risk: normal | sensitive | destructive | cost
+  prerequisites: string[]
   from: unknown
   to: unknown
   blocked: string
@@ -75,20 +118,42 @@ class Change {
   payload: unknown
 }
 
+class OrganizationState {
+  settings: Map
+  properties: Map
+  teams: Map
+  roles: Map
+  rulesets: ExistingRuleset[]
+}
+
 class AppliedChange {
   outcome: success | failed
   error: string
 }
 
+Config "1" *-- "0..1" OrganizationPolicy : one per account
 Config "1" *-- "0..*" PolicySet : precedence layers
 PolicySet "1" *-- "0..*" RulesetPolicy
+PolicySet "1" *-- "0..*" BranchProtectionPolicy
+PolicySet "1" *-- "0..1" AccessPolicy
+PolicySet "1" *-- "0..*" LabelPolicy
+PolicySet "1" *-- "0..*" MilestonePolicy
 PolicySet "1" *-- "0..*" EnvironmentPolicy
 PolicySet "1" *-- "0..*" FilePolicy
 RepoState <|-- RepoDetail
 RepoDetail "1" *-- "0..1" RepoStructure
 RepoDetail "1" o-- "0..1" CapabilityEvidence
+OrganizationPolicy ..> Change : desired values
+OrganizationState ..> Change : observed values
 PolicySet ..> Change : desired values
 RepoDetail ..> Change : observed values
 CapabilityEvidence ..> Change : availability
+Change "0..*" --> "0..*" Change : prerequisites
 Change "1" --> "0..1" AppliedChange : attempted as
+
+note bottom of Change
+  <b>repo</b> is optional. A change to the account
+  itself has no repository to name, and inventing
+  one would make it group and count as though it did.
+end note
 @enduml

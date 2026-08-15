@@ -63,16 +63,38 @@ and report suspected vulnerabilities through a private channel.
 
 ## Core guarantees
 
-| Boundary | Octoform `0.4` contract |
+| Boundary | Octoform `0.5` contract |
 | --- | --- |
 | Configuration | Desired state and local source paths; never credential values |
 | Token input | `GITHUB_TOKEN`, then `GH_TOKEN`; never part of policy or plan |
 | `audit` | Read-only inventory and findings |
 | `plan` | Read-only observation and deterministic comparison |
 | `apply` | Displays its plan, confirms, then sends ordered mutations |
-| Unreadable state | Blocked instead of treated as absent or disabled |
+| `inspect` | Read-only, including `inspect members` |
+| `members` | One person per invocation, stated and confirmed before it is sent |
+| Unreadable state | Blocked instead of treated as absent or disabled, whichever transport failed to read it |
 | Unsupported capability | Reported from owner, repository, token, and API evidence when available |
 | Files | Create-if-missing; no overwrite or deletion |
+| Removal | Never implied by an omission. Every removable resource has a word that has to be written. |
+| Lockout | Refused: not the only organization owner, and not the account the run is authenticated as |
+
+## Governing the account is not the same as governing its repositories
+
+The difference is worth stating before granting it.
+
+A [base permission](../configuration/organization.md#reach-and-why-eight-of-these-are-sensitive),
+an [organization ruleset](../configuration/organization-rulesets.md) and an
+[organization role](../configuration/roles.md) each reach every repository the
+organization owns, including ones no configuration names. Each is reported as
+`sensitive`.
+
+Deleting a [team](../configuration/teams.md) takes its child teams with it, and
+taking somebody off a team takes them out of every repository that team
+reached. Both are `destructive`.
+
+Nothing at this level is removed because a file stopped mentioning it. A team,
+a property definition or a member is removed only where the configuration says
+so, or through a command that names the person and asks.
 
 !!! warning "Keep security reports private"
 

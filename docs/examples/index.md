@@ -1,6 +1,6 @@
 ---
 title: Validated examples
-description: Choose and download a complete Octoform 0.4 configuration for a focused governance workflow.
+description: Choose and download a complete Octoform 0.5 configuration for a focused governance workflow.
 ---
 
 # Validated examples
@@ -15,6 +15,28 @@ repositories are intentionally fictitious.
     run `octoform plan` before considering `apply`.
 
 <div class="octoform-grid" markdown>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
+## Organization
+
+Govern the account itself — profile, member policies, custom properties and
+organization rulesets — in the same reviewed plan as its repositories.
+
+[Open the organization policy](organization.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
+## Teams and access
+
+Declare teams and their nesting, who is on each one, who holds an organization
+role, and what each of them may reach.
+
+[Open the teams and access policy](teams-and-access.md)
+
+</div>
 
 <div class="octoform-card octoform-card--linked" markdown>
 
@@ -112,3 +134,9 @@ The documentation build parses every root file, resolves its imports, and
 rejects invalid configuration. Validation proves compatibility with the
 documented Octoform release; it does not prove that the placeholder policy is
 appropriate for a particular repository, token, or GitHub plan.
+
+It proves less than usual for the two organization examples, and the difference
+is worth knowing. Loading a file establishes that every key is spelled the way
+the release accepts. It cannot establish what a `base_permission` or a `~ALL`
+condition would reach in *your* organization — only a plan against that
+organization can, which is why both examples say to run one first.

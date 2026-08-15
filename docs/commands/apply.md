@@ -64,23 +64,56 @@ and across the whole selection.
 
 ## Operation order
 
-1. Rename the default branch when planned.
-2. Apply repository settings in endpoint-compatible groups.
-3. Execute branch, ruleset, environment, security, and file operations in
-   their defined groups.
-4. Report the outcome of every attempted change.
+The account is brought into agreement with the file before any repository is
+touched:
+
+1. Organization settings, in one request.
+2. Custom property definitions, one at a time, each read before it is written.
+3. Teams, team membership, and organization role assignments, ordered by their
+   dependencies rather than by the order the file happens to be written in.
+4. Organization rulesets, last of the owner-level work, because they reach
+   furthest.
+
+Then, per repository:
+
+1. Unarchive, when planned. Everything else waits for it.
+2. Rename the repository or the default branch when planned.
+3. Apply repository settings in endpoint-compatible groups.
+4. Execute branch, ruleset, protection, access, collection, environment,
+   security, and file operations in their defined groups.
+5. Archive, when planned, and only if everything else succeeded.
+6. Report the outcome of every attempted change.
 
 The default branch is renamed before operations that can name a branch. Fields
 accepted by the repository update endpoint are bundled into one request. If a
 group request fails, every field in that request receives the same failure
 because individual success cannot be established.
 
+## Order comes from a dependency graph
+
+!!! info "Available since 0.5.0"
+
+    Apply order is derived from what each change waits for, not from the order
+    the steps are written in. A change records its prerequisites, and the graph
+    does two things with them: it attempts a prerequisite first, and it
+    **blocks** — rather than attempts — anything whose prerequisite failed.
+
+    A child team is not sent to sit under a parent whose creation failed. A
+    member is not added to a team that does not exist. A repository setting is
+    not written to a repository that is still archived.
+
+    See [owner reconciliation](../architecture/behavior/owner-reconciliation.md)
+    for the graph itself.
+
 ## Partial failure
 
-A failure in one endpoint group does not suppress unrelated groups. The
-command exits `5` when any attempted change fails, `4` when nothing failed but
-something was blocked, and leaves successful earlier groups in place. There is
-no transaction or automatic rollback across GitHub endpoints.
+A failure in one endpoint group does not suppress unrelated groups, unless
+something depended on it — in which case the dependent is reported as blocked
+with the reason, rather than attempted and failing for a second time.
+
+The command exits `5` when any attempted change fails, `4` when nothing failed
+but something was blocked, and leaves successful earlier groups in place. There
+is no transaction or automatic rollback across GitHub endpoints.
 
 ## Recovery
 
@@ -92,6 +125,10 @@ no transaction or automatic rollback across GitHub endpoints.
 To revert a successful value, declare its previous value and apply another
 reviewed plan. Removing a field stops management but does not reverse an
 already applied value.
+
+There is no rollback command, and some changes a second run cannot undo. See
+[incidents and recovery](../security/incidents-and-recovery.md) for which ones
+and why.
 
 See the [plan and apply guide](../guides/plan-and-apply.md) for a complete
 operator procedure.

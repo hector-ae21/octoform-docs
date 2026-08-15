@@ -1,6 +1,6 @@
 ---
 title: Classification and audit
-description: Infer repository types and declare read-only compliance expectations in Octoform 0.4.
+description: Infer repository types and declare read-only compliance expectations in Octoform 0.5.
 ---
 
 # Classification and audit

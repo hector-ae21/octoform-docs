@@ -1,6 +1,6 @@
 ---
 title: Use-case specifications
-description: The eleven Octoform 0.4 use cases, each specified as a conversation with a primary actor, preconditions, and the states it can end on.
+description: The fifteen Octoform 0.5 use cases, each specified as a conversation with a primary actor, preconditions, and the states it can end on.
 ---
 
 # Use-case specifications
@@ -29,6 +29,17 @@ and where the conversation can end.
 | [`applySavedPlan()`](apply-saved-plan.md) | Change reviewer | Yes | Yes |
 | [`classifyRepositories()`](classify-repositories.md) | Repository operator | Yes | Only with `--apply` |
 | [`syncProperties()`](sync-properties.md) | Repository operator | Yes | Yes |
+| [`inspectMembers()`](inspect-members.md) | Repository operator | Yes | No |
+| [`inviteMember()`](invite-member.md) | Repository operator | Yes | Yes, one person |
+| [`removeMember()`](remove-member.md) | Repository operator | Yes | Yes, one person |
+| [`convertMember()`](convert-member.md) | Repository operator | Yes | Yes, one person |
+
+The last three are the only writes that do not go through a plan. That is
+deliberate and is argued in each specification: an invitation is an act
+addressed to a person, not a state a schedule reconciles. Everything the
+organization itself *holds* — its profile, member policies, properties,
+rulesets, teams and roles — is planned like any other change, by
+[`planChanges()`](plan-changes.md) and [`applyPlan()`](apply-plan.md).
 
 ## How to read a specification
 

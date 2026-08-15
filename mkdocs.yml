@@ -1,5 +1,5 @@
 site_name: Octoform
-site_description: Declarative plan and apply governance for GitHub repositories
+site_description: Declarative plan and apply governance for GitHub organizations and repositories
 site_author: Hector Arrechea
 site_url: &documentation_root https://hector-ae21.github.io/octoform-docs/
 repo_name: hector-ae21/octoform-docs
@@ -115,10 +115,14 @@ nav:
   - Guides & examples:
       - Guides overview: guides/index.md
       - Plan and apply: guides/plan-and-apply.md
+      - Govern the organization: guides/organization-governance.md
+      - Verify against a test organization: guides/test-organization.md
       - Several accounts: guides/multi-account.md
       - CI/CD automation: automation/index.md
       - Examples:
           - Example catalogue: examples/index.md
+          - Organization: examples/organization.md
+          - Teams and access: examples/teams-and-access.md
           - Multi-owner: examples/multi-owner.md
           - Reviewed plan: examples/reviewed-plan.md
           - Minimal policy: examples/minimal.md
@@ -135,9 +139,18 @@ nav:
           - Document composition: configuration/document-composition.md
           - Selection and precedence: configuration/selection-and-precedence.md
           - Classification and audit: configuration/classification-and-audit.md
+          - The organization block: configuration/organization.md
+          - Custom properties: configuration/custom-properties.md
+          - Organization rulesets: configuration/organization-rulesets.md
+          - Teams and membership: configuration/teams.md
+          - Organization roles: configuration/roles.md
           - Repository settings: configuration/repository-settings.md
           - Security settings: configuration/security-settings.md
           - Branches and rulesets: configuration/branches-and-rulesets.md
+          - Ruleset rules: configuration/ruleset-rules.md
+          - Classic branch protection: configuration/branch-protection.md
+          - Repository access: configuration/access.md
+          - Labels and milestones: configuration/collections.md
           - Environments: configuration/environments.md
           - Files: configuration/files.md
       - Command line:
@@ -149,6 +162,7 @@ nav:
           - Properties sync: commands/properties-sync.md
           - Configuration commands: commands/config.md
           - Inspection commands: commands/inspect.md
+          - Members: commands/members.md
           - Authentication and exit codes: commands/execution-contract.md
       - Audited evidence:
           - 0.3.1 behavior baseline: reference/v0.3.1-baseline.md
@@ -173,6 +187,10 @@ nav:
               - applySavedPlan(): architecture/requirements/use-cases/apply-saved-plan.md
               - classifyRepositories(): architecture/requirements/use-cases/classify-repositories.md
               - syncProperties(): architecture/requirements/use-cases/sync-properties.md
+              - inspectMembers(): architecture/requirements/use-cases/inspect-members.md
+              - inviteMember(): architecture/requirements/use-cases/invite-member.md
+              - removeMember(): architecture/requirements/use-cases/remove-member.md
+              - convertMember(): architecture/requirements/use-cases/convert-member.md
       - Software structure:
           - Container view: architecture/software/container-view.md
           - Runtime components: architecture/software/runtime-components.md
@@ -182,6 +200,7 @@ nav:
           - Policy resolution: architecture/behavior/policy-resolution.md
           - Repository selection: architecture/behavior/repository-selection.md
           - Plan and apply: architecture/behavior/plan-and-apply.md
+          - Owner reconciliation: architecture/behavior/owner-reconciliation.md
           - State models: architecture/behavior/state-models.md
       - Trust and delivery:
           - Trust and data flow: architecture/trust/trust-and-data-flow.md

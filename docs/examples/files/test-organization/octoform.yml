@@ -1,0 +1,100 @@
+# The convergence half of the test-organization runbook.
+#
+# Everything here is meant to be applied twice. The first run creates it; the
+# second must find nothing to do. A second run that still reports changes is
+# the finding the whole exercise exists to produce, because it means a value
+# octoform writes is not the value it reads back.
+#
+# Nothing here removes anything. The refusals are probed separately, in the
+# runbook, so that a mistake in this file cannot delete anything on a real
+# organisation somebody pointed it at by accident.
+#
+#   export GITHUB_TOKEN=...
+#   octoform plan  --config octoform.yml
+#   octoform apply --config octoform.yml
+#   octoform plan  --config octoform.yml     # must report nothing to do
+#
+# Replace `example-sandbox` with the disposable organisation, and the two
+# repository names with the two repositories seeded in it.
+
+version: 1
+owner: example-sandbox
+
+organization:
+  profile:
+    description: Disposable organisation for verifying octoform
+    location: Nowhere
+
+  # Normal risk, and reversible: the whole point of running this somewhere
+  # disposable is that `none` here cannot lock anybody out of anything real.
+  members:
+    base_permission: none
+    create_public_repositories: false
+    fork_private_repositories: false
+
+  # Defined here, answered by the repositories below. The second run proves
+  # the carry-forward works: octoform reads the definition it wrote and finds
+  # every field already correct, including the ones this file never restates.
+  properties:
+    tier:
+      value_type: single_select
+      description: How closely this repository is watched
+      allowed_values: [bronze, gold]
+      default_value: bronze
+      values_editable_by: org_actors
+
+  teams:
+    # A parent, created first because the child names it. Neither team can be
+    # secret: one has a child and the other has a parent.
+    sandbox-platform:
+      name: Sandbox platform
+      description: Parent team, created before its child
+      privacy: closed
+
+    sandbox-oncall:
+      name: Sandbox on-call
+      parent: sandbox-platform
+      privacy: closed
+      notifications: false
+      membership:
+        # Additive. Removal is probed separately in the runbook, never here.
+        authoritative: false
+        maintainers: [example-operator]
+
+  # Aimed by property rather than by name, so it also proves that a repository
+  # answering `tier: gold` is reached without being listed anywhere.
+  #
+  # `evaluate` on purpose: this is a verification run, and evaluate reports
+  # what would have been blocked without blocking it.
+  rulesets:
+    - name: sandbox-default-branches
+      enforcement: evaluate
+      target_branches: ['~DEFAULT_BRANCH']
+      block_force_push: true
+      block_deletion: true
+      repositories:
+        properties:
+          - name: tier
+            values: [gold]
+
+defaults:
+  access:
+    teams:
+      sandbox-platform: write
+
+  labels:
+    - name: sandbox
+      color: '#0E8A16'
+      description: Created by the octoform verification run
+
+repos:
+  example-sandbox-service:
+    properties:
+      tier: gold
+    access:
+      teams:
+        sandbox-oncall: admin
+
+  example-sandbox-tool:
+    properties:
+      tier: bronze

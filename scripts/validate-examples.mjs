@@ -15,11 +15,14 @@ const roots = [
   'branch-patterns/octoform.yml',
   'minimal/octoform.yml',
   'multi-owner/octoform.yml',
+  'organization/octoform.yml',
   'personal-account/octoform.yml',
   'reviewed-plan/octoform.yml',
   'self-audit/octoform.yml',
+  'teams-and-access/octoform.yml',
   'shared-presets/org.octoform.yml',
   'shared-presets/personal.octoform.yml',
+  'test-organization/octoform.yml',
 ];
 const forbiddenIdentities = ['didactika', 'hector-ae21', 'resilientmq'];
 

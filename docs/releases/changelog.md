@@ -1,17 +1,133 @@
 ---
 title: Changelog
-description: Review Octoform 0.4 changes by exact package patch and identify when guidance becomes applicable.
+description: Review Octoform 0.5 changes by exact package patch and identify when guidance becomes applicable.
 ---
 
 # Changelog
 
-The documentation selector remains `0.4` for compatible `0.4.x` packages.
+The documentation selector remains `0.5` for compatible `0.5.x` packages.
 Entries below identify the exact patch that introduced each change. A page
-marked **Available since 0.4.1** would apply to `0.4.1` and every later
-`0.4.x` patch, but not to `0.4.0`.
+marked **Available since 0.5.1** would apply to `0.5.1` and every later
+`0.5.x` patch, but not to `0.5.0`.
 
-Earlier lines keep their own published documentation; the `0.3` entries below
-remain here as the patch index for that line.
+Earlier lines keep their own published documentation; the `0.4` and `0.3`
+entries below remain here as the patch index for those lines.
+
+## 0.5.0 — 2026-08-16
+
+**Applies from:** `0.5.0`  
+**Compatibility:** every existing configuration file keeps working. Two
+exported shapes moved, and three fixes change what a run does to a file you
+have not edited — see **Changed** and **Fixed**.
+
+Octoform now governs the account above the repositories as well as the
+repositories themselves, and finishes the repository surface it had started.
+
+### Added — the organization itself
+
+- An [`organization` block](../configuration/organization.md), planned and
+  applied like any other change rather than through a command of its own. Its
+  profile, and what members may do without being asked: the base permission,
+  what they may create, forking, Pages, web commit sign-off, deploy keys and
+  projects.
+- The base permission and the creation switches are reported as `sensitive`,
+  because they reach every repository the organization owns including ones no
+  policy names. The organization is applied before any repository, so a lowered
+  floor is never briefly wider than the file asks for.
+- [Custom property definitions](../configuration/custom-properties.md) under
+  `organization.properties`. The write endpoint replaces rather than patches,
+  so the current definition is read first and every field the configuration is
+  silent about is carried forward.
+- [Organization rulesets](../configuration/organization-rulesets.md) under
+  `organization.rulesets`: the same rules a repository can carry, aimed at
+  repositories selected by name or by custom property value. Every one is
+  `sensitive`.
+- [Teams](../configuration/teams.md) under `organization.teams`, keyed by slug,
+  with nesting. A child team waits for a parent the same run is creating, and
+  is blocked rather than attempted when that creation fails.
+- Team membership under `organization.teams.<slug>.membership`: additive unless
+  the block says `authoritative`, and a pending invitation counts as somebody
+  already asked.
+- [Organization role assignment](../configuration/roles.md) under
+  `organization.roles`, granting and revoking a role for users and teams.
+- [`octoform inspect members`](../commands/members.md): owners, members,
+  outside collaborators, waiting and failed invitations, and which people the
+  configuration names are in no part of the organization.
+- [`octoform members invite`, `remove` and `convert`](../commands/members.md):
+  one login per invocation, each saying what it will do and asking first.
+
+### Added — the repository surface, completed
+
+- Every [ruleset rule type, target and condition](../configuration/ruleset-rules.md),
+  modelled as one table that reading, writing and comparison are all derived
+  from.
+- [Ruleset bypass actors](../configuration/ruleset-rules.md#bypass-actors) —
+  users, teams, apps, repository roles, deploy keys and organization admins —
+  resolved by name while reading, so an unknown name is a blocked line in the
+  plan rather than an exception thrown mid-apply.
+- [Classic branch protection](../configuration/branch-protection.md) under
+  `branch_protection`. A branch governed by both protection and a ruleset
+  blocks on both sides.
+- [`access.users` and `access.teams`](../configuration/access.md), with pending
+  invitations read so a grant to somebody who is not a collaborator yet is not
+  re-sent on every run. Revocation is spelled `none`.
+- [Labels, milestones](../configuration/collections.md) and repository custom
+  property values, with `rename_from` and `mode: absent`.
+- [`repo.visibility`, `repo.archived`, `repo.template` and repository rename](../configuration/repository-settings.md#the-four-guarded-changes).
+  Unarchiving is sent first and everything waits for it; archiving is sent last
+  and only if everything else succeeded.
+- The [four repository settings only GraphQL exposes](../configuration/repository-settings.md#settings-that-only-graphql-exposes).
+  `features.discussions` is now changeable instead of permanently blocked.
+- Merge message defaults and `security.immutable_releases`.
+- A [warning](../configuration/security-settings.md#codeql-setup-boundary) when
+  `security.code_scanning_default_setup` would disable a workflow that uploads
+  code scanning results, which GitHub refuses without either side reporting a
+  failure.
+- A [resource dependency graph](../architecture/behavior/owner-reconciliation.md):
+  apply order comes from the graph rather than from the order the steps happen
+  to be written in, and a dependent whose prerequisite failed is blocked rather
+  than attempted.
+- [`octoform inspect capabilities --repo <name>`](../commands/inspect.md#one-repository-at-a-time).
+- A [GraphQL transport](../architecture/software/container-view.md#two-transports-one-vocabulary),
+  normalized against the REST one.
+
+### Changed
+
+- **`Change.repo` is now optional.** An organization setting has no repository
+  to name. Programmatic callers that read `change.repo` as a string have to
+  handle its absence.
+- **`planOrganization`, `setPropertyValues` and `putPropertySchema` take
+  different arguments.**
+- `classify --apply` and `properties sync` send thirty repositories per
+  request. Neither did, and exceeding that limit is the ordinary case for an
+  organization large enough to want either command.
+
+### Fixed
+
+- **`properties sync` no longer clears the fields it says nothing about.** It
+  sent the allowed values alone, which on a property that already existed reset
+  its description, its default value and who may edit it — every run, silently.
+- **Updating a ruleset no longer deletes the rules Octoform does not model, or
+  the ones the policy does not mention.** The update replaces the whole rule
+  list, and what was not sent back was being removed with nothing in the plan
+  to say so.
+- **An undeclared ruleset key is no longer treated as a demand for GitHub's
+  default**, which made every run offer to strip approvals and protections
+  nobody had asked about.
+- Two different lists of objects of the same length no longer compare as
+  identical when a ruleset is compared.
+- A seeded file is read as bytes, so a file that is not valid UTF-8 text is no
+  longer corrupted, and its existence is checked on the branch it would be
+  created on rather than on the default branch.
+- The topics, PUT/DELETE toggle, code scanning and branch rename steps record
+  their failures, so anything depending on them is blocked instead of
+  attempted.
+- [`config migrate`](../commands/config.md) moves a `repos` block at an
+  imported file's root under the account the root file declares, instead of
+  refusing the whole migration.
+
+The [0.5.0 application Release][release-050] contains the package evidence and
+[SHA-256 manifest][checksums-050].
 
 ## 0.4.1 — 2026-08-15
 
@@ -168,10 +284,12 @@ See [the 0.3.0 Release][release-030] for the immutable application record.
 
 Before changing the installed patch, review every entry after the current
 version and up to the target. If a future change cannot be documented as
-compatible within `0.3`, its guidance and selector entry move to the next minor
-line instead of silently changing the `0.3` contract.
+compatible within `0.5`, its guidance and selector entry move to the next minor
+line instead of silently changing the `0.5` contract.
 
 [checksums-032]: https://github.com/hector-ae21/octoform/releases/download/v0.3.2/SHA256SUMS
+[checksums-050]: https://github.com/hector-ae21/octoform/releases/download/v0.5.0/SHA256SUMS
+[release-050]: https://github.com/hector-ae21/octoform/releases/tag/v0.5.0
 [release-030]: https://github.com/hector-ae21/octoform/releases/tag/v0.3.0
 [release-031]: https://github.com/hector-ae21/octoform/releases/tag/v0.3.1
 [release-032]: https://github.com/hector-ae21/octoform/releases/tag/v0.3.2

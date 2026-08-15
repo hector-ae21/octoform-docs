@@ -5,7 +5,7 @@ description: Understand unmanaged values, policy precedence, and blocked operati
 
 # Core concepts
 
-Three ideas. The reference reads as arbitrary until these are in place, and
+Four ideas. The reference reads as arbitrary until these are in place, and
 almost every surprising behaviour in octoform follows from one of them.
 
 ## 1. Every setting is tri-state
@@ -95,7 +95,7 @@ value that could not be read at all.
 
 ```text
   my-repo
-    features.discussions: false -> true   [skipped: not applicable over the REST API]
+    access.users.someone: (unreadable) -> write   [skipped: could not read who already has access]
 ```
 
 **Warned** — it will happen, and something else breaks as a result. Renaming a
@@ -113,11 +113,42 @@ drift that does not exist. It is reported as blocked.
 
 ```text
   my-repo
-    security.secret_scanning: (unreadable) -> true   [skipped: current value could not be read, probably not available on this plan]
+    security.secret_scanning: (unreadable) -> true   [skipped: current value could not be read]
 ```
 
-## What follows from all three
+It does not matter which transport failed to produce the value. A GraphQL read
+that failed narrows to the same unreadable state a REST read does, and the
+planner blocks it for the same reason without knowing which one it was.
+
+## 4. Removal is always a word
+
+Omission means unmanaged. That is idea 1, and it has a consequence people meet
+later than they should: **deleting a line from the file never removes
+anything**.
+
+`null` cannot mean "remove", because it already means "stop managing". So every
+resource that can be removed has its own word, and the word has to be written:
+
+| To remove | Write | Reported as |
+| --- | --- | --- |
+| A collaborator or team grant | `none` | `destructive` |
+| A label, milestone, team or property definition | `mode: absent` | `destructive` |
+| A repository custom property value | `''` or `[]` | `sensitive` |
+| A profile field | `''` | `normal` |
+
+An organization member is not in that table at all. Taking somebody out of an
+organization is [a command](../commands/members.md) that names them and asks,
+not a line anybody can delete by accident.
+
+## What follows from all four
 
 `plan` is read-only, always, and `apply` computes its diff by calling `plan` —
 not by recomputing it. So `apply` can never do something `octoform plan` did
 not just tell you it would do. That is the whole design in one sentence.
+
+Two additions in `0.5` follow the same rule rather than bending it. The
+[organization block](../configuration/organization.md) is planned and confirmed
+exactly like a repository setting, because reach is a reason for *more*
+scrutiny, not for a separate path. And when one change waits for another, a
+failed prerequisite blocks its dependents instead of letting them be attempted
+against something that does not exist.
