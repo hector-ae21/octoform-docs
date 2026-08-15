@@ -2523,6 +2523,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-turn-3-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why turn 3 exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#why-previewing-is-the-default" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3875,6 +3886,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#why-turn-3-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why turn 3 exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#why-previewing-is-the-default" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3992,7 +4014,7 @@
 </tr>
 <tr>
 <td>Precondition</td>
-<td>A configuration file exists and resolves</td>
+<td>A configuration file exists, resolves, and no file it imports binds policy to bare repository names at its own root</td>
 </tr>
 <tr>
 <td>Successful postcondition</td>
@@ -4000,7 +4022,7 @@
 </tr>
 <tr>
 <td>Failure postcondition</td>
-<td>Nothing is written; the reason is reported</td>
+<td>Nothing is written; the reason is reported, naming any file that has to move first</td>
 </tr>
 <tr>
 <td>Command</td>
@@ -4036,20 +4058,41 @@
 <tr>
 <td>3</td>
 <td>Octoform</td>
-<td>Prints the converted document and changes nothing, because previewing is the default</td>
+<td>Checks what the imports declare, because only the named file is converted</td>
 </tr>
 <tr>
 <td>4</td>
+<td>Octoform</td>
+<td>Prints the converted document and changes nothing, because previewing is the default</td>
+</tr>
+<tr>
+<td>5</td>
 <td>Policy author</td>
 <td>Keeps the preview, or asks for <code>--write</code></td>
 </tr>
 <tr>
-<td>5</td>
+<td>6</td>
 <td>Octoform</td>
 <td>Moves the blocks in place, preserving comments, ordering, and formatting</td>
 </tr>
 </tbody>
 </table>
+<h2 id="why-turn-3-exists">Why turn 3 exists<a class="headerlink" href="#why-turn-3-exists" title="Permanent link">&para;</a></h2>
+<p>Only the file the author names is converted. A <code>repos</code> block at the root of an
+imported file therefore stays where it is — and that block is accepted beside
+<code>owner</code> while rejected beside <code>owners</code>, because a bare repository name
+identifies nothing once more than one account can be in scope.</p>
+<p>Converting the root alone would produce a document that no longer loads, so the
+use case refuses and names the files that have to move first. It does not
+rewrite them: the author offered one file, and silently editing others would
+exceed what was asked.</p>
+<p>Imports that keep repositories out of their root — declaring <code>types</code>,
+<code>classify</code>, <code>audit</code> or <code>defaults</code> instead — are unaffected.</p>
+<div class="admonition info">
+<p class="admonition-title">Available since 0.4.1</p>
+<p>In <code>0.4.0</code> this turn did not exist, and the conversion produced a file that
+failed to load on the next command.</p>
+</div>
 <h2 id="why-previewing-is-the-default">Why previewing is the default<a class="headerlink" href="#why-previewing-is-the-default" title="Permanent link">&para;</a></h2>
 <p>The conversion rewrites a file the author is expected to keep under version
 control. Defaulting to a preview means the destructive form has to be asked

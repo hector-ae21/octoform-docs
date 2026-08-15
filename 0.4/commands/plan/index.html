@@ -1851,6 +1851,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reading-the-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#saving-a-plan" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3848,6 +3859,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reading-the-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading the summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#saving-a-plan" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3959,6 +3981,29 @@ at all is reported as a distinct failure and never treated as "no changes".</p>
 </table>
 <p>Blocked changes remain visible with their reason. Unreadable state is not
 converted into a guessed current value.</p>
+<div class="admonition info">
+<p class="admonition-title">Available since 0.4.1</p>
+<p>A reason explains itself from what was observed. Where repository
+visibility settles the question — GitHub hides scanning settings outside a
+public repository without Advanced Security — the report names that;
+where it does not, it says only that the value could not be read, rather
+than guessing at a commercial plan.</p>
+</div>
+<h2 id="reading-the-summary">Reading the summary<a class="headerlink" href="#reading-the-summary" title="Permanent link">&para;</a></h2>
+<p>The per-account counts put each repository in exactly one bucket, so they sum
+to the number scanned. A repository that has both an executable change and a
+blocked one is therefore counted as changed.</p>
+<div class="admonition info">
+<p class="admonition-title">Available since 0.4.1</p>
+<p>Because that would understate how much of a run cannot be applied, the
+number of repositories carrying blocked work is stated alongside the
+totals whenever it is larger:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Total — scanned: 49, changed: 18, blocked: 9, failed: 0, unchanged: 22
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>16 repositories carry blocked work; 7 of them are counted above as
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>changed because they also have changes to apply.
+</span></code></pre></div>
+<p><code>PlanSummary</code> exposes the same number as <code>blockedRepositories</code>.</p>
+</div>
 <h2 id="saving-a-plan">Saving a plan<a class="headerlink" href="#saving-a-plan" title="Permanent link">&para;</a></h2>
 <p><code>--out &lt;path&gt;</code> writes the reviewed plan to a versioned JSON file, with
 owner-only permissions where the platform supports them. The file records the

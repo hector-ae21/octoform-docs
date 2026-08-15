@@ -3845,6 +3845,26 @@ control, it refuses to run when that file has uncommitted changes in a git
 working tree, so the conversion is always reviewable as a diff.</p>
 <p>A file that already declares <code>owners</code> needs no migration and is reported as
 such.</p>
+<div class="admonition warning">
+<p class="admonition-title">Available since 0.4.1 — imports that bind bare repository names</p>
+<p>Only the file you name is converted. A <code>repos</code> block at the root of an
+imported file therefore stays where it is, and that block is accepted
+beside <code>owner</code> but rejected beside <code>owners</code>: a bare repository name
+identifies nothing once more than one account can be in scope.</p>
+<p>Converting the root alone would leave a configuration that no longer
+loads, so the migration refuses and names the files to move first:</p>
+<div class="highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp">$ </span>octoform<span class="w"> </span>config<span class="w"> </span>migrate<span class="w"> </span>--config<span class="w"> </span>octoform.yml
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="go">octoform.yml cannot be migrated automatically. metadata.yml,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="go">overrides.yml declare &quot;repos&quot; at the root, and only the file you named</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="go">is converted. [...] Move those entries under the account they belong</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="go">to, then migrate again.</span>
+</span></code></pre></div>
+<p>Move each entry under the account's own <code>repos</code>, then migrate again.
+Imports that keep repositories out of their root — declaring <code>types</code>,
+<code>classify</code>, <code>audit</code> or <code>defaults</code> instead — are unaffected.</p>
+<p>In <code>0.4.0</code> this case was not detected, and the conversion produced a file
+that failed to load on the next command.</p>
+</div>
 <p>Migration is optional. A single-owner file keeps its exact meaning in this
 release and produces the same plans; see
 <a href="../../configuration/document-composition/">document composition</a>.</p>

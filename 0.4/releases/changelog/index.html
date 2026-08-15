@@ -3573,6 +3573,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#041-2026-08-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.1 — 2026-08-15
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.1 — 2026-08-15">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#040-2026-08-15" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3585,7 +3624,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -3663,7 +3702,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fixed" class="md-nav__link">
+  <a href="#fixed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fixed
@@ -3691,7 +3730,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -3883,6 +3922,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#041-2026-08-15" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.1 — 2026-08-15
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.1 — 2026-08-15">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fixed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fixed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#040-2026-08-15" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3895,7 +3973,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -3973,7 +4051,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#fixed" class="md-nav__link">
+  <a href="#fixed_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Fixed
@@ -4001,7 +4079,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added_1" class="md-nav__link">
+  <a href="#added_2" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -4065,11 +4143,36 @@ marked <strong>Available since 0.4.1</strong> would apply to <code>0.4.1</code> 
 <code>0.4.x</code> patch, but not to <code>0.4.0</code>.</p>
 <p>Earlier lines keep their own published documentation; the <code>0.3</code> entries below
 remain here as the patch index for that line.</p>
+<h2 id="041-2026-08-15">0.4.1 — 2026-08-15<a class="headerlink" href="#041-2026-08-15" title="Permanent link">&para;</a></h2>
+<p><strong>Applies from:</strong> <code>0.4.1</code><br />
+<strong>Compatibility:</strong> no exit class, schema, or exported signature moved. Every
+change is a fix to what a command reports or refuses.</p>
+<p>These came from running <code>0.4.0</code> against real multi-account configurations
+rather than against fixtures.</p>
+<h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="../../commands/config/"><code>config migrate</code></a> no longer produces a configuration
+  that fails to load. It converted the root file's <code>owner</code> to <code>owners</code> while
+  leaving a <code>repos</code> block at the root of an imported file, which is accepted
+  beside <code>owner</code> and rejected beside <code>owners</code>. It now stops, names the files
+  that have to move first, and writes nothing.</li>
+<li>A setting whose current value could not be read is explained from what was
+  observed rather than from a guessed commercial plan. Where repository
+  visibility settles the question, the reason names it.</li>
+<li>A <a href="../../commands/plan/#reading-the-summary">plan</a> states how many
+  repositories carry blocked work, instead of leaving those that also have
+  changes counted only as changed.</li>
+</ul>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>PlanSummary</code> gains <code>blockedRepositories</code>: repositories with at least one
+  blocked change, whether or not they also changed.</li>
+</ul>
 <h2 id="040-2026-08-15">0.4.0 — 2026-08-15<a class="headerlink" href="#040-2026-08-15" title="Permanent link">&para;</a></h2>
 <p><strong>Applies from:</strong> <code>0.4.0</code><br />
 <strong>Compatibility:</strong> every existing configuration file keeps its exact meaning
 and produces the same plans. Two contracts changed — see <strong>Changed</strong> below.</p>
-<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>One configuration can describe several GitHub accounts. A root <code>owners</code>
   mapping keyed by login replaces one file per account, and the root of the
@@ -4150,7 +4253,7 @@ capability, permission, or plan/apply migration.</p>
 <a href="https://github.com/hector-ae21/octoform/releases/download/v0.3.2/SHA256SUMS">SHA-256 manifest</a>.</p>
 <h2 id="031-2026-08-12">0.3.1 — 2026-08-12<a class="headerlink" href="#031-2026-08-12" title="Permanent link">&para;</a></h2>
 <p><strong>Applies from:</strong> <code>0.3.1</code></p>
-<h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h3>
+<h3 id="fixed_1">Fixed<a class="headerlink" href="#fixed_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Private repositories owned by personal accounts no longer have repository
   rulesets blocked solely because organization-wide rulesets are unavailable.
@@ -4162,7 +4265,7 @@ operational boundary and <a href="https://github.com/hector-ae21/octoform/releas
 application record.</p>
 <h2 id="030-2026-08-10">0.3.0 — 2026-08-10<a class="headerlink" href="#030-2026-08-10" title="Permanent link">&para;</a></h2>
 <p><strong>Applies from:</strong> <code>0.3.0</code></p>
-<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
+<h3 id="added_2">Added<a class="headerlink" href="#added_2" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Existing environment reviewers can be reconciled; a team reviewer remains a
   blocked operation because the <code>0.3</code> model resolves declared reviewers as

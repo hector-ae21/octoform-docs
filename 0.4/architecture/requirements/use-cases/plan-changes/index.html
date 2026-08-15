@@ -4084,6 +4084,14 @@
 </table>
 <p>Blocked work stays in the report. It is never removed, never counted as
 convergence, and never handed to the applier.</p>
+<div class="admonition info">
+<p class="admonition-title">Available since 0.4.1</p>
+<p>The per-account counts are exclusive so they sum to the number scanned,
+which files a repository that is both changed and blocked under <code>changed</code>.
+The number of repositories carrying blocked work is therefore stated
+alongside the totals, so the summary cannot understate what the plan
+cannot apply. See <a href="../../../../commands/plan/#reading-the-summary">reading the summary</a>.</p>
+</div>
 <h2 id="reading-order-across-accounts">Reading order across accounts<a class="headerlink" href="#reading-order-across-accounts" title="Permanent link">&para;</a></h2>
 <p>When a configuration declares several accounts, they run one at a time in
 declaration order, so their reports never interleave. A failure in one does not
