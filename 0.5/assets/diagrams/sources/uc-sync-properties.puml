@@ -1,0 +1,50 @@
+@startuml uc-sync-properties
+!include _theme.iuml
+
+state syncProperties as "syncProperties()" {
+
+  state " " as RequestingSync
+  state " " as Reconciling
+  state " " as Writing
+
+  [*] --> RequestingSync
+  note on link
+  <b>Operator</b> asks for the organisation property schema to
+  match the types the configuration declares
+  end note
+
+  RequestingSync --> Reconciling
+  note on link
+  <b>Octoform</b> compares the declared type values and the
+  explicitly declared repository assignments with the schema
+  that the organisation currently carries
+  end note
+
+  Reconciling --> Writing
+  note on link
+  <b>Octoform</b> converges the allowed values and the declared
+  assignments
+  • a repository the configuration does not mention
+    keeps whatever value it has
+  • an organisation custom-property write needs
+    admin:org on a classic token
+  end note
+
+  Writing --> [*]
+  note on link
+  <b>Operator</b> receives the outcome of each write separately
+  end note
+}
+
+syncProperties --> PROPERTY_SCHEMA_SYNCHRONIZED
+note on link
+the schema and declared values converged; exit 0
+end note
+
+syncProperties -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+custom properties are an organisation feature,
+so this use case does not apply to a personal
+account; a write failure exits 5
+end note
+@enduml

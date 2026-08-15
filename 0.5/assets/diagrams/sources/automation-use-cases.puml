@@ -1,0 +1,43 @@
+@startuml automation-use-cases
+!include _theme.iuml
+left to right direction
+
+actor "Automation workflow" as Automation
+actor "Integrating application" as Application
+
+rectangle "Octoform 0.4 · non-interactive use" {
+  package "Reachable without a prompt" {
+    usecase "validateConfiguration()" as Validate
+    usecase "auditRepositories()" as Audit
+    usecase "planChanges()" as Plan
+    usecase "savePlan()" as Save
+  }
+  package "Reachable only with --yes" {
+    usecase "applyPlan()" as Apply
+    usecase "applySavedPlan()" as ApplySaved
+  }
+  usecase "embedGovernanceServices()" as Embed
+}
+
+Automation --> Validate
+Automation --> Audit
+Automation --> Plan
+Automation --> Save
+Automation --> Apply
+Automation --> ApplySaved
+Application --> Embed
+
+Apply ..> Plan : <<include>>
+ApplySaved ..> Save : <<include>>
+
+note bottom of Embed
+  An automation workflow is the same actor role as an operator
+  minus the ability to answer a prompt. It reaches the same use
+  cases; --yes replaces the confirmation step, so the review it
+  represents has to exist outside Octoform.
+
+  An integrating application calls exported functions directly
+  and therefore owns authentication, invocation and error
+  handling around them.
+end note
+@enduml

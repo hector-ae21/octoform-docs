@@ -1,0 +1,60 @@
+@startuml governance-use-cases
+!include _theme.iuml
+left to right direction
+
+actor "Repository operator" as Operator
+actor "Change reviewer" as Reviewer
+
+rectangle "Octoform 0.5 · GitHub-facing governance" {
+  package "Observation" {
+    usecase "inspectCapabilities()" as Capabilities
+    usecase "inspectMembers()" as Members
+    usecase "auditRepositories()" as Audit
+    usecase "planChanges()" as Plan
+  }
+  package "Reviewed change" {
+    usecase "savePlan()" as Save
+    usecase "applyPlan()" as Apply
+    usecase "applySavedPlan()" as ApplySaved
+  }
+  package "Repository typing" {
+    usecase "classifyRepositories()" as Classify
+    usecase "syncProperties()" as Properties
+  }
+  package "Organisation membership" {
+    usecase "inviteMember()" as Invite
+    usecase "removeMember()" as Remove
+    usecase "convertMember()" as Convert
+  }
+}
+
+Operator --> Capabilities
+Operator --> Members
+Operator --> Audit
+Operator --> Plan
+Operator --> Apply
+Operator --> Classify
+Operator --> Properties
+Operator --> Invite
+Operator --> Remove
+Operator --> Convert
+Reviewer --> Save
+Reviewer --> ApplySaved
+
+Save .> Plan : <<extend>>
+Apply .> Plan : <<include>>
+ApplySaved .> Save : <<include>>
+
+note bottom of Properties
+  Every use case here reads GitHub. Only applyPlan(),
+  applySavedPlan(), syncProperties() and classifyRepositories()
+  with --apply can write, and each one says so before it does.
+end note
+
+note bottom of Convert
+  Membership is the one area that is not declarative.
+  Each of these takes one login, says what it will do,
+  and asks — because an invitation is an act addressed
+  to a person, not a state a schedule reconciles.
+end note
+@enduml

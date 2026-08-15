@@ -1,0 +1,35 @@
+@startuml automation-pipelines
+!include _theme.iuml
+
+start
+switch (Automation intent)
+case (Pull-request validation)
+  :Check out reviewed configuration;
+  :Use a read-only token;
+  :Run octoform plan;
+  :Publish the plan as a job report;
+  :Never invoke apply;
+case (Scheduled observation)
+  :Use a read-only token;
+  :Run octoform audit;
+  :Publish findings to the run summary;
+  note right
+    Audit findings exit 1, so drift gates the job
+    directly. A job that must not fail on findings
+    has to handle that class deliberately.
+  end note
+case (Protected application)
+  :Require a trusted branch or immutable ref;
+  :Require protected-environment approval;
+  :Load the minimum write-capable secret;
+  :Run octoform plan and retain the log;
+  if (Plan approved?) then (yes)
+    :Run octoform apply --yes in the same\nprotected workflow context;
+    :Publish per-change outcomes;
+  else (no)
+    :Stop without mutation;
+  endif
+endswitch
+:Retain only necessary, access-controlled logs;
+stop
+@enduml

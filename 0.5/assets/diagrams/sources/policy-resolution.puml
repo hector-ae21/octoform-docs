@@ -1,0 +1,47 @@
+@startuml policy-resolution
+!include _theme.iuml
+
+start
+:Receive normalized Config and RepoState;
+:Select the OwnerScope for the account being planned;
+:Initialize an empty effective PolicySet;
+
+note right
+  Each layer is overlaid field by field.
+  A later layer never removes what it
+  does not mention.
+end note
+
+partition "Document composition" {
+  :Fold in imported files, earliest first;
+  :Overlay the importing file over them;
+}
+
+partition "Per layer, widest first" {
+  :Fold in the policies the layer references, in list order;
+  :Overlay the layer's own keys over them;
+}
+
+:Overlay root defaults;
+:Overlay owner defaults;
+if (Repository has a resolved type?) then (yes)
+  :Overlay types.<type>;
+endif
+if (repos.<name> exists?) then (yes)
+  :Overlay repos.<name>;
+endif
+
+note right
+  Concrete scalar: replace inherited value
+  null scalar: cancel inherited value
+  omitted scalar: preserve inherited value
+  declared collection: replace inherited collection
+end note
+
+if (Effective manage is false?) then (yes)
+  :Return inventory-only policy boundary;
+else (no)
+  :Return effective desired-state policy;
+endif
+stop
+@enduml

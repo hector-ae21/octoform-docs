@@ -1,0 +1,30 @@
+@startuml actors-and-use-cases
+!include _theme.iuml
+left to right direction
+
+actor "Policy author" as Author
+actor "Repository operator" as Operator
+
+rectangle "Octoform 0.4 · offline configuration work" {
+  package "Authoring" {
+    usecase "validateConfiguration()" as Validate
+    usecase "migrateConfiguration()" as Migrate
+  }
+  package "Explanation" {
+    usecase "inspectConfiguration()" as InspectConfig
+  }
+}
+
+Author --> Validate
+Author --> Migrate
+Author --> InspectConfig
+Operator --> InspectConfig
+
+Migrate .> Validate : <<include>>
+InspectConfig .> Validate : <<include>>
+
+note bottom of InspectConfig
+  No use case in this view contacts GitHub or reads a token,
+  which is what makes them the cheapest checks in a pull request.
+end note
+@enduml

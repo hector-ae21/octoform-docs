@@ -1,0 +1,55 @@
+@startuml uc-apply-plan
+!include _theme.iuml
+
+state applyPlan as "applyPlan()" {
+
+  state " " as RequestingApply
+  state " " as Presenting
+  state " " as Confirming
+  state " " as Executing
+
+  [*] --> RequestingApply
+  note on link
+  <b>Operator</b> asks to converge a selection they have
+  already planned and understood
+  end note
+
+  RequestingApply --> Presenting
+  note on link
+  <b>Octoform</b> plans again and displays the result, because
+  the state it observed a moment ago may have moved
+  end note
+
+  Presenting --> Confirming
+  note on link
+  <b>Octoform</b> asks for confirmation of exactly the displayed
+  operations, and treats any answer other than y as a refusal
+  end note
+
+  Confirming --> Executing
+  note on link
+  <b>Operator</b> authorizes that run only; confirmation is
+  never a standing approval
+  end note
+
+  Executing --> [*]
+  note on link
+  <b>Octoform</b> attempts each independent endpoint group and
+  reports every outcome separately
+  • a default-branch rename runs before resources
+    that name branches
+  • a failure does not roll back what succeeded
+  end note
+}
+
+applyPlan --> CHANGES_APPLIED
+note on link
+everything requested was applied; exit 0
+end note
+
+applyPlan -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+declined at the prompt, exit 1 · something
+blocked, exit 4 · an operation failed, exit 5
+end note
+@enduml

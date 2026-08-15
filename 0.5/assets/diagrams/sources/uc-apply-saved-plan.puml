@@ -1,0 +1,51 @@
+@startuml uc-apply-saved-plan
+!include _theme.iuml
+
+state applySavedPlan as "applySavedPlan()" {
+
+  state " " as PresentingArtifact
+  state " " as Verifying
+  state " " as Executing
+
+  [*] --> PresentingArtifact
+  note on link
+  <b>Change reviewer</b> hands over a saved plan and asks for
+  exactly the operations it records
+  end note
+
+  PresentingArtifact --> Verifying
+  note on link
+  <b>Octoform</b> re-checks six things before touching anything
+  • the artifact schema version
+  • the expiry
+  • the authenticated actor
+  • each account's numeric identity
+  • the digest of every configuration source file
+  • the digest of the resolved configuration
+  end note
+
+  Verifying --> Executing
+  note on link
+  <b>Octoform</b> performs exactly the recorded operations; it
+  does not re-plan and does not re-observe
+  end note
+
+  Executing --> [*]
+  note on link
+  <b>Change reviewer</b> receives an outcome for the plan they
+  approved, not for a plan produced in their absence
+  end note
+}
+
+applySavedPlan --> CHANGES_APPLIED
+note on link
+every check held; exit 0
+end note
+
+applySavedPlan -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+one check moved: the run refuses, names which
+one, and exits 2 · a stale plan is never
+silently repaired or re-planned
+end note
+@enduml

@@ -1,0 +1,52 @@
+@startuml owner-apply-order
+!include _theme.iuml
+
+participant "Applier" as Applier
+participant "Organisation settings" as Settings
+participant "Property definitions" as Definitions
+participant "Teams" as Teams
+participant "Team membership" as Membership
+participant "Organisation roles" as Roles
+participant "Organisation rulesets" as Rulesets
+participant "Repositories" as Repos
+
+Applier -> Settings : one PATCH for every declared field
+note right
+  Sent first so a lowered base permission is
+  never briefly wider than the file asks for.
+end note
+
+Applier -> Definitions : one write per property
+note right
+  The current definition is read before it is
+  written, because the endpoint replaces.
+end note
+
+group Ordered by the dependency graph
+  Applier -> Teams : create, update or delete
+  Teams --> Applier : outcome per team
+  Applier -> Membership : add, promote or remove
+  note right
+    A member of a team created in this same run
+    waits for that team. If it failed, this is
+    blocked rather than attempted.
+  end note
+  Applier -> Roles : grant or revoke
+  note right
+    A team granted a role waits for the team
+    for the same reason.
+  end note
+end
+
+Applier -> Rulesets : create or update
+note right
+  Last of the owner-level work: it reaches
+  repositories the file may never name.
+end note
+
+Applier -> Repos : per-repository plan
+note right
+  Every repository is worked on only after the
+  account above it agrees with the file.
+end note
+@enduml

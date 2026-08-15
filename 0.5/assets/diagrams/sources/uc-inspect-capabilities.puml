@@ -1,0 +1,48 @@
+@startuml uc-inspect-capabilities
+!include _theme.iuml
+
+state inspectCapabilities as "inspectCapabilities()" {
+
+  state " " as RequestingEvidence
+  state " " as Resolving
+  state " " as Presenting
+
+  [*] --> RequestingEvidence
+  note on link
+  <b>Operator</b> asks what Octoform believes each selected
+  account supports, before planning against it
+  end note
+
+  RequestingEvidence --> Resolving
+  note on link
+  <b>Octoform</b> asks GitHub, because that is where the
+  evidence is, and resolves each account by login
+  end note
+
+  Resolving --> Presenting
+  note on link
+  <b>Octoform</b> reports evidence rather than assumption
+  • the account kind, resolved from the API
+  • the numeric identity, stable across renames
+  • whether organisation-wide rulesets are available
+  • every declaration that does not apply to this kind
+    of account, with the reason it does not
+  end note
+
+  Presenting --> [*]
+  note on link
+  <b>Operator</b> corrects the declaration or accepts that
+  it will be reported on every run
+  end note
+}
+
+inspectCapabilities --> CAPABILITIES_ESTABLISHED
+note on link
+exit 0
+end note
+
+inspectCapabilities -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+the token cannot authenticate; exit 3
+end note
+@enduml

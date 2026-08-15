@@ -1,0 +1,48 @@
+@startuml saved-plan-verification
+!include _theme.iuml
+
+start
+:Read the saved plan file;
+
+if (Schema version supported?) then (no)
+  :Refuse: unsupported-schema-version; <<#173B69>>
+  stop
+endif
+
+if (Still within its expiry?) then (no)
+  :Refuse: expired; <<#173B69>>
+  stop
+endif
+
+:Resolve the authenticated actor;
+if (Same actor that produced the plan?) then (no)
+  :Refuse: actor-mismatch; <<#173B69>>
+  stop
+endif
+
+:Resolve each target account's numeric identity;
+if (Every identity unchanged?) then (no)
+  :Refuse: owner-identity-mismatch; <<#173B69>>
+  stop
+endif
+
+:Reload the configuration from the recorded path;
+if (Every source file digest unchanged?) then (no)
+  :Refuse: source-digest-mismatch; <<#173B69>>
+  stop
+endif
+
+if (Resolved configuration digest unchanged?) then (no)
+  :Refuse: config-digest-mismatch; <<#173B69>>
+  stop
+endif
+
+note right
+  A stale plan fails.
+  It is never silently
+  repaired or re-planned.
+end note
+
+:Apply exactly the recorded operations;
+stop
+@enduml

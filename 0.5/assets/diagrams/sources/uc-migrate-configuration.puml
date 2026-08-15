@@ -1,0 +1,65 @@
+@startuml uc-migrate-configuration
+!include _theme.iuml
+
+state migrateConfiguration as "migrateConfiguration()" {
+
+  state " " as RequestingConversion
+  state " " as CheckingImports
+  state " " as Previewing
+  state " " as Deciding
+
+  [*] --> RequestingConversion
+  note on link
+  <b>Policy author</b> asks to convert a file that names its
+  account in a root owner field
+  end note
+
+  RequestingConversion --> CheckingImports
+  note on link
+  <b>Octoform</b> resolves the document and reports what it is
+  • a file that already declares owners needs no migration
+  • the converted result is equivalent: the same repositories
+    resolve to the same policy
+  end note
+
+  CheckingImports --> Previewing
+  note on link
+  <b>Octoform</b> checks what the imports declare, because only
+  the named file is converted and a repos block left at an
+  import's root would strand the result
+  end note
+
+  Previewing --> Deciding
+  note on link
+  <b>Octoform</b> prints the converted document and changes
+  nothing, because previewing is the default
+  end note
+
+  Deciding --> [*]
+  note on link
+  <b>Policy author</b> either keeps the preview, or asks for
+  --write to convert the file in place
+  end note
+}
+
+migrateConfiguration --> CONFIGURATION_RESOLVED
+note on link
+comments, ordering and formatting survive:
+the conversion moves blocks rather than
+re-serializing the document
+end note
+
+migrateConfiguration -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+refused, naming the files to move: an import
+declares repos at its root, so converting this
+file alone would produce one that does not load
+end note
+
+migrateConfiguration -[#A78BFA]-> CONFIGURATION_RESOLVED
+note on link
+--write refused: the file has uncommitted
+changes in a git working tree, so the
+conversion could not be reviewed as a diff
+end note
+@enduml

@@ -1,0 +1,90 @@
+# Governing the account itself, not only its repositories — the shape 0.5
+# introduced.
+#
+# Everything under `organization` describes the account above the repositories:
+# its public identity, what its members may do without asking, the custom
+# properties it defines, and the rulesets it aims at repositories it selects.
+#
+# None of it has a command of its own. It appears in the same plan as the
+# repository changes, grouped under a heading that names the account, and is
+# confirmed the same way:
+#
+#   export GITHUB_TOKEN=...
+#   octoform plan  --config octoform.yml
+#   octoform apply --config octoform.yml
+#
+# The account is brought into agreement with this file before any repository is
+# touched, so a lowered base permission is never briefly wider than it says.
+#
+# `example-org` is a placeholder. Replace it before running anything.
+
+version: 1
+owner: example-org
+
+organization:
+  profile:
+    description: Platform engineering for the example estate
+    website: https://example.invalid
+    location: Remote
+
+  # Eight of these reach every repository the organisation owns, including
+  # ones this file never names, so the plan reports them as sensitive.
+  # `base_permission` is a floor: no repository policy can go below it.
+  members:
+    base_permission: read
+    create_public_repositories: false
+    create_private_repositories: true
+    fork_private_repositories: false
+    web_commit_signoff_required: true
+
+  # The organisation *defines* a property here. A repository *answers* it under
+  # its own `properties`, further down. The two are not interchangeable.
+  #
+  # The definition endpoint replaces rather than patches, so octoform reads the
+  # current definition and carries forward every field this file omits.
+  properties:
+    tier:
+      value_type: single_select
+      description: How closely this repository is watched
+      allowed_values: [bronze, silver, gold]
+      default_value: bronze
+      values_editable_by: org_actors
+
+  # Aimed at whatever the condition matches — which can include repositories
+  # this file never lists. Every organisation ruleset is reported as sensitive
+  # for that reason.
+  #
+  # Run it once with `enforcement: evaluate`. That reports what would have been
+  # blocked without blocking it, and it is the only honest way to find out what
+  # a property condition actually covers.
+  rulesets:
+    - name: watched-default-branches
+      enforcement: evaluate
+      target_branches: ['~DEFAULT_BRANCH']
+      block_force_push: true
+      block_deletion: true
+      require_pull_request: true
+      required_approvals: 1
+      repositories:
+        properties:
+          - name: tier
+            values: [gold, silver]
+
+defaults:
+  merge:
+    delete_branch_on_merge: true
+
+types:
+  service:
+    # The repository's half of the property defined above. Changing this can
+    # change which organisation rulesets reach the repository, which is why a
+    # property value is sensitive too.
+    properties:
+      tier: gold
+
+repos:
+  example-service:
+    type: service
+  example-sandbox:
+    properties:
+      tier: bronze

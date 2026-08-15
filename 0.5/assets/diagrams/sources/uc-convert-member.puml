@@ -1,0 +1,50 @@
+@startuml uc-convert-member
+!include _theme.iuml
+
+state convertMember as "convertMember()" {
+
+  state " " as NamingOnePerson
+  state " " as Guarding
+  state " " as Asking
+  state " " as Converting
+
+  [*] --> NamingOnePerson
+  note on link
+  <b>Operator</b> names one member to turn into an outside
+  collaborator
+  end note
+
+  NamingOnePerson --> Guarding
+  note on link
+  <b>Octoform</b> applies the same two refusals a removal
+  does — the last owner, and the account this run is
+  authenticated as — because leaving the organisation
+  is what this does, even though access remains
+  end note
+
+  Guarding --> Asking
+  note on link
+  <b>Octoform</b> refuses somebody who is not a member,
+  and reports somebody who is already an outside
+  collaborator without changing anything
+  end note
+
+  Asking --> Converting
+  note on link
+  <b>Operator</b> is told they stop being a member and keep
+  only the repositories their current teams allow —
+  and confirms
+  end note
+
+  Converting --> [*]
+  note on link
+  <b>Octoform</b> converts them and reports the outcome
+  end note
+}
+
+convertMember --> CONFIGURATION_RESOLVED
+note on link
+a guard or a non-member exits 4;
+declining exits 1; a refused request exits 5
+end note
+@enduml
