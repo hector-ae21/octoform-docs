@@ -1,11 +1,11 @@
 ---
 title: Architecture
-description: Navigate the requirements, software structure, behavior, state, trust, and delivery views of Octoform 0.3.
+description: Navigate the requirements, software structure, behavior, state, trust, and delivery views of Octoform 0.4.
 ---
 
 # Architecture
 
-These views explain how Octoform `0.3` turns reviewed YAML into observable,
+These views explain how Octoform `0.4` turns reviewed YAML into observable,
 planned, and explicitly confirmed GitHub operations. They describe the released
 system and exclude planned multi-owner or organization-management features.
 

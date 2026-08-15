@@ -9,7 +9,7 @@ hide:
 
 <div class="octoform-hero-copy" markdown>
 
-<p class="octoform-eyebrow">Declarative GitHub governance · Octoform 0.3</p>
+<p class="octoform-eyebrow">Declarative GitHub governance · Octoform 0.4</p>
 
 # Make repository policy visible before it becomes real
 
@@ -150,7 +150,7 @@ surfaces the block instead of inventing a safe-looking answer.
 
 <div class="octoform-callout" markdown>
 
-**Current documentation:** this site describes Octoform `0.3`. Use the version
+**Current documentation:** this site describes Octoform `0.4`. Use the version
 selector when operating another release line so commands, configuration, and
 permissions remain aligned with the package you installed.
 

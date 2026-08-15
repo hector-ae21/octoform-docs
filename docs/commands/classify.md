@@ -1,6 +1,6 @@
 ---
 title: octoform classify
-description: Propose and optionally persist missing repository types with Octoform 0.3.
+description: Propose and optionally persist missing repository types with Octoform 0.4.
 ---
 
 # `octoform classify`

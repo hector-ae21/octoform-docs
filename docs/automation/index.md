@@ -35,13 +35,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npx --yes @hector21/octoform@0.3.2 audit --config octoform.yml
+      - run: npx --yes @hector21/octoform@0.4.0 audit --config octoform.yml
         env:
           GITHUB_TOKEN: ${{ secrets.OCTOFORM_AUDIT_TOKEN }}
 ```
 
-`audit` exits `0` when it reports findings. Treat its output as a report; do
-not assume that a successful job means no findings.
+`audit` exits `1` when it reports findings, so the scheduled job fails on
+drift and the failure is the notification. On the `0.3` line it exited `0`
+regardless; a job carried over from that line starts failing the first time it
+finds something, which is the intended behaviour rather than a regression.
 
 ## Credential selection
 
@@ -56,10 +58,21 @@ repository names through a public workflow log.
 
 ## Protected apply
 
-Octoform `0.3` does not consume a separately signed immutable plan artifact.
-Its apply command plans, displays, and then mutates in the same process. That
-means a protected job must approve the workflow revision and exact policy, not
-an earlier standalone plan file.
+Octoform `0.4` can hand a reviewed plan from one job to another. `plan --out`
+writes a versioned artifact and `apply --plan` performs exactly the operations
+it records, refusing with a named reason when the actor, an account's numeric
+identity, the configuration digest, a source digest, or the expiry no longer
+match. This is the shape to prefer: the job that mutates applies what was
+reviewed, rather than re-deriving it and hoping the two agree.
+
+The artifact is not cryptographically signed and does not try to be. It
+detects a plan that no longer matches the world it was made in, not an
+attacker who can rewrite files in the workspace — it carries the same trust as
+the configuration file beside it. A protected job must therefore still approve
+the workflow revision and the policy, not the plan file alone.
+
+Running `apply` without `--plan` plans, displays, and mutates in the same
+process, which remains correct for interactive use.
 
 Use all of these controls:
 
@@ -99,7 +112,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npx --yes @hector21/octoform@0.3.2 apply --yes --config octoform.yml --repo "$TARGET_REPOSITORY"
+      - run: npx --yes @hector21/octoform@0.4.0 apply --yes --config octoform.yml --repo "$TARGET_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.OCTOFORM_APPLY_TOKEN }}
           TARGET_REPOSITORY: ${{ inputs.repository }}
@@ -110,7 +123,7 @@ policy may additionally pin Actions to reviewed commit SHAs.
 
 !!! note "Patch shown in commands"
 
-    The documentation line is `0.3`. Executable examples pin `0.3.2`, the
+    The documentation line is `0.4`. Executable examples pin `0.4.0`, the
     latest patch verified by this publication. Review the
     [changelog](../releases/changelog.md) before adopting a later patch.
 

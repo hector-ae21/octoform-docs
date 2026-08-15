@@ -1,6 +1,6 @@
 ---
 title: Validated examples
-description: Choose and download a complete Octoform 0.3 configuration for a focused governance workflow.
+description: Choose and download a complete Octoform 0.4 configuration for a focused governance workflow.
 ---
 
 # Validated examples

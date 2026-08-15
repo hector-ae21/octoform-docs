@@ -31,10 +31,12 @@ invoked through its CLI or imported as an ESM library.
 
 ## Deployment consequences
 
-There is no Octoform server, database, queue, or persisted plan service in
-`0.3`. Process exit loses the computed plan. A later invocation observes and
-plans again. Configuration history belongs in version control, while applied
-state and mutation audit evidence belong to GitHub.
+There is no Octoform server, database, or queue in `0.4`. The only thing that
+outlives the process is a plan the operator asked for with `plan --out`: a
+file, not a service, which a later `apply --plan` verifies before acting on.
+Without it, process exit loses the computed plan and a later invocation
+observes and plans again. Configuration history belongs in version control,
+while applied state and mutation audit evidence belong to GitHub.
 
 See [trust and data flow](../trust/trust-and-data-flow.md) for disclosure and
 credential implications.

@@ -1,14 +1,83 @@
 ---
 title: Changelog
-description: Review Octoform 0.3 changes by exact package patch and identify when guidance becomes applicable.
+description: Review Octoform 0.4 changes by exact package patch and identify when guidance becomes applicable.
 ---
 
 # Changelog
 
-The documentation selector remains `0.3` for compatible `0.3.x` packages.
+The documentation selector remains `0.4` for compatible `0.4.x` packages.
 Entries below identify the exact patch that introduced each change. A page
-marked **Available since 0.3.1** applies to `0.3.1` and every later `0.3.x`
-patch, but not to `0.3.0`.
+marked **Available since 0.4.1** would apply to `0.4.1` and every later
+`0.4.x` patch, but not to `0.4.0`.
+
+Earlier lines keep their own published documentation; the `0.3` entries below
+remain here as the patch index for that line.
+
+## 0.4.0 — 2026-08-15
+
+**Applies from:** `0.4.0`  
+**Compatibility:** every existing configuration file keeps its exact meaning
+and produces the same plans. Two contracts changed — see **Changed** below.
+
+### Added
+
+- One configuration can describe several GitHub accounts. A root `owners`
+  mapping keyed by login replaces one file per account, and the root of the
+  file holds whatever those accounts share.
+- A root `version` field states the configuration contract a file is written
+  against. `1` is the only accepted value, required whenever `owners` is used.
+- A root `policies` mapping declares named, reusable policy fragments that any
+  layer folds in before its own keys.
+- `--owner <login>`, repeatable, narrows a run to the named accounts and
+  rejects a login the configuration does not declare. `--repo` accepts a
+  qualified `owner/name`.
+- `--strict` fails a run when a declaration does not apply to the account that
+  declared it.
+- [`octoform config validate`](../commands/config.md) and
+  [`octoform config migrate`](../commands/config.md), both offline.
+- [`octoform inspect config`](../commands/inspect.md) and
+  [`octoform inspect capabilities`](../commands/inspect.md).
+- Capability answers carry status, reason, source, and observation time
+  instead of a bare boolean, so an opaque `404` no longer reads the same as a
+  confirmed denial.
+- Owner discovery resolves an account's kind and GitHub's numeric identity for
+  it, which is the identity that survives a rename.
+- `--concurrency <n>` bounds repositories worked on at once per account, and a
+  failure in one account no longer aborts the rest; `--fail-fast` opts back
+  into stopping at the first failure.
+- [`plan --out`](../commands/plan.md#saving-a-plan) saves a versioned plan and
+  [`apply --plan`](../commands/apply.md#applying-a-saved-plan) performs
+  exactly that plan or refuses with a named reason.
+- `--format json` wraps output in a versioned envelope on `plan` and both
+  `inspect` commands.
+- The pinned REST API version is now sent on every request.
+
+### Changed
+
+- **Exit codes are a frozen set of six classes.** `audit` now exits `1` when
+  it reports findings rather than `0`, and `apply` follows the same classes. A
+  pipeline that tested for success without inspecting the code will now fail
+  on drift, which is the intended behaviour. See the
+  [execution contract](../commands/execution-contract.md#exit-codes).
+- **The programmatic API changed.** `loadConfig` returns a resolved
+  configuration holding one scope per owner, so `config.owner` becomes
+  `config.owners[n].owner`; `planRepo` takes the account as its first
+  argument; and `PlanOptions.rulesetCapability` replaces
+  `rulesetsEnforcedOnPrivate`. Configuration files are unaffected.
+
+### Security
+
+- Credentials come from an explicit token or token provider, then
+  `GITHUB_TOKEN`, then `GH_TOKEN`, and nowhere else. A credential-shaped value
+  in a configuration file is rejected when it loads, naming the YAML path
+  without echoing the value.
+- A declared owner is checked against GitHub's own login format, so one
+  carrying a path separator, a control character, or a homoglyph fails with
+  the reason instead of an opaque `404` mid-run.
+- Control characters in anything read from GitHub — repository names,
+  descriptions, topics, property values, API errors — are escaped before being
+  printed, so a crafted value cannot rewrite the report or imitate the
+  confirmation prompt.
 
 ## 0.3.2 — 2026-08-14
 

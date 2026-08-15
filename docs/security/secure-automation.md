@@ -22,7 +22,7 @@ An apply workflow should have:
 - minimal log and artifact retention;
 - a new read-only plan after any failure.
 
-See [CI/CD automation](../automation/index.md) for supported `0.3` examples
+See [CI/CD automation](../automation/index.md) for supported `0.4` examples
 and its important immutable-plan limitation.
 
 ## Threats and mitigations
@@ -40,7 +40,7 @@ and its important immutable-plan limitation.
 
 ## Plan freshness
 
-Octoform `0.3` does not consume a separately approved immutable plan artifact.
+Octoform `0.4` does not consume a separately approved immutable plan artifact.
 The apply command plans again immediately before confirmation. Protect the
 configuration revision and apply environment, and review the plan displayed by
 that authorized run.

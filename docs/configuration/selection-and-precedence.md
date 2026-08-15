@@ -1,6 +1,6 @@
 ---
 title: Selection and precedence
-description: Resolve defaults, repository types, named overrides, and management boundaries in Octoform 0.3.
+description: Resolve defaults, repository types, named overrides, and management boundaries in Octoform 0.4.
 ---
 
 # Selection and precedence
@@ -8,22 +8,48 @@ description: Resolve defaults, repository types, named overrides, and management
 Octoform resolves policy from the widest layer to the narrowest, one field at
 a time. A narrow policy can override one value without copying its siblings.
 
+The complete chain, widest first:
+
+```text
+imported files, in declaration order
+  root policies referenced by the layer being resolved
+    root defaults
+      owner defaults
+        types.<type>
+          repos.<name>
+```
+
+Every step overlays the one before it field by field. A layer that says
+nothing about a setting leaves the previous answer standing — which is what
+lets an account, or one repository, state only what differs.
+
 ```yaml
+version: 1
+
 defaults:
   features:
     wiki: false
 
-types:
-  library:
-    merge:
-      delete_branch_on_merge: true
-
-repos:
-  exceptional-library:
-    type: library
-    features:
-      wiki: null
+owners:
+  example-org:
+    types:
+      library:
+        merge:
+          delete_branch_on_merge: true
+    repos:
+      exceptional-library:
+        type: library
+        features:
+          wiki: null
 ```
+
+A single-account file omits `owners` and declares `defaults`, `types`, and
+`repos` at the root. The chain is the same, minus the owner layer.
+
+The first two steps are described in
+[document composition](document-composition.md): imports compose the document,
+and a layer's `policies` list folds named fragments in before that layer's own
+keys, so the layer referencing a policy always wins over it.
 
 ## `defaults`
 
