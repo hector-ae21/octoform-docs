@@ -1,6 +1,6 @@
 ---
-title: Govern GitHub repositories as declared state
-description: Review and apply consistent GitHub repository governance from one explicit policy.
+title: Govern GitHub organizations and repositories as declared state
+description: Review and apply consistent GitHub governance, from one organization's member policies down to one repository's labels, from a single explicit policy.
 hide:
   - toc
 ---
@@ -9,13 +9,13 @@ hide:
 
 <div class="octoform-hero-copy" markdown>
 
-<p class="octoform-eyebrow">Declarative GitHub governance · Octoform 0.4</p>
+<p class="octoform-eyebrow">Declarative GitHub governance · Octoform 0.5</p>
 
-# Make repository policy visible before it becomes real
+# Make GitHub policy visible before it becomes real
 
 <p class="octoform-lead">Octoform compares an explicit YAML policy with the
-current state of your GitHub repositories, builds a deterministic plan, and
-applies only the changes you approve.</p>
+current state of your GitHub organization and its repositories, builds a
+deterministic plan, and applies only the changes you approve.</p>
 
 <div class="octoform-actions" markdown>
 
@@ -53,8 +53,9 @@ GitHub currently exposes, and what Octoform is actually allowed to change.</p>
 
 ### Describe only what you manage
 
-Omitted settings remain untouched. Defaults, repository types, and repository
-overrides resolve field by field into one effective policy.
+Omitted settings remain untouched, and nothing is removed because a line was
+left out. Defaults, repository types, and repository overrides resolve field by
+field into one effective policy.
 
 </div>
 
@@ -148,9 +149,56 @@ surfaces the block instead of inventing a safe-looking answer.
 
 </div>
 
+## The account, not only its repositories
+
+<p class="octoform-section-intro">Octoform 0.5 governs the organization above
+the repositories: its profile, what members may do, its custom properties, the
+rulesets it aims at repositories it selects, its teams and its roles. All of it
+appears in the same plan, and all of it is confirmed the same way.</p>
+
+<div class="octoform-grid" markdown>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
+### Reach is stated, not discovered
+
+A base permission, an organization ruleset and an organization role each reach
+every repository the account owns — including ones no policy names. Each is
+reported as `sensitive` before it is applied.
+
+[Read the organization block](configuration/organization.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
+### Membership asks first
+
+Inviting, removing or converting one person is a command that names them, says
+what will happen, and waits. An invitation is addressed to a person, not
+reconciled by a schedule.
+
+[Read the members commands](commands/members.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
+### Nothing is removed by omission
+
+Every removable resource has a word that has to be written: `none` for a grant,
+`mode: absent` for a team, a label or a property definition. Deleting a line
+stops managing something; it never destroys it.
+
+[Follow the organization guide](guides/organization-governance.md)
+
+</div>
+
+</div>
+
 <div class="octoform-callout" markdown>
 
-**Current documentation:** this site describes Octoform `0.4`. Use the version
+**Current documentation:** this site describes Octoform `0.5`. Use the version
 selector when operating another release line so commands, configuration, and
 permissions remain aligned with the package you installed.
 

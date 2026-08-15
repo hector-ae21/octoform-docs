@@ -35,7 +35,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npx --yes @hector21/octoform@0.4.1 audit --config octoform.yml
+      - run: npx --yes @hector21/octoform@0.5.0 audit --config octoform.yml
         env:
           GITHUB_TOKEN: ${{ secrets.OCTOFORM_AUDIT_TOKEN }}
 ```
@@ -58,7 +58,7 @@ repository names through a public workflow log.
 
 ## Protected apply
 
-Octoform `0.4` can hand a reviewed plan from one job to another. `plan --out`
+Octoform `0.5` can hand a reviewed plan from one job to another. `plan --out`
 writes a versioned artifact and `apply --plan` performs exactly the operations
 it records, refusing with a named reason when the actor, an account's numeric
 identity, the configuration digest, a source digest, or the expiry no longer
@@ -112,7 +112,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npx --yes @hector21/octoform@0.4.1 apply --yes --config octoform.yml --repo "$TARGET_REPOSITORY"
+      - run: npx --yes @hector21/octoform@0.5.0 apply --yes --config octoform.yml --repo "$TARGET_REPOSITORY"
         env:
           GITHUB_TOKEN: ${{ secrets.OCTOFORM_APPLY_TOKEN }}
           TARGET_REPOSITORY: ${{ inputs.repository }}
@@ -123,7 +123,7 @@ policy may additionally pin Actions to reviewed commit SHAs.
 
 !!! note "Patch shown in commands"
 
-    The documentation line is `0.4`. Executable examples pin `0.4.1`, the
+    The documentation line is `0.5`. Executable examples pin `0.5.0`, the
     latest patch verified by this publication. Review the
     [changelog](../releases/changelog.md) before adopting a later patch.
 

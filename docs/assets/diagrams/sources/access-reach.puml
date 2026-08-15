@@ -1,0 +1,42 @@
+@startuml access-reach
+!include _theme.iuml
+left to right direction
+
+actor "Person" as Person
+rectangle "Repository" as Repo
+
+package "Declared by the organisation" {
+  rectangle "organization.members.base_permission\nA floor under every repository" as Base
+  rectangle "organization.roles.<name>\nAssignment only" as Role
+  rectangle "organization.teams.<slug>.membership\nWho is on the team" as Team
+}
+
+package "Declared by the repository" {
+  rectangle "access.teams.<slug>\nWhat the team may do here" as TeamGrant
+  rectangle "access.users.<login>\nA direct collaborator" as Direct
+}
+
+Person --> Base : as any member
+Person --> Team : as member or maintainer
+Person --> Role : as a holder
+Person --> Direct : by name
+
+Base --> Repo : every repository the\norganisation owns
+Team --> TeamGrant
+TeamGrant --> Repo : one repository
+Direct --> Repo : one repository
+Role --> Repo : every repository the\norganisation owns
+
+note bottom of Base
+  <b>The floor is not a grant.</b> No repository
+  policy can go below it, so lowering it takes
+  access away from people no policy names.
+  Reported as <b>sensitive</b>.
+end note
+
+note bottom of Direct
+  Revocation is spelled <b>none</b>. Deleting the
+  line stops managing the grant; it does not
+  remove it.
+end note
+@enduml

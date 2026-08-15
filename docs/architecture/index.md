@@ -1,13 +1,14 @@
 ---
 title: Architecture
-description: Navigate the requirements, software structure, behavior, state, trust, and delivery views of Octoform 0.4.
+description: Navigate the requirements, software structure, behavior, state, trust, and delivery views of Octoform 0.5.
 ---
 
 # Architecture
 
-These views explain how Octoform `0.4` turns reviewed YAML into observable,
+These views explain how Octoform `0.5` turns reviewed YAML into observable,
 planned, and explicitly confirmed GitHub operations. They describe the released
-system and exclude planned multi-owner or organization-management features.
+system, which governs an account as well as its repositories, and exclude the
+Actions, environments and secret-management features planned for later lines.
 
 Every diagram is rendered locally from versioned PlantUML source. The public
 site serves static SVG files and sends neither documentation content nor source
@@ -39,6 +40,7 @@ code to an external diagram service.
 | [Policy resolution](behavior/policy-resolution.md) | Resolve defaults, type policy, named overrides, `null`, and management boundaries. |
 | [Repository selection](behavior/repository-selection.md) | Explain owner-aware discovery, exclusions, filters, archive handling, and observation scope. |
 | [Plan and apply](behavior/plan-and-apply.md) | Sequence reads, planning, confirmation, grouped mutation, and results. |
+| [Owner reconciliation](behavior/owner-reconciliation.md) | Reconcile the account itself, and derive apply order from a dependency graph rather than from written order. |
 | [State models](behavior/state-models.md) | Follow configuration and individual changes through their complete lifecycles. |
 
 ## Trust and delivery
@@ -52,13 +54,18 @@ code to an external diagram service.
 ## Cross-cutting safety properties
 
 1. Omission means unmanaged, not disabled or deleted.
-2. Unreadable state remains distinguishable from an absent value.
+2. Unreadable state remains distinguishable from an absent value, whichever
+   transport failed to read it.
 3. Capability comes from GitHub evidence, not hard-coded plan names.
 4. `apply` uses the executable changes displayed in that invocation.
 5. Blocked changes remain reportable and never reach the applier.
 6. Endpoint groups can fail independently; successful groups are not rolled
    back automatically.
-7. Undeclared rulesets, environments, branches, and files are not deleted.
+7. Undeclared rulesets, environments, branches, files, teams, property
+   definitions, labels and milestones are not deleted. Removal is stated.
+8. A change whose prerequisite failed is blocked, not attempted.
+9. Nothing removes the last person able to undo the change: not the only
+   organization owner, and not the account the run is authenticated as.
 
 The [audited behavior baseline](../reference/v0.3.1-baseline.md) records the
 published package and API evidence behind these properties.

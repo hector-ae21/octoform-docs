@@ -1,6 +1,6 @@
 ---
 title: octoform audit
-description: Inventory repositories and report read-only compliance findings with Octoform 0.4.
+description: Inventory repositories and report read-only compliance findings with Octoform 0.5.
 ---
 
 # `octoform audit`

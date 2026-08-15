@@ -1,6 +1,6 @@
 ---
 title: Operator context
-description: The states an Octoform 0.4 operator holds, and the use case that moves them between each one.
+description: The states an Octoform 0.5 operator holds, and the use case that moves them between each one.
 ---
 
 # Operator context
@@ -33,6 +33,8 @@ operator has established and can act on.
 | `CHANGES_APPLIED` | Per-operation outcomes. Not a guarantee that every operation succeeded. |
 | `TYPES_PROPOSED` | Proposed repository types, written only when `--apply` was requested. |
 | `PROPERTY_SCHEMA_SYNCHRONIZED` | An organization property schema converged with the declared types. |
+| `MEMBERSHIP_REPORTED` | Who is in the organization, and which of the people the configuration names are not. |
+| `MEMBERSHIP_CHANGED` | One person invited, removed, or converted. Never more than one. |
 
 ## Why most states are terminal
 
@@ -55,6 +57,20 @@ ones that carry work forward:
 Every other apparent continuation — planning, then applying tomorrow from
 memory — is not modelled because Octoform does not support it. A plan that was
 not saved cannot be applied later.
+
+## `MEMBERSHIP_CHANGED` is deliberately outside the plan
+
+Three transitions reach it, and none of them goes through `PLAN_PRESENTED`.
+That is the one place in this model where a write is not preceded by a plan,
+and it is a design decision rather than an omission: an invitation is an act
+addressed to a person who is emailed about it, so it is confirmed one login at
+a time rather than reconciled by a schedule. See
+[`octoform members`](../../commands/members.md).
+
+Everything the organization *itself* holds — its profile, its member policies,
+its properties, rulesets, teams and roles — does go through
+`PLAN_PRESENTED`, because a setting that reaches every repository an account
+owns should never be the one thing nobody saw a diff for.
 
 ## Self-transitions are not idle
 

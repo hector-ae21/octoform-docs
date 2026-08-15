@@ -1,6 +1,6 @@
 ---
 title: Security settings
-description: Configure repository security features while respecting GitHub capability evidence in Octoform 0.4.
+description: Configure repository security features while respecting GitHub capability evidence in Octoform 0.5.
 ---
 
 # Security settings
@@ -29,9 +29,15 @@ defaults:
 | `secret_scanning` | Repository update under `security_and_analysis` |
 | `secret_scanning_push_protection` | Repository update under `security_and_analysis` |
 | `code_scanning_default_setup` | Update CodeQL default setup |
+| `immutable_releases` | Repository update |
 
 Each field is tri-state. A concrete boolean manages it; `null` cancels an
 inherited value; omission contributes no policy at that layer.
+
+`immutable_releases` stops a published release and its assets from being
+changed after the fact. It is an ordinary managed setting, and turning it on is
+the direction that is hard to reverse in practice: releases published while it
+was on cannot be edited afterwards.
 
 ## Capability evidence
 
@@ -51,6 +57,26 @@ workflow. Enabling default setup can disable the advanced configuration. Leave
 `code_scanning_default_setup` unmanaged for repositories that own a
 `codeql.yml` workflow unless the migration is deliberate and separately
 reviewed.
+
+Since `0.5.0` the plan says so itself. Octoform reads the repository's workflow
+files, and a policy that would enable default setup where a workflow uploads
+code-scanning results carries a warning:
+
+```text
+    security.code_scanning_default_setup: false -> true  [warning: .github/workflows/codeql.yml upload code scanning results, and GitHub refuses those uploads while the default setup is configured]
+```
+
+It is a warning rather than a block because the migration is a legitimate thing
+to want. What made it worth reporting is that GitHub refuses the combination
+without either side reporting a failure: the uploads simply stop arriving.
+
+Workflow files that could not be read produce their own warning, saying so,
+rather than an assurance that there was nothing to disable.
+
+A second consequence is reported the same way: a repository whose visibility is
+`internal` warns that GitHub does not accept `internal` as a visibility to
+*set*, so changing away from it cannot be undone by changing the configuration
+back.
 
 ## Plan and apply behavior
 

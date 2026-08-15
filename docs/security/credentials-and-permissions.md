@@ -38,9 +38,17 @@ A fine-grained personal access token is preferable to a classic PAT. Select
 only the repositories being evaluated and begin with read permissions. Add a
 write permission only when the reviewed policy contains that capability.
 
-The CLI preflight for classic tokens requires `repo`. Organization custom
-property writes additionally require `admin:org`. Those coarse scopes do not
-describe minimum fine-grained permissions.
+The CLI preflight checks the classic scopes the command it was given actually
+needs:
+
+| Command | Classic scopes |
+| --- | --- |
+| `audit`, `plan`, `apply`, `classify`, `inspect capabilities` | `repo` |
+| `properties sync` | `repo`, `admin:org` |
+| `inspect members` | `read:org` |
+| `members invite`, `members remove`, `members convert` | `admin:org` |
+
+Those coarse scopes do not describe minimum fine-grained permissions.
 
 ## Automated operation
 
@@ -57,17 +65,43 @@ credential from a pull-request payload or configuration file.
 
 ## Permission families
 
-GitHub evaluates distinct permission families for:
+GitHub evaluates distinct permission families. The ones Octoform can need are:
 
-- repository administration and settings;
-- contents and branch creation;
-- rules and rulesets;
-- environments and deployment protection;
-- security events and code-scanning setup;
-- organization custom properties.
+| Scope | Families |
+| --- | --- |
+| Repository | Administration and settings; metadata; contents and branch creation; issues, for labels and milestones; rules and rulesets; environments and deployment protection; security events and code-scanning setup; custom property values |
+| Organization | Administration, for the profile and member policies; custom property definitions; members, for teams, team membership, role assignment and the `members` commands |
 
 Grant only families declared by the active policy. A read-only audit should
 not receive write permissions merely because a future policy might need them.
+
+A configuration with no [`organization` block](../configuration/organization.md)
+and no `access.teams` needs none of the organization families at all.
+
+### The generated permission model
+
+`reference/permissions.json` ships inside the published package and states, per
+route and per capability, which classic scope or fine-grained profile it needs,
+and whether the route is a read or a write.
+
+It is generated from the same register the behaviour is tested against, so it
+is the authority rather than this page: duplicating it in prose would only
+create somewhere for the two to disagree. Read it before deciding what a token
+should be allowed to do.
+
+The register also records what Octoform will **never** do, and why. Two groups:
+operations that are irreversible in a way no plan can describe — deleting a
+repository or an organization, transferring either — and operations beyond what
+a personal access token can reach at all.
+
+### Personal access token request review
+
+GitHub's fine-grained PAT governance endpoints are not implemented, and the
+capability register records them as `unsupported` with the reason. All eight of
+them — the request listing, both review routes, the grant listing, both update
+routes and the two repository listings — state that only GitHub Apps can use
+them. Octoform authenticates with a personal access token, so every one would
+refuse it whatever permissions it carried.
 
 ## Token lifecycle
 

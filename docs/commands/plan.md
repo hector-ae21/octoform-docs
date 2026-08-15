@@ -27,19 +27,63 @@ when the same repository name exists under more than one selected account.
 them evaluates the complete managed set after exclusions. Use a narrow
 selector for initial rollout and incident diagnosis.
 
+## What a plan covers
+
+A plan covers the selected repositories **and the account above them**. An
+[`organization` block](../configuration/organization.md) produces changes in
+the same plan, confirmed the same way, grouped under a heading that cannot be
+mistaken for a repository name — a repository really can be called the same
+thing as the organization that owns it:
+
+```text
+3 change(s) across 2 repositories:
+
+  (example-org: the organisation itself)
+    organization.members.base_permission: write -> read
+    organization.teams.platform-oncall: (unset) -> platform-oncall (Platform on-call); closed; under platform
+
+  example-service
+    access.teams.platform: (unset) -> maintain
+```
+
+Owner-level work is planned and applied before any repository, so a change to
+the floor under every repository is never briefly wider than the file asks for.
+
 ## Operation identity
 
 Every operation carries:
 
 - a stable identifier, unchanged between two runs that plan the same change,
   so results can be correlated across runs and across output formats;
-- the account it belongs to;
-- an operation kind: `create` or `update`;
-- a risk level: `normal` or `sensitive`;
+- the account it belongs to, and the repository when it belongs to one;
+- an operation kind: `create`, `update`, `attach`, `detach` or `delete`;
+- a risk level: `normal`, `sensitive`, `destructive` or `cost`;
 - its prerequisites, and its before and after values.
 
 Identifiers address a change in Octoform's own model. They are never a GitHub
 object identity.
+
+!!! info "Changed in 0.5.0"
+
+    `attach`, `detach` and `delete` are new operation kinds, and `destructive`
+    is a new risk level. A change belonging to the account itself has **no**
+    repository at all: `Change.repo` is optional, and inventing a value for it
+    would make the change group and count as though it belonged to a
+    repository. Programmatic callers that read `change.repo` as a string have
+    to handle its absence.
+
+### Risk levels
+
+| Level | What it means | Examples |
+| --- | --- | --- |
+| `normal` | Metadata | A description, a label colour, a team's notification setting |
+| `sensitive` | It affects access, merge safety, or reaches beyond what the file names | `base_permission`, an organization ruleset, an organization role, any `access` grant, branch protection, visibility, a repository property value |
+| `destructive` | Something is removed and GitHub does not keep it | A deleted team, a deleted property definition, a revoked grant, a deleted label |
+| `cost` | It has a billing consequence | Nothing Octoform manages today |
+
+Risk is carried on every change in `--format json` and in a saved plan. Text
+output does not print it; it prints the reason a change is blocked or warned,
+which is what a reader acts on.
 
 ## Determinism and concurrency
 

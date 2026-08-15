@@ -26,7 +26,7 @@ network, and GitHub-controlled boundaries.
 | Process ↔ GitHub | Use authenticated HTTPS; treat response fields and status codes as state and capability evidence. |
 | Process → logs | Restrict retention and audience because names, private topology, current settings, and API errors can be sensitive. |
 
-Octoform `0.4` has no token configuration field, and rejects a
+Octoform `0.5` has no token configuration field, and rejects a
 credential-shaped value written into one. It does persist a plan when asked:
 `plan --out` writes a saved plan, with owner-only permissions where the
 platform supports them. That file carries no credential, but it does name

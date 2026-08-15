@@ -5,14 +5,15 @@ description: See the configuration Octoform resolved, and what it believes each 
 
 # `octoform inspect`
 
-Two read-only commands for answering "why did it decide that?" without
-inferring the answer from a plan. Neither mutates anything.
+Three read-only commands for answering "why did it decide that?" without
+inferring the answer from a plan. None of them mutates anything.
 
 ```console
 octoform inspect config       --config octoform.yml
 octoform inspect config       --config octoform.yml --owner example-org --format json
 octoform inspect capabilities --config octoform.yml
-octoform inspect capabilities --config octoform.yml --format json
+octoform inspect capabilities --config octoform.yml --repo example-service
+octoform inspect members      --config octoform.yml
 ```
 
 ## `inspect config`
@@ -60,10 +61,33 @@ A declaration that does not apply is reported, never silently ignored. Pass
 `--strict` to any GitHub-facing command to turn those reports into a failed
 run instead.
 
+### One repository at a time
+
+`--repo <name>` narrows the ruleset question to one repository and reports what
+answered it:
+
+```console
+octoform inspect capabilities --config octoform.yml --repo example-service
+```
+
+Private-repository ruleset availability is decided per repository from a
+read-only probe of the default branch's protection, so asking about the account
+and asking about one of its repositories are genuinely different questions. See
+[private repository capability](../configuration/branches-and-rulesets.md#private-repository-capability).
+
+## `inspect members`
+
+Who owns, belongs to and collaborates on the organization, which invitations
+are waiting or failed, and which of the people the configuration names are in
+no part of it.
+
+It has its own page alongside the three commands that change a membership:
+**[`octoform members`](members.md)**.
+
 ## Output
 
-Both support `--format json`, wrapping their result in the versioned envelope
-described in the
-[execution contract](execution-contract.md#json-output). Both exit `0` on
-success, `2` on a configuration or selector error, and `inspect capabilities`
-exits `3` when the token cannot authenticate.
+All three support `--format json`, wrapping their result in the versioned
+envelope described in the
+[execution contract](execution-contract.md#json-output). All three exit `0` on
+success and `2` on a configuration or selector error; `inspect capabilities`
+and `inspect members` exit `3` when the token cannot authenticate.

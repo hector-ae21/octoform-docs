@@ -9,6 +9,7 @@ component "TypeScript application" as Consumer
 package "Trusted workstation or CI runner" {
   component "Octoform Node.js process\nCLI adapter and ESM library" as Process
   component "Octokit client\nREST transport" as Octokit
+  component "GraphQL transport\nNormalized to the same vocabulary" as GraphQLClient
   file "Root YAML and imports\nDeclared desired state" as Config
   file "Local seed files\nCreate-if-missing content" as Seeds
   rectangle "Process environment\nGITHUB_TOKEN or GH_TOKEN" as Token
@@ -17,6 +18,7 @@ package "Trusted workstation or CI runner" {
 
 package "GitHub.com boundary" {
   component "REST API" as REST
+  component "GraphQL API" as GraphQL
   database "Owner and repository state" as State
 }
 
@@ -26,13 +28,27 @@ Consumer --> Process : ESM imports and function calls
 Config --> Process : configuration composition
 Seeds --> Process : declared file content
 Token --> Octokit : bearer credential in memory
+Token --> GraphQLClient : the same credential
 Process --> Octokit : observation and mutation requests
+Process --> GraphQLClient : only the four settings\nREST does not expose
 Octokit --> REST : authenticated HTTPS
+GraphQLClient --> GraphQL : authenticated HTTPS
 REST --> State : read or authorized mutation
+GraphQL --> State : read or authorized mutation
 State --> REST : current values
+State --> GraphQL : current values
 REST --> Octokit : response, headers or error
+GraphQL --> GraphQLClient : data and errors, together, under HTTP 200
+GraphQLClient --> Process : the same unreadable sentinel a REST failure produces
 Octokit --> Process : state and capability evidence
 Process --> Console : findings, plans and outcomes
 Console --> Operator
 Console --> Automation
+
+note bottom of GraphQLClient
+  A partial GraphQL answer never reads as a complete
+  one: what arrived is reported alongside what failed,
+  and the planner cannot tell which transport observed
+  a value it could not read.
+end note
 @enduml

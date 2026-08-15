@@ -1,6 +1,6 @@
 ---
 title: Configuration reference
-description: Navigate every field and policy block accepted by Octoform 0.4.
+description: Navigate every field and policy block accepted by Octoform 0.5.
 ---
 
 # Configuration reference
@@ -19,16 +19,35 @@ defaults:
 
 ## Configuration map
 
+### The account
+
 | Area | Fields and decisions |
 | --- | --- |
-| [Document composition](document-composition.md) | `owner`, `imports`, `exclude`, relative paths, circular imports |
+| [Document composition](document-composition.md) | `owner`, `owners`, `imports`, `policies`, `exclude`, relative paths, circular imports |
 | [Selection and precedence](selection-and-precedence.md) | `defaults`, `types`, `repos`, `type`, `manage`, tri-state overrides |
 | [Classification and audit](classification-and-audit.md) | `classify`, rule conditions, `audit`, read-only findings |
-| [Repository settings](repository-settings.md) | `features`, `merge`, `repo` metadata and settings |
-| [Security settings](security-settings.md) | Dependabot, secret scanning, private reporting, CodeQL default setup |
+| [The organization block](organization.md) | `organization.profile`, `organization.members`, reach and risk |
+| [Custom properties](custom-properties.md) | `organization.properties` definitions and repository `properties` values |
+| [Organization rulesets](organization-rulesets.md) | `organization.rulesets` and the repositories they select |
+| [Teams and membership](teams.md) | `organization.teams`, nesting, and who is on each one |
+| [Organization roles](roles.md) | `organization.roles`, granted to users and teams |
+
+### The repository
+
+| Area | Fields and decisions |
+| --- | --- |
+| [Repository settings](repository-settings.md) | `features`, `merge`, `repo` metadata, visibility, archive state and rename |
+| [Security settings](security-settings.md) | Dependabot, secret scanning, private reporting, CodeQL default setup, immutable releases |
 | [Branches and rulesets](branches-and-rulesets.md) | `default_branch`, `ensure_branches`, repository rulesets and capability evidence |
+| [Ruleset rules](ruleset-rules.md) | Every target, rule and bypass actor a ruleset can carry |
+| [Classic branch protection](branch-protection.md) | `branch_protection`, and why one branch takes one mechanism |
+| [Repository access](access.md) | `access.users`, `access.teams`, and stating a revocation |
+| [Labels and milestones](collections.md) | `labels`, `milestones`, `rename_from`, `mode: absent` |
 | [Environments](environments.md) | Environment creation and required user reviewers |
 | [Files](files.md) | Safe `create-if-missing` repository file seeding |
+
+Organization membership is the one area that is deliberately not declarative.
+See [`octoform members`](../commands/members.md).
 
 ## Common field contract
 
@@ -56,16 +75,29 @@ After resolution, `null` and omission both mean that the effective field is
 unmanaged. Lists such as `rulesets`, `environments`, and `files` are compared
 according to their resource-specific rules; they are not scalar toggles.
 
+Because `null` is already taken, every resource that can be *removed* has its
+own word for it, and each one has to be written:
+
+| To remove | Write |
+| --- | --- |
+| A collaborator or team grant | `none` |
+| A label, milestone, team, or property definition | `mode: absent` |
+| A repository custom property value | `''` or `[]` |
+
+Deleting a line from the file never removes anything.
+
 See [core concepts](../concepts/index.md) for worked precedence examples and
 the [plan command](../commands/plan.md) for interpreting the resulting diff.
 
 ## Global boundaries
 
-- Archived repositories are observed but receive no planned mutations.
+- Archived repositories are observed but receive no planned mutations, unless
+  the policy is unarchiving them.
 - An unreadable current value produces a blocked change, not an assumed value.
-- Octoform `0.4` never deletes undeclared rulesets, environments, branches,
-  or repository files.
-- `features.discussions` is accepted but blocked because the released REST
-  integration cannot mutate it.
+- Octoform `0.5` never deletes an undeclared ruleset, environment, branch, team,
+  property definition, or repository file. Removal happens only where a policy
+  states it.
 - Owner plan names are not configuration. Availability is inferred from owner
   kind, visibility, permissions, and GitHub responses.
+- A declaration that does not apply to the kind of account that declared it is
+  reported, not silently ignored. `--strict` turns that report into a failure.

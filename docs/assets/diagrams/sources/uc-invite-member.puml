@@ -1,0 +1,52 @@
+@startuml uc-invite-member
+!include _theme.iuml
+
+state inviteMember as "inviteMember()" {
+
+  state " " as NamingOnePerson
+  state " " as Resolving
+  state " " as Asking
+  state " " as Sending
+
+  [*] --> NamingOnePerson
+  note on link
+  <b>Operator</b> names one login and, optionally, the
+  organisation role to offer: admin, direct_member
+  or billing_manager
+  end note
+
+  NamingOnePerson --> Resolving
+  note on link
+  <b>Octoform</b> checks whether the person is already a
+  member or already invited, and stops there if they are
+  • an invitation already waiting is reported with its
+    age rather than sent again
+  end note
+
+  Resolving --> Asking
+  note on link
+  <b>Octoform</b> resolves the login to the numeric user id
+  the endpoint takes, and refuses a login no GitHub
+  account answers to
+  end note
+
+  Asking --> Sending
+  note on link
+  <b>Operator</b> is told who will be invited, as what, and
+  that they will be emailed about it — and confirms
+  end note
+
+  Sending --> [*]
+  note on link
+  <b>Octoform</b> sends exactly one invitation and reports
+  the outcome
+  end note
+}
+
+inviteMember --> CONFIGURATION_RESOLVED
+note on link
+declining exits 1 and sends nothing;
+an unknown login or an unknown role
+exits 4; a refused request exits 5
+end note
+@enduml

@@ -1,6 +1,6 @@
 ---
 title: Command-line reference
-description: Choose and operate every command exposed by Octoform 0.4.
+description: Choose and operate every command exposed by Octoform 0.5.
 ---
 
 # Command-line reference
@@ -22,7 +22,11 @@ octoform properties sync [--config <path>] [--owner <login>]
 octoform config validate [--config <path>]
 octoform config migrate  [--config <path>] [--write]
 octoform inspect config       [--config <path>] [--owner <login>] [--format <text|json>]
-octoform inspect capabilities [--config <path>] [--owner <login>] [--format <text|json>]
+octoform inspect capabilities [--config <path>] [--owner <login>] [--repo <name>] [--format <text|json>]
+octoform inspect members      [--config <path>] [--owner <login>] [--format <text|json>]
+octoform members invite  --user <login> [--role <role>] [--owner <login>] [--yes]
+octoform members remove  --user <login> [--owner <login>] [--yes]
+octoform members convert --user <login> [--owner <login>] [--yes]
 ```
 
 ## Choose a command
@@ -38,9 +42,17 @@ octoform inspect capabilities [--config <path>] [--owner <login>] [--format <tex
 | [`config migrate`](config.md) | Convert a single-owner file to the multi-owner shape | Never |
 | [`inspect config`](inspect.md) | Print the fully resolved configuration for the selection | Never |
 | [`inspect capabilities`](inspect.md) | Print what each selected account supports, and why | Never |
+| [`inspect members`](members.md) | Print who is in the organization, and which named people are not | Never |
+| [`members invite`](members.md) | Invite one person, who is emailed about it | Yes, after asking |
+| [`members remove`](members.md) | Remove one person, or withdraw their unanswered invitation | Yes, after asking |
+| [`members convert`](members.md) | Turn one member into an outside collaborator | Yes, after asking |
 
 `config validate`, `config migrate`, and `inspect config` never contact GitHub
 at all. They need no token.
+
+The three `members` commands are the only writes that are not part of a plan.
+Organization membership is deliberately not declarative; see
+[why these are commands and not policy](members.md#why-these-are-commands-and-not-policy).
 
 ## Common options
 
@@ -48,17 +60,19 @@ at all. They need no token.
 | --- | --- | --- |
 | `--config <path>` | All | Root configuration; defaults to `octoform.yml` in the working directory. |
 | `--owner <login>` | All GitHub-facing commands, `inspect config` | Limit the run to the named account. Repeatable. A login the configuration does not declare is an error, never a silent no-op. |
-| `--repo <name>` | `plan`, `apply` | Limit policy evaluation to one exact repository. Accepts a qualified `owner/name`. |
+| `--repo <name>` | `plan`, `apply`, `inspect capabilities` | Limit to one exact repository. Accepts a qualified `owner/name`. |
 | `--type <type>` | `plan`, `apply` | Limit policy evaluation to repositories with one resolved type. |
+| `--user <login>` | `members invite`, `remove`, `convert` | The one person the command is about. Required. |
+| `--role <role>` | `members invite` | `admin`, `direct_member` or `billing_manager`. Defaults to `direct_member`. |
 | `--concurrency <n>` | `plan`, `apply` | Repositories worked on at once within an account. Defaults to `4`. |
-| `--fail-fast` | `plan`, `apply` | Stop at the first account that fails, instead of continuing through the rest. |
-| `--format <text\|json>` | `plan`, `inspect config`, `inspect capabilities` | Output shape. Defaults to `text`. |
+| `--fail-fast` | `plan`, `apply`, `classify`, `properties sync` | Stop at the first account that fails, instead of continuing through the rest. |
+| `--format <text\|json>` | `plan`, `inspect config`, `inspect capabilities`, `inspect members` | Output shape. Defaults to `text`. |
 | `--out <path>` | `plan` | Save the reviewed plan for a later `apply --plan`. |
 | `--expires-in <minutes>` | `plan --out` | How long the saved plan stays valid. Defaults to `60`. |
 | `--plan <path>` | `apply` | Apply exactly a previously saved plan instead of planning again. |
 | `--strict` | All GitHub-facing commands | Fail the run when a declaration does not apply to the account that declared it. |
 | `--write` | `config migrate` | Update the file in place instead of previewing. |
-| `--yes`, `-y` | `apply` | Skip interactive confirmation. |
+| `--yes`, `-y` | `apply`, `members invite`, `members remove`, `members convert` | Skip interactive confirmation. |
 | `--apply` | `classify` | Persist proposals instead of printing them only. |
 | `--help`, `-h` | All | Print usage and exit successfully. |
 

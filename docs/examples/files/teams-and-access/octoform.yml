@@ -1,0 +1,95 @@
+# Who can reach what: teams, their membership, and the grants that let them in.
+#
+# Four mechanisms decide whether somebody can reach a repository, and they are
+# declared in two different places on purpose:
+#
+#   organization.members.base_permission   a floor under every repository
+#   organization.teams.<slug>.membership   who is on a team
+#   organization.roles.<name>              who holds an organisation role
+#   access.teams / access.users            what a team or person may do *here*
+#
+# The last one is declared from the repository side even for teams, so there is
+# one place to read a grant rather than two places for them to disagree.
+#
+#   export GITHUB_TOKEN=...
+#   octoform inspect members --config octoform.yml   # who is here already
+#   octoform plan            --config octoform.yml
+#
+# Every login below is fictitious. Replace them, and read `inspect members`
+# before applying: a grant to somebody who is not in the organisation becomes
+# an invitation, and an invitation nobody accepts is access that never arrives.
+
+version: 1
+owner: example-org
+
+organization:
+  members:
+    # Nothing is granted by default. Every path to a repository below is one
+    # this file states.
+    base_permission: none
+
+  teams:
+    # A parent. It has children, so it cannot be secret — GitHub does not keep
+    # that shape, and octoform refuses it while planning rather than sending it.
+    platform:
+      name: Platform
+      description: Owns the shared build and release tooling
+      privacy: closed
+
+    # A child. It names its parent by slug. If this run is creating `platform`
+    # too, this team waits for it — and is blocked, not attempted, if that
+    # creation fails.
+    platform-oncall:
+      name: Platform on-call
+      parent: platform
+      privacy: closed
+      notifications: false
+      membership:
+        maintainers: [example-lead]
+        members: [example-dev-a, example-dev-b]
+        # Additive. Nobody is removed for not appearing above.
+        #
+        # `authoritative: true` asks for the other behaviour and is refused in
+        # two cases: when the lists name nobody, and when it would remove the
+        # account the run is authenticated as.
+        authoritative: false
+
+    security:
+      name: Security
+      description: Reviews what reaches the default branch
+      privacy: closed
+      membership:
+        maintainers: [example-security-lead]
+
+  # Assignment only. There is no endpoint that creates an organisation role, so
+  # a name that matches nothing is refused as a name rather than treated as a
+  # definition. Both granting and revoking are sensitive: a role reaches every
+  # repository the organisation owns.
+  roles:
+    Security manager:
+      teams: [security]
+
+defaults:
+  access:
+    teams:
+      platform: maintain
+      security: read
+
+repos:
+  example-service:
+    access:
+      teams:
+        # Narrower than the default above, for this repository only.
+        platform-oncall: admin
+      users:
+        # A direct collaborator. If they are not one yet, this becomes an
+        # invitation, and octoform reads pending invitations so it is not sent
+        # again on the next run.
+        example-contractor: write
+
+  example-archive:
+    access:
+      users:
+        # Revocation is a word, not a deletion. Removing this line would stop
+        # managing the grant; it would not take it away.
+        example-former-contractor: none

@@ -337,9 +337,11 @@ try {
   const examplePages = [
     ['/examples/audit-only/', 1],
     ['/examples/branch-patterns/', 1],
+    ['/examples/organization/', 1],
     ['/examples/personal-account/', 1],
     ['/examples/scheduled-audit/', 1],
     ['/examples/shared-presets/', 4],
+    ['/examples/teams-and-access/', 1],
   ];
   for (const [path, expectedDownloads] of examplePages) {
     await page.goto(`${origin}${path}`, { waitUntil: 'networkidle' });
@@ -358,8 +360,8 @@ try {
 
   const linkedCardPages = [
     ['/getting-started/', 6],
-    ['/guides/', 4],
-    ['/examples/', 8],
+    ['/guides/', 5],
+    ['/examples/', 10],
     ['/reference/', 3],
     ['/security/', 4],
     ['/releases/', 4],

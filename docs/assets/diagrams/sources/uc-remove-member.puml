@@ -1,0 +1,53 @@
+@startuml uc-remove-member
+!include _theme.iuml
+
+state removeMember as "removeMember()" {
+
+  state " " as NamingOnePerson
+  state " " as Guarding
+  state " " as Asking
+  state " " as Removing
+
+  [*] --> NamingOnePerson
+  note on link
+  <b>Operator</b> names one login to take out of the
+  organisation
+  end note
+
+  NamingOnePerson --> Guarding
+  note on link
+  <b>Octoform</b> refuses two people whatever else is true
+  • the only remaining owner, because an organisation
+    with no owners cannot be administered by anybody
+  • the account this run is authenticated as, because it
+    could not put itself back
+  Neither is an API error: GitHub performs both happily
+  end note
+
+  Guarding --> Asking
+  note on link
+  <b>Octoform</b> says which of the two states it found — an
+  active membership, or an invitation never answered —
+  and what will be lost
+  end note
+
+  Asking --> Removing
+  note on link
+  <b>Operator</b> confirms
+  end note
+
+  Removing --> [*]
+  note on link
+  <b>Octoform</b> removes them, and says that any membership
+  held through an enterprise team is unaffected and has
+  to be removed there
+  end note
+}
+
+removeMember --> CONFIGURATION_RESOLVED
+note on link
+a guard exits 4 and nothing is attempted;
+declining exits 1; somebody who is neither
+a member nor invited is reported and exits 0
+end note
+@enduml

@@ -1,6 +1,6 @@
 ---
 title: State models
-description: Follow configuration processing and planned changes through complete Octoform 0.4 lifecycles.
+description: Follow configuration processing and planned changes through complete Octoform 0.5 lifecycles.
 ---
 
 # State models

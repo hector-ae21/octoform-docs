@@ -1,0 +1,51 @@
+@startuml owner-dependency-graph
+!include _theme.iuml
+
+start
+
+:Collect every owner-level change
+the plan produced;
+
+:Record what each one waits for;
+note right
+  A change carries its prerequisites.
+  Nothing infers them from the order
+  the file happens to be written in.
+end note
+
+if (Does anything wait for a change
+that is not in this run?) then (yes)
+  :Report it as blocked;
+  note right
+    A parent that already exists is
+    nothing to wait for. A parent that
+    was never declared is a mistake in
+    the file, and is named as one.
+  end note
+  stop
+else (no)
+endif
+
+repeat
+  :Take the changes whose prerequisites
+  have all succeeded;
+  :Attempt them;
+
+  if (Did a prerequisite fail?) then (yes)
+    :Block everything that waited for it;
+    note right
+      Blocked, not attempted. Sending a
+      child team to sit under a parent
+      that does not exist would fail in a
+      way nobody asked about.
+    end note
+  else (no)
+  endif
+repeat while (Anything left that can be attempted?) is (yes)
+->no;
+
+:Report every outcome, including the
+ones that were never attempted;
+
+stop
+@enduml
