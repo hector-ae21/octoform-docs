@@ -13,6 +13,34 @@ marked **Available since 0.4.1** would apply to `0.4.1` and every later
 Earlier lines keep their own published documentation; the `0.3` entries below
 remain here as the patch index for that line.
 
+## 0.4.1 — 2026-08-15
+
+**Applies from:** `0.4.1`  
+**Compatibility:** no exit class, schema, or exported signature moved. Every
+change is a fix to what a command reports or refuses.
+
+These came from running `0.4.0` against real multi-account configurations
+rather than against fixtures.
+
+### Fixed
+
+- [`config migrate`](../commands/config.md) no longer produces a configuration
+  that fails to load. It converted the root file's `owner` to `owners` while
+  leaving a `repos` block at the root of an imported file, which is accepted
+  beside `owner` and rejected beside `owners`. It now stops, names the files
+  that have to move first, and writes nothing.
+- A setting whose current value could not be read is explained from what was
+  observed rather than from a guessed commercial plan. Where repository
+  visibility settles the question, the reason names it.
+- A [plan](../commands/plan.md#reading-the-summary) states how many
+  repositories carry blocked work, instead of leaving those that also have
+  changes counted only as changed.
+
+### Added
+
+- `PlanSummary` gains `blockedRepositories`: repositories with at least one
+  blocked change, whether or not they also changed.
+
 ## 0.4.0 — 2026-08-15
 
 **Applies from:** `0.4.0`  
