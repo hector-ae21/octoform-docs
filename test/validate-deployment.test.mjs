@@ -12,16 +12,23 @@ test('accepts an exact immutable tree with redirect aliases', async (context) =>
 
 test('accepts an older immutable tree without moving current aliases', async (context) => {
   const fixture = await createFixture(context, { aliases: [] });
-  await mkdir(resolve(fixture.publishedDirectory, 'latest'), { recursive: true });
-  await writeFile(resolve(fixture.publishedDirectory, 'latest', 'index.html'), '../0.3.1/');
-  await writeFile(
-    resolve(fixture.publishedDirectory, 'versions.json'),
-    `${JSON.stringify([
-      { version: '0.3.1', title: '0.3.1', aliases: ['latest'] },
-      { version: fixture.version, title: fixture.version, aliases: [] },
-    ], undefined, 2)}\n`,
-  );
+  await supersede(fixture);
   await assert.doesNotReject(() => validateDeployment(fixture));
+});
+
+test('rejects a superseded line whose exit stays inside that line', async (context) => {
+  const fixture = await createFixture(context, {
+    aliases: [],
+    exitHref: 'https://hector-ae21.github.io/octoform-docs/0.3',
+  });
+  await supersede(fixture);
+  await assert.rejects(() => validateDeployment(fixture), /sends readers to/u);
+});
+
+test('rejects a superseded line that offers no exit', async (context) => {
+  const fixture = await createFixture(context, { aliases: [], exitHref: null });
+  await supersede(fixture);
+  await assert.rejects(() => validateDeployment(fixture), /offers no exit/u);
 });
 
 test('rejects stale canonical content', async (context) => {
@@ -49,21 +56,44 @@ test('rejects symbolic-link aliases', async (context) => {
   );
 });
 
+async function supersede({ publishedDirectory, version }) {
+  await mkdir(resolve(publishedDirectory, 'latest'), { recursive: true });
+  await writeFile(resolve(publishedDirectory, 'latest', 'index.html'), '../0.3.1/');
+  await writeFile(
+    resolve(publishedDirectory, 'versions.json'),
+    `${JSON.stringify([
+      { version: '0.3.1', title: '0.3.1', aliases: ['latest'] },
+      { version, title: version, aliases: [] },
+    ], undefined, 2)}\n`,
+  );
+}
+
+function landingPage(exitHref) {
+  const exit = exitHref === null
+    ? ''
+    : `<div class="md-banner__inner"><a href="${exitHref}"><strong>Open</strong></a></div>`;
+  return `<h1>Octoform</h1><aside class="md-banner md-banner--warning">${exit}</aside>`;
+}
+
 async function createFixture(
   context,
-  { aliases = ['0.3.0', '0.3.1', '0.3.2', 'latest', 'stable'] } = {},
+  {
+    aliases = ['0.3.0', '0.3.1', '0.3.2', 'latest', 'stable'],
+    exitHref = 'https://hector-ae21.github.io/octoform-docs/',
+  } = {},
 ) {
   const root = await mkdtemp(resolve(tmpdir(), 'octoform-docs-release-'));
   context.after(() => rm(root, { recursive: true, force: true }));
   const builtDirectory = resolve(root, 'site');
   const publishedDirectory = resolve(root, 'published');
   const version = '0.3';
+  const landing = landingPage(exitHref);
   await mkdir(resolve(builtDirectory, 'configuration'), { recursive: true });
-  await writeFile(resolve(builtDirectory, 'index.html'), '<h1>Octoform</h1>');
+  await writeFile(resolve(builtDirectory, 'index.html'), landing);
   await writeFile(resolve(builtDirectory, 'configuration', 'index.html'), 'Configuration');
   await mkdir(resolve(publishedDirectory, version), { recursive: true });
   await mkdir(resolve(publishedDirectory, version, 'configuration'), { recursive: true });
-  await writeFile(resolve(publishedDirectory, version, 'index.html'), '<h1>Octoform</h1>');
+  await writeFile(resolve(publishedDirectory, version, 'index.html'), landing);
   await writeFile(resolve(publishedDirectory, version, 'configuration', 'index.html'), 'Configuration');
   for (const alias of aliases) {
     await mkdir(resolve(publishedDirectory, alias), { recursive: true });

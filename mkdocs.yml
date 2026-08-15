@@ -1,7 +1,7 @@
 site_name: Octoform
 site_description: Declarative plan and apply governance for GitHub repositories
 site_author: Hector Arrechea
-site_url: https://hector-ae21.github.io/octoform-docs/
+site_url: &documentation_root https://hector-ae21.github.io/octoform-docs/
 repo_name: hector-ae21/octoform-docs
 repo_url: https://github.com/hector-ae21/octoform-docs
 edit_uri: edit/v0.x/docs/
@@ -87,6 +87,10 @@ extra_javascript:
   - assets/javascripts/navigation.js
 
 extra:
+  # Mike rewrites site_url to the deployed version's own root, so a template
+  # cannot use it to reach the site root. This alias of the source site_url
+  # stays untouched by the version plugin.
+  documentation_root: *documentation_root
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/hector-ae21/octoform

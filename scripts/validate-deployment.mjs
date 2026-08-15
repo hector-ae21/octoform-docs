@@ -3,6 +3,8 @@ import { lstat, readFile, readdir } from 'node:fs/promises';
 import { dirname, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
+const documentationRoot = new URL('https://hector-ae21.github.io/octoform-docs/');
+
 /**
  * Validates the exact remote tree prepared for GitHub Pages.
  *
@@ -53,8 +55,37 @@ export async function validateDeployment({ builtDirectory, publishedDirectory, v
   if (latestInfo.isSymbolicLink() || !latestInfo.isDirectory()) {
     throw new Error('Alias latest must be a real redirect directory');
   }
+  await validateSupersededExits(publishedDirectory, versions);
   const publishedFiles = await listFiles(publishedDirectory, { rejectLinks: true });
   if (publishedFiles.length === 0) throw new Error('Published tree is empty');
+}
+
+/**
+ * Requires every superseded line to send readers to the documentation root.
+ *
+ * A published page is static, so the banner it carries is decided at build
+ * time and cannot be corrected later from the current line. The link must
+ * leave the version it was built into.
+ *
+ * @param {string} publishedDirectory
+ * @param {{version: string, aliases: string[]}[]} versions
+ */
+async function validateSupersededExits(publishedDirectory, versions) {
+  const current = versions.find((entry) => entry.aliases.includes('latest'));
+  for (const entry of versions) {
+    if (!current || entry.version === current.version) continue;
+    const page = await readFile(resolve(publishedDirectory, entry.version, 'index.html'), 'utf8');
+    const banner = /md-banner__inner[\s\S]*?<a\s+href="([^"]+)"/u.exec(page);
+    if (!banner) {
+      throw new Error(`Superseded ${entry.version} offers no exit to the current documentation`);
+    }
+    const target = new URL(banner[1], new URL(`${entry.version}/`, documentationRoot));
+    if (target.href !== documentationRoot.href) {
+      throw new Error(
+        `Superseded ${entry.version} sends readers to ${target.href} instead of ${documentationRoot.href}`,
+      );
+    }
+  }
 }
 
 async function listFiles(root, options = {}) {
