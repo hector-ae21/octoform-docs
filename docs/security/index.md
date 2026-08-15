@@ -63,7 +63,7 @@ and report suspected vulnerabilities through a private channel.
 
 ## Core guarantees
 
-| Boundary | Octoform `0.3` contract |
+| Boundary | Octoform `0.4` contract |
 | --- | --- |
 | Configuration | Desired state and local source paths; never credential values |
 | Token input | `GITHUB_TOKEN`, then `GH_TOKEN`; never part of policy or plan |

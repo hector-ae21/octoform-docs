@@ -23,6 +23,28 @@ Replace `your-account` with the login that owns the repositories. Octoform asks
 GitHub whether that login represents a personal account or an organization;
 the configuration does not duplicate that fact.
 
+Start with one account. When a second one needs the same policy, move both
+under `owners` and keep the shared part at the root:
+
+```yaml title="octoform.yml"
+version: 1
+
+defaults:
+  merge:
+    delete_branch_on_merge: true
+
+owners:
+  your-account: {}
+  your-other-account: {}
+```
+
+Both forms are supported and a single-account file keeps its exact meaning, so
+there is nothing to migrate until you want it.
+[`octoform config migrate`](../commands/config.md) does the conversion,
+previewing by default and preserving your comments. See
+[document composition](../configuration/document-composition.md) for
+`owners`, `policies` and imports.
+
 ## What this policy means
 
 - `delete_branch_on_merge` must be enabled for selected managed repositories.

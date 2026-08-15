@@ -1,6 +1,6 @@
 ---
 title: Domain model
-description: Define every declared, observed, capability, planned, and applied concept in Octoform 0.3.
+description: Define every declared, observed, capability, planned, and applied concept in Octoform 0.4.
 ---
 
 # Domain model

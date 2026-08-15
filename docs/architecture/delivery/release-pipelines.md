@@ -32,7 +32,7 @@ independently within the documented Octoform `MAJOR.MINOR` line. Mike deploys
 the release line—not the exact package patch or editorial tag—and updates
 `latest` and `stable` only after successful verification and deployment.
 
-For example, publication tag `v0.3.25` can update the public `0.3`
-documentation while the build remains pinned to Octoform `0.3.2`.
+For example, publication tag `v0.4.25` can update the public `0.4`
+documentation while the build remains pinned to Octoform `0.4.0`.
 
 See [Releases](../../releases/index.md) for the reader-facing version contract.

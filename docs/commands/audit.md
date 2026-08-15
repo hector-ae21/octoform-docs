@@ -1,6 +1,6 @@
 ---
 title: octoform audit
-description: Inventory repositories and report read-only compliance findings with Octoform 0.3.
+description: Inventory repositories and report read-only compliance findings with Octoform 0.4.
 ---
 
 # `octoform audit`
@@ -28,9 +28,15 @@ The report lists discovered repositories, exclusions, owner context, and
 findings such as missing descriptions, topics, or types. Archived repositories
 produce no findings.
 
-Findings are information, not command failure. `audit` exits `0` whether it
-finds zero or many findings. A pipeline that needs a compliance gate must
-interpret captured output itself; `0.3` has no machine-readable result mode.
+`audit` exits `1` when it reports findings and `0` when it reports none, so a
+scheduled job fails on drift without having to interpret its output. This
+changed in `0.4`: on the `0.3` line, findings still exited `0`. A pipeline
+that treats drift as informational should test for the exact code rather than
+for success.
+
+`audit` has no `--format json` in this release. A gate that needs structured
+detail rather than a pass or fail should use [`plan --format json`](plan.md)
+instead.
 
 ## Permissions and failure
 

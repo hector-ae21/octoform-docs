@@ -9,6 +9,29 @@ The credential determines the maximum authority available to Octoform. Owner
 roles, repository access, and feature availability may narrow that authority
 further.
 
+## Where the token comes from
+
+Octoform searches exactly three places, in this order, and nothing else:
+
+1. a token passed by a programmatic caller, either directly or through a token
+   provider function;
+2. `GITHUB_TOKEN`;
+3. `GH_TOKEN`.
+
+There is no credential field in the configuration model, and a secret is never
+accepted as a command-line flag — process arguments are readable by other
+processes on the same machine.
+
+A value shaped like an issued GitHub token — `ghp_`, `gho_`, `ghu_`, `ghs_`,
+`ghr_`, or `github_pat_` — written into a configuration file is rejected when
+the file loads, before anything reaches GitHub. The error names the YAML path
+and never repeats the value, so it is safe to paste into a bug report. Mapping
+keys are checked as well, so a token pasted where a login or a repository name
+belongs is caught and reported against its parent.
+
+Tokens are held in memory for the life of the process. Nothing writes one to a
+plan, a log, or an artifact.
+
 ## Interactive operation
 
 A fine-grained personal access token is preferable to a classic PAT. Select

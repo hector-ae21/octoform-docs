@@ -140,6 +140,8 @@ nav:
           - Apply: commands/apply.md
           - Classify: commands/classify.md
           - Properties sync: commands/properties-sync.md
+          - Configuration commands: commands/config.md
+          - Inspection commands: commands/inspect.md
           - Authentication and exit codes: commands/execution-contract.md
       - Audited evidence:
           - 0.3.1 behavior baseline: reference/v0.3.1-baseline.md

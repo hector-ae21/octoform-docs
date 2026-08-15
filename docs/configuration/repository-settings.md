@@ -1,6 +1,6 @@
 ---
 title: Repository settings
-description: Manage GitHub repository features, merge behavior, and metadata with Octoform 0.3.
+description: Manage GitHub repository features, merge behavior, and metadata with Octoform 0.4.
 ---
 
 # Repository settings

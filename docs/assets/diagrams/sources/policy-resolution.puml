@@ -3,14 +3,32 @@
 
 start
 :Receive normalized Config and RepoState;
+:Select the OwnerScope for the account being planned;
 :Initialize an empty effective PolicySet;
-:Overlay defaults field by field;
+
+note right
+  Each layer is overlaid field by field.
+  A later layer never removes what it
+  does not mention.
+end note
+
+partition "Document composition" {
+  :Fold in imported files, earliest first;
+  :Overlay the importing file over them;
+}
+
+partition "Per layer, widest first" {
+  :Fold in the policies the layer references, in list order;
+  :Overlay the layer's own keys over them;
+}
+
+:Overlay root defaults;
+:Overlay owner defaults;
 if (Repository has a resolved type?) then (yes)
-  :Find matching types.<type> policy;
-  :Overlay type policy field by field;
+  :Overlay types.<type>;
 endif
 if (repos.<name> exists?) then (yes)
-  :Overlay named repository policy;
+  :Overlay repos.<name>;
 endif
 
 note right

@@ -16,12 +16,14 @@ The complete operation-level data is in
 | REST | GitHub OpenAPI `2026-03-10` at `b26c240ded1c8b79cb0fb09dee4a21239061fa23`, SHA-256 `6f36bc90e67debdb256880d0c5daaaba0afa8ce7bde343db7cc7f608492a997f` |
 | GraphQL | Public schema mutation introspection captured `2026-08-13` (274 mutations) |
 
-Octoform `0.3` sends no REST version header, so GitHub currently applies
-`2022-11-28`. The newer pinned description is used to disposition future API
-coverage; it does not claim that the `0.3` line already uses that version.
-Patch `0.3.2` does not add GitHub operations, so the implementation table
-continues to identify `v0.3.1` as the release where those routes entered the
-product contract.
+Octoform `0.4` pins an explicit REST version and sends it on every request,
+rather than leaving GitHub to apply whichever version is current by default.
+The pinned description above is also what dispositions future API coverage.
+
+The implementation table below continues to identify `v0.3.1` as the release
+where those routes entered the product contract. `0.4.0` adds owner discovery
+against `GET /users/{username}`, which was already part of the surface, and
+otherwise reaches the same operations.
 
 ## Summary
 

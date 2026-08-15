@@ -19,8 +19,34 @@ If you use the pinned on-demand invocation instead, place the command after the
 package name:
 
 ```console
-npx --yes @hector21/octoform@0.3.2 plan --config octoform.yml --repo sample-repository
+npx --yes @hector21/octoform@0.4.0 plan --config octoform.yml --repo sample-repository
 ```
+
+## When the configuration names several accounts
+
+Add `--owner` to narrow the run to one of them, and qualify `--repo` when the
+same repository name exists under more than one:
+
+```console
+octoform plan --config octoform.yml --owner example-org
+octoform plan --config octoform.yml --repo example-org/sample-repository
+```
+
+A bare `--repo` name that matches repositories under two selected accounts is
+rejected, and the error lists the qualified forms that would resolve it. A
+login the configuration does not declare is rejected too, rather than quietly
+resolving to every account except the one you meant.
+
+Before the first run against a new account, check what Octoform resolved
+about it:
+
+```console
+octoform inspect capabilities --config octoform.yml --owner example-org
+```
+
+That prints the account kind, its numeric identity, whether organisation-wide
+rulesets are available, and any declaration that does not apply to this kind
+of account — each with the evidence behind it rather than an assumption.
 
 ## Read the result
 

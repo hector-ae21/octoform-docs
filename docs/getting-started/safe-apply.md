@@ -22,6 +22,31 @@ Do not use `--yes` for this first run. That option belongs in a protected
 automation path where configuration review, plan retention, credentials, and
 environment approval replace the interactive prompt.
 
+## Applying exactly the plan you reviewed
+
+Planning and applying separately means two observations and two plans, and
+nothing forces them to agree. To close that gap, save the plan and apply that
+file:
+
+```console
+octoform plan  --config octoform.yml --repo sample-repository --out plan.json
+octoform apply --plan plan.json
+```
+
+`apply --plan` performs exactly the operations the file records. Before it
+touches anything it re-checks the schema version, the expiry, the
+authenticated actor, each account's numeric identity, every configuration
+source file, and the resolved configuration itself — and refuses, naming which
+check failed, if any of them moved. A stale plan fails; it is never silently
+repaired or re-planned.
+
+The saved plan expires after an hour by default; `--expires-in <minutes>`
+changes that. It carries no credential, but it does name private repositories
+and their settings, so treat it with the same care as the configuration.
+
+This is the shape to prefer in automation, where the person who approves a
+change is not the process that carries it out.
+
 ## Inspect the result
 
 Octoform reports each attempted change separately. A successful operation does
