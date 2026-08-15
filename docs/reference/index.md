@@ -81,7 +81,7 @@ checksummed configuration, CLI, capability, permission, and API manifests.
   [execution contract](../commands/execution-contract.md#exit-codes).
 - REST API version header: pinned and sent on every request.
 - GraphQL transport: not used by `0.4`.
-- Documentation line: `0.4`; latest verified application patch: `0.4.0`.
+- Documentation line: `0.4`; latest verified application patch: `0.4.1`.
 
 `0.4.0` keeps every existing configuration file working: the same document
 produces the same plans it did on `0.3.x`. Two contracts did change. `audit`
@@ -95,4 +95,4 @@ The [0.3.1 behavior baseline](v0.3.1-baseline.md) remains the audited
 implementation evidence for the `0.3` line, which stays published. Consult the
 [changelog](../releases/changelog.md) for patch-level availability.
 
-[typedoc]: https://github.com/hector-ae21/octoform/releases/download/v0.4.0/api.json
+[typedoc]: https://github.com/hector-ae21/octoform/releases/download/v0.4.1/api.json
