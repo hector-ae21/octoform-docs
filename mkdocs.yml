@@ -116,6 +116,7 @@ nav:
       - Guides overview: guides/index.md
       - Plan and apply: guides/plan-and-apply.md
       - Govern the organization: guides/organization-governance.md
+      - Verify against a test organization: guides/test-organization.md
       - Several accounts: guides/multi-account.md
       - CI/CD automation: automation/index.md
       - Examples:

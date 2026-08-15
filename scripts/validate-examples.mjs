@@ -22,6 +22,7 @@ const roots = [
   'teams-and-access/octoform.yml',
   'shared-presets/org.octoform.yml',
   'shared-presets/personal.octoform.yml',
+  'test-organization/octoform.yml',
 ];
 const forbiddenIdentities = ['didactika', 'hector-ae21', 'resilientmq'];
 

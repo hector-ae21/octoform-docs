@@ -35,6 +35,17 @@ teams, in an order where each step is reviewable on its own.
 
 <div class="octoform-card octoform-card--linked" markdown>
 
+## Verify against a test organization
+
+Prove convergence, idempotence and every refusal on an organization you can
+afford to throw away, before pointing Octoform at a real one.
+
+[Open the test-organization runbook](test-organization.md)
+
+</div>
+
+<div class="octoform-card octoform-card--linked" markdown>
+
 ## Operate across several accounts
 
 Introduce a second account, narrow a run before widening it, and read a report
