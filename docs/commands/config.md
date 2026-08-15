@@ -65,6 +65,31 @@ working tree, so the conversion is always reviewable as a diff.
 A file that already declares `owners` needs no migration and is reported as
 such.
 
+!!! warning "Available since 0.4.1 — imports that bind bare repository names"
+
+    Only the file you name is converted. A `repos` block at the root of an
+    imported file therefore stays where it is, and that block is accepted
+    beside `owner` but rejected beside `owners`: a bare repository name
+    identifies nothing once more than one account can be in scope.
+
+    Converting the root alone would leave a configuration that no longer
+    loads, so the migration refuses and names the files to move first:
+
+    ```console
+    $ octoform config migrate --config octoform.yml
+    octoform.yml cannot be migrated automatically. metadata.yml,
+    overrides.yml declare "repos" at the root, and only the file you named
+    is converted. [...] Move those entries under the account they belong
+    to, then migrate again.
+    ```
+
+    Move each entry under the account's own `repos`, then migrate again.
+    Imports that keep repositories out of their root — declaring `types`,
+    `classify`, `audit` or `defaults` instead — are unaffected.
+
+    In `0.4.0` this case was not detected, and the conversion produced a file
+    that failed to load on the next command.
+
 Migration is optional. A single-owner file keeps its exact meaning in this
 release and produces the same plans; see
 [document composition](../configuration/document-composition.md).

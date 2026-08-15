@@ -51,6 +51,14 @@ description: Specification of the read-only use case that compares resolved poli
 Blocked work stays in the report. It is never removed, never counted as
 convergence, and never handed to the applier.
 
+!!! info "Available since 0.4.1"
+
+    The per-account counts are exclusive so they sum to the number scanned,
+    which files a repository that is both changed and blocked under `changed`.
+    The number of repositories carrying blocked work is therefore stated
+    alongside the totals, so the summary cannot understate what the plan
+    cannot apply. See [reading the summary](../../../commands/plan.md#reading-the-summary).
+
 ## Reading order across accounts
 
 When a configuration declares several accounts, they run one at a time in

@@ -68,6 +68,34 @@ at all is reported as a distinct failure and never treated as "no changes".
 Blocked changes remain visible with their reason. Unreadable state is not
 converted into a guessed current value.
 
+!!! info "Available since 0.4.1"
+
+    A reason explains itself from what was observed. Where repository
+    visibility settles the question — GitHub hides scanning settings outside a
+    public repository without Advanced Security — the report names that;
+    where it does not, it says only that the value could not be read, rather
+    than guessing at a commercial plan.
+
+## Reading the summary
+
+The per-account counts put each repository in exactly one bucket, so they sum
+to the number scanned. A repository that has both an executable change and a
+blocked one is therefore counted as changed.
+
+!!! info "Available since 0.4.1"
+
+    Because that would understate how much of a run cannot be applied, the
+    number of repositories carrying blocked work is stated alongside the
+    totals whenever it is larger:
+
+    ```text
+    Total — scanned: 49, changed: 18, blocked: 9, failed: 0, unchanged: 22
+    16 repositories carry blocked work; 7 of them are counted above as
+    changed because they also have changes to apply.
+    ```
+
+    `PlanSummary` exposes the same number as `blockedRepositories`.
+
 ## Saving a plan
 
 `--out <path>` writes the reviewed plan to a versioned JSON file, with
