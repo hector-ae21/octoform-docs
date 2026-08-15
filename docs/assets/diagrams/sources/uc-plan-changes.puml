@@ -1,0 +1,58 @@
+@startuml uc-plan-changes
+!include _theme.iuml
+
+state planChanges as "planChanges()" {
+
+  state " " as RequestingPlan
+  state " " as Observing
+  state " " as Classifying
+  state " " as Presenting
+
+  [*] --> RequestingPlan
+  note on link
+  <b>Operator</b> asks what would change, for an explicit
+  policy and a deliberately narrow selection
+  end note
+
+  RequestingPlan --> Observing
+  note on link
+  <b>Octoform</b> resolves policy, discovers the selection and
+  reads only the state the policy is about
+  end note
+
+  Observing --> Classifying
+  note on link
+  <b>Octoform</b> sorts every candidate into one category
+  • change: observed and desired values differ
+  • no change: they already agree
+  • warning: available, with a known consequence
+  • blocked: availability or state cannot be proven
+  end note
+
+  Classifying --> Presenting
+  note on link
+  <b>Octoform</b> presents the plan and changes nothing
+  • blocked work stays in the report and is never
+    handed to the applier
+  • accounts run one at a time, so reports do not
+    interleave
+  end note
+
+  Presenting --> [*]
+  note on link
+  <b>Operator</b> confirms scope, current values, desired
+  values, warnings and blocked work before acting
+  end note
+}
+
+planChanges --> PLAN_PRESENTED
+note on link
+executable changes were found; exit 1
+end note
+
+planChanges -[#A78BFA]-> PLAN_PRESENTED
+note on link
+nothing to do, exit 0 · something blocked,
+exit 4 · the run itself failed, exit 5
+end note
+@enduml

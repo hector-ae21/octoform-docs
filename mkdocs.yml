@@ -115,9 +115,12 @@ nav:
   - Guides & examples:
       - Guides overview: guides/index.md
       - Plan and apply: guides/plan-and-apply.md
+      - Several accounts: guides/multi-account.md
       - CI/CD automation: automation/index.md
       - Examples:
           - Example catalogue: examples/index.md
+          - Multi-owner: examples/multi-owner.md
+          - Reviewed plan: examples/reviewed-plan.md
           - Minimal policy: examples/minimal.md
           - Audit only: examples/audit-only.md
           - Personal account: examples/personal-account.md
@@ -153,8 +156,23 @@ nav:
   - Architecture:
       - Architecture overview: architecture/index.md
       - Requirements:
+          - Requirements overview: architecture/requirements/index.md
           - Actors and use cases: architecture/requirements/actors-and-use-cases.md
+          - Operator context: architecture/requirements/operator-context.md
           - System context: architecture/requirements/system-context.md
+          - Use-case specifications:
+              - Specification catalogue: architecture/requirements/use-cases/index.md
+              - validateConfiguration(): architecture/requirements/use-cases/validate-configuration.md
+              - migrateConfiguration(): architecture/requirements/use-cases/migrate-configuration.md
+              - inspectConfiguration(): architecture/requirements/use-cases/inspect-configuration.md
+              - inspectCapabilities(): architecture/requirements/use-cases/inspect-capabilities.md
+              - auditRepositories(): architecture/requirements/use-cases/audit-repositories.md
+              - planChanges(): architecture/requirements/use-cases/plan-changes.md
+              - savePlan(): architecture/requirements/use-cases/save-plan.md
+              - applyPlan(): architecture/requirements/use-cases/apply-plan.md
+              - applySavedPlan(): architecture/requirements/use-cases/apply-saved-plan.md
+              - classifyRepositories(): architecture/requirements/use-cases/classify-repositories.md
+              - syncProperties(): architecture/requirements/use-cases/sync-properties.md
       - Software structure:
           - Container view: architecture/software/container-view.md
           - Runtime components: architecture/software/runtime-components.md

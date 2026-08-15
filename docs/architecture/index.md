@@ -17,7 +17,10 @@ code to an external diagram service.
 
 | Artefact | Purpose |
 | --- | --- |
+| [Requirements overview](requirements/index.md) | Explain how the requirements artefacts are recorded and why they are required to agree with each other. |
 | [Actors and use cases](requirements/actors-and-use-cases.md) | Define each human, automation, application, and external-system role and the individual goals they pursue. |
+| [Operator context](requirements/operator-context.md) | Place every use case on one state model: what the operator holds, and which use case moves them. |
+| [Use-case specifications](requirements/use-cases/index.md) | Specify each use case as a conversation, with preconditions and the states it can end on. |
 | [System context](requirements/system-context.md) | Show how those actors enter through the CLI or ESM API and how Octoform reaches GitHub. |
 
 ## Software structure

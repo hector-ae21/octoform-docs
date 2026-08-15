@@ -2,28 +2,42 @@
 !include _theme.iuml
 left to right direction
 
-actor "CI/CD\nworkflow" as Automation
-actor "TypeScript\napplication" as Consumer
+actor "Automation workflow" as Automation
+actor "Integrating application" as Application
 
-rectangle "Octoform 0.3 · automated and embedded use" {
-  package "Automation goals" {
-    usecase "Run scheduled\nobservation" as Scheduled
-    usecase "Validate policy in a\npull request" as PullRequest
-    usecase "Run protected\nnon-interactive apply" as ProtectedApply
+rectangle "Octoform 0.4 · non-interactive use" {
+  package "Reachable without a prompt" {
+    usecase "validateConfiguration()" as Validate
+    usecase "auditRepositories()" as Audit
+    usecase "planChanges()" as Plan
+    usecase "savePlan()" as Save
   }
-  package "Reused governance capabilities" {
-    usecase "Audit repository\nmetadata" as Audit
-    usecase "Preview desired-state\nchanges" as Plan
-    usecase "Confirm and apply\na displayed plan" as Apply
+  package "Reachable only with --yes" {
+    usecase "applyPlan()" as Apply
+    usecase "applySavedPlan()" as ApplySaved
   }
-  usecase "Embed configuration and\nplanning services" as Embed
+  usecase "embedGovernanceServices()" as Embed
 }
 
-Automation --> Scheduled
-Automation --> PullRequest
-Automation --> ProtectedApply
-Consumer --> Embed
-Scheduled ..> Audit : <<include>>
-PullRequest ..> Plan : <<include>>
-ProtectedApply ..> Apply : <<include>>
+Automation --> Validate
+Automation --> Audit
+Automation --> Plan
+Automation --> Save
+Automation --> Apply
+Automation --> ApplySaved
+Application --> Embed
+
+Apply ..> Plan : <<include>>
+ApplySaved ..> Save : <<include>>
+
+note bottom of Embed
+  An automation workflow is the same actor role as an operator
+  minus the ability to answer a prompt. It reaches the same use
+  cases; --yes replaces the confirmation step, so the review it
+  represents has to exist outside Octoform.
+
+  An integrating application calls exported functions directly
+  and therefore owns authentication, invocation and error
+  handling around them.
+end note
 @enduml

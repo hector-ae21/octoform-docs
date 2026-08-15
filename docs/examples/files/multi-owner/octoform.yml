@@ -1,0 +1,53 @@
+# Two accounts governed by one reviewed document — the shape 0.4 introduced.
+#
+# What is worth noticing here is what is *not* repeated. The root `defaults`
+# and the named policy under `policies` are written once, and each account
+# takes what applies to it. An account is not a copy of the document; it is a
+# selection within it.
+#
+# `example-org` and `example-personal` are placeholders — replace them, then:
+#   export GITHUB_TOKEN=...
+#   octoform plan --config octoform.yml --owner example-org
+#   octoform plan --config octoform.yml            # both, one at a time
+#
+# Accounts run in declaration order and their reports never interleave. By
+# default a failure in one does not stop the other; add --fail-fast to stop at
+# the first.
+
+version: 1
+
+defaults:
+  merge:
+    delete_branch_on_merge: true
+    allow_merge_commit: true
+    allow_rebase: false
+
+policies:
+  published-library:
+    features:
+      issues: true
+    security:
+      secret_scanning: true
+      secret_scanning_push_protection: true
+
+owners:
+  # An organisation: rulesets are available at owner level, and custom
+  # properties exist, so classification can be persisted.
+  example-org:
+    classify:
+      rules:
+        - when: { file_exists: package.json }
+          type: npm-package
+    types:
+      npm-package:
+        policies: [published-library]
+        default_branch:
+          name: main
+
+  # A personal account: the same named policy applies, but nothing here
+  # depends on an organisation-only feature. `octoform inspect capabilities`
+  # reports any declaration that would not apply, with the reason.
+  example-personal:
+    repos:
+      example-tool:
+        policies: [published-library]
