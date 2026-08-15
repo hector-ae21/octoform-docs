@@ -1,0 +1,31 @@
+@startuml system-context
+!include _theme.iuml
+left to right direction
+
+actor "Repository operator" as Operator
+actor "CI/CD workflow" as Automation
+actor "TypeScript application" as Application
+
+rectangle "Octoform system boundary" as Octoform {
+  rectangle "Command-line interface\nCommands, options, confirmation, reports" as CLI
+  rectangle "Public ESM API\nTyped configuration, planning and apply exports" as API
+  rectangle "Governance engine\nResolve policy, observe state, plan and apply" as Engine
+}
+
+cloud "GitHub REST API\nOwner identity, repositories, organization metadata,\nsettings and governed resources" as GitHub
+
+Operator --> CLI : audit, classify, plan, apply
+Automation --> CLI : scheduled audit, PR plan, protected apply
+Application --> API : typed function calls
+CLI --> Engine : validated command intent
+API --> Engine : typed service invocation
+Engine --> GitHub : authenticated reads and permitted writes
+GitHub --> Engine : current state, permissions and capability evidence
+Engine --> CLI : findings, plan, outcomes and exit status
+Engine --> API : typed values, changes and errors
+
+note bottom of Octoform
+  One resolved configuration targets one owner in 0.3.
+  The released integration uses GitHub REST, not GraphQL.
+end note
+@enduml

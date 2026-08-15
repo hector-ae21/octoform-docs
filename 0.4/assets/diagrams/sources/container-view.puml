@@ -1,0 +1,38 @@
+@startuml container-view
+!include _theme.iuml
+left to right direction
+
+actor "Operator" as Operator
+actor "CI/CD workflow" as Automation
+component "TypeScript application" as Consumer
+
+package "Trusted workstation or CI runner" {
+  component "Octoform Node.js process\nCLI adapter and ESM library" as Process
+  component "Octokit client\nREST transport" as Octokit
+  file "Root YAML and imports\nDeclared desired state" as Config
+  file "Local seed files\nCreate-if-missing content" as Seeds
+  rectangle "Process environment\nGITHUB_TOKEN or GH_TOKEN" as Token
+  rectangle "Standard output and error\nHuman-readable report" as Console
+}
+
+package "GitHub.com boundary" {
+  component "REST API" as REST
+  database "Owner and repository state" as State
+}
+
+Operator --> Process : command, filters and confirmation
+Automation --> Process : command and protected inputs
+Consumer --> Process : ESM imports and function calls
+Config --> Process : configuration composition
+Seeds --> Process : declared file content
+Token --> Octokit : bearer credential in memory
+Process --> Octokit : observation and mutation requests
+Octokit --> REST : authenticated HTTPS
+REST --> State : read or authorized mutation
+State --> REST : current values
+REST --> Octokit : response, headers or error
+Octokit --> Process : state and capability evidence
+Process --> Console : findings, plans and outcomes
+Console --> Operator
+Console --> Automation
+@enduml
