@@ -1,6 +1,6 @@
 @startuml operator-context
+left to right direction
 !include _theme.iuml
-skinparam linetype ortho
 
 state "NO_CONFIGURATION" as NoConfig
 state "CONFIGURATION_RESOLVED" as Resolved
