@@ -28,7 +28,7 @@
     "@axe-core/playwright": "4.13.0",
     "@hector21/octoform": "0.5.0",
     "cspell": "10.0.1",
-    "html-validate": "11.6.2",
+    "html-validate": "11.7.0",
     "http-server": "14.1.1",
     "markdownlint-cli2": "0.23.2",
     "playwright": "1.62.1"
