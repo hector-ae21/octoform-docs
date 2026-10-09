@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sourceDirectory = resolve(root, 'docs/assets/diagrams/sources');
 const outputDirectory = resolve(root, 'docs/assets/diagrams');
-const image = 'plantuml/plantuml@sha256:47870c1f76cfb3747bc7090bfe83013a4e3105b5a0bb1515e2baf5d3e2b3ee9d';
+const image = 'ghcr.io/plantuml/plantuml@sha256:47870c1f76cfb3747bc7090bfe83013a4e3105b5a0bb1515e2baf5d3e2b3ee9d';
 const sources = readdirSync(sourceDirectory)
   .filter((file) => file.endsWith('.puml'))
   .sort();
