@@ -5,7 +5,7 @@ description = "Professional, versioned documentation for Octoform"
 requires-python = ">=3.13,<3.14"
 dependencies = [
   "mike==2.2.0",
-  "mkdocs-material==9.7.7",
+  "mkdocs-material==9.8.0",
 ]
 
 [tool.pip-tools]
