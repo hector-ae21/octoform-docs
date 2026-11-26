@@ -14,7 +14,7 @@ uses all four, and the point of it is where each one is declared.
 --8<-- "docs/examples/files/teams-and-access/octoform.yml"
 ```
 
-[:material-download: Download YAML](files/teams-and-access/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the teams and access YAML" }
+[:material-download: Download YAML](files/teams-and-access/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download YAML — the teams and access configuration" }
 
 </div>
 
