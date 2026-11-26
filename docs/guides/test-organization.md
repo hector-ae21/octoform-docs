@@ -85,7 +85,7 @@ applying.
 --8<-- "docs/examples/files/test-organization/octoform.yml"
 ```
 
-[:material-download: Download YAML](../examples/files/test-organization/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the test-organization YAML" }
+[:material-download: Download YAML](../examples/files/test-organization/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download YAML — the test-organization configuration" }
 
 Nothing in it removes anything. The refusals get their own step, so that a
 mistake in the file cannot delete something on a real organization somebody

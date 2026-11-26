@@ -16,7 +16,7 @@ checks public metadata while leaving all repository settings unmanaged.
 --8<-- "docs/examples/files/self-audit/octoform.yml"
 ```
 
-[:material-download: Download YAML](files/self-audit/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the scheduled-audit policy YAML" }
+[:material-download: Download YAML](files/self-audit/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download YAML — the scheduled-audit policy" }
 
 </div>
 

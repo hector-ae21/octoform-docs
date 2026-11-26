@@ -14,7 +14,7 @@ be the same. This example is written for that split.
 --8<-- "docs/examples/files/reviewed-plan/octoform.yml"
 ```
 
-[:material-download: Download YAML](files/reviewed-plan/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the reviewed-plan YAML" }
+[:material-download: Download YAML](files/reviewed-plan/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download YAML — the reviewed-plan configuration" }
 
 </div>
 

@@ -14,7 +14,7 @@ plan. This is the shape the 0.5 line introduced.
 --8<-- "docs/examples/files/organization/octoform.yml"
 ```
 
-[:material-download: Download YAML](files/organization/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the organization YAML" }
+[:material-download: Download YAML](files/organization/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download YAML — the organization configuration" }
 
 </div>
 

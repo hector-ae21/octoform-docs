@@ -14,7 +14,7 @@ shape the 0.4 line introduced, and the reason the rest of the release exists.
 --8<-- "docs/examples/files/multi-owner/octoform.yml"
 ```
 
-[:material-download: Download YAML](files/multi-owner/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download the multi-owner YAML" }
+[:material-download: Download YAML](files/multi-owner/octoform.yml){ .octoform-example-download download="octoform.yml" aria-label="Download YAML — the multi-owner configuration" }
 
 </div>
 
